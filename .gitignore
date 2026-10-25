@@ -1,0 +1,9 @@
+.vercel/
+.DS_Store
+Thumbs.db
+*.log
+*.rvf
+*.rvf.lock
+*.db
+.claude/
+node_modules/
