@@ -2,3 +2,4 @@ tools/
 README.md
 .claude/
 .gitignore
+.env*
