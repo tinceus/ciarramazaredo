@@ -1,0 +1,518 @@
+{
+  "name": "Inbox triage and daily brief",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Inbox triage and daily brief\nEvery new email is sorted and labeled. Emails that need a reply get a draft, never a sent message. Each morning one short brief lists what needs the leader.\n\nConnect Gmail and Anthropic after import, and create the five labels.",
+        "height": 200,
+        "width": 440,
+        "color": 4
+      },
+      "id": "f8ff44e7-c244-5e8b-8c01-a5dcdfc2891e",
+      "name": "About this workflow",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -80,
+        -320
+      ]
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyX",
+              "value": 5,
+              "unit": "minutes"
+            }
+          ]
+        },
+        "simple": false,
+        "filters": {
+          "labelIds": [
+            "INBOX"
+          ]
+        },
+        "options": {}
+      },
+      "id": "e05b40df-7b08-5547-8a66-927fb95a758b",
+      "name": "New email",
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "inputText": "=From: {{ $json.from.text }}\nSubject: {{ $json.subject }}\n\n{{ $json.text }}",
+        "categories": {
+          "categories": [
+            {
+              "category": "Urgent",
+              "description": "Needs action today: a deadline, an outage, a leader or client waiting."
+            },
+            {
+              "category": "Needs reply",
+              "description": "A real person asked a question or proposed something."
+            },
+            {
+              "category": "Billing",
+              "description": "Invoices, receipts, payments, subscriptions."
+            },
+            {
+              "category": "FYI",
+              "description": "Updates to read later with no action needed."
+            },
+            {
+              "category": "Newsletter",
+              "description": "Bulk or marketing email."
+            }
+          ]
+        },
+        "options": {
+          "fallback": "other"
+        }
+      },
+      "id": "8f2cb5c3-80ca-5626-983e-1eeef87b7c16",
+      "name": "Sort email",
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1.1,
+      "position": [
+        260,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "id",
+          "value": "claude-sonnet-5-5"
+        },
+        "options": {
+          "temperature": 0
+        }
+      },
+      "id": "6f9ff2bc-5a7d-56c1-9df0-f31c68568949",
+      "name": "Claude (sorting)",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        260,
+        220
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": [
+          "Urgent"
+        ]
+      },
+      "id": "9540bb1c-4a3d-568d-b2b3-c88ae7641560",
+      "name": "Label: Urgent",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        560,
+        -260
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": [
+          "Needs reply"
+        ]
+      },
+      "id": "161c4c50-c4ce-5626-8ddb-7d9c0364a944",
+      "name": "Label: Needs reply",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        560,
+        -130
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": [
+          "Billing"
+        ]
+      },
+      "id": "48544b3d-b108-5aab-8eb0-1481a57fba05",
+      "name": "Label: Billing",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        560,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": [
+          "FYI"
+        ]
+      },
+      "id": "9a98eaee-e938-5f3e-8a64-0b575c5b2516",
+      "name": "Label: FYI",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        560,
+        130
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": [
+          "Newsletter"
+        ]
+      },
+      "id": "0eb851f0-56fd-5f83-9e6b-8e68532a93c3",
+      "name": "Label: Newsletter",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        560,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Draft a short, polite reply for the leader to review. Match their tone, answer only what was asked, and mark anything you are unsure of with [CHECK].\n\nFrom: {{ $('New email').item.json.from.text }}\nSubject: {{ $('New email').item.json.subject }}\n\n{{ $('New email').item.json.text }}"
+      },
+      "id": "19be4ec5-a80f-5803-96dc-aa10f81c03ec",
+      "name": "Draft a reply",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        820,
+        -130
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "id",
+          "value": "claude-sonnet-5-5"
+        },
+        "options": {
+          "temperature": 0.3
+        }
+      },
+      "id": "b784fbee-85c4-5059-a3de-a8ba94664db9",
+      "name": "Claude (drafting)",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        820,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "draft",
+        "subject": "=Re: {{ $('New email').item.json.subject }}",
+        "emailType": "text",
+        "message": "={{ $json.text }}",
+        "options": {
+          "threadId": "={{ $('New email').item.json.threadId }}",
+          "sendTo": "={{ $('New email').item.json.from.value[0].address }}"
+        }
+      },
+      "id": "36c021d0-3d5b-5c79-99c3-4e33fe1685cb",
+      "name": "Save as draft (never send)",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1060,
+        -130
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "30 7 * * 1-5"
+            }
+          ]
+        }
+      },
+      "id": "d310b802-aca0-596b-b575-236f51af25ee",
+      "name": "Every weekday 7:30",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        520
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "returnAll": true,
+        "simple": true,
+        "filters": {
+          "q": "newer_than:1d (label:Urgent OR label:\"Needs reply\" OR label:Billing)"
+        },
+        "options": {}
+      },
+      "id": "43cd1b07-3f7e-54b3-b1c4-0959e10e8698",
+      "name": "Get last 24 hours",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        260,
+        520
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const lines = $input.all().map(i => `- ${i.json.From || i.json.from}: ${i.json.Subject || i.json.subject}`);\nreturn [{ json: { list: lines.join('\\n'), count: lines.length } }];"
+      },
+      "id": "0994b5c1-e688-56ed-a393-554df5ae8321",
+      "name": "List them",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        480,
+        520
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Write a morning brief of at most 8 lines for a busy leader. Group into Do today, Reply, Pay. Use only the emails listed. Never add items.\n\n{{ $json.list }}"
+      },
+      "id": "09a09deb-21c6-5738-9dae-1338cc550554",
+      "name": "Write the brief",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        700,
+        520
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "id",
+          "value": "claude-sonnet-5-5"
+        },
+        "options": {
+          "temperature": 0.2
+        }
+      },
+      "id": "d38e23d3-f46d-54b8-b0d5-a8bba7a9b961",
+      "name": "Claude (brief)",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        700,
+        740
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "you@example.com",
+        "subject": "=Morning brief {{ $now.toFormat('ccc d LLL') }}",
+        "emailType": "text",
+        "message": "={{ $json.text }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "id": "8ae6014e-ddff-5532-93a3-2a2fb6112beb",
+      "name": "Send brief to me",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        940,
+        520
+      ]
+    }
+  ],
+  "connections": {
+    "Claude (sorting)": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Sort email",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "New email": {
+      "main": [
+        [
+          {
+            "node": "Sort email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sort email": {
+      "main": [
+        [
+          {
+            "node": "Label: Urgent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Label: Needs reply",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Label: Billing",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Label: FYI",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Label: Newsletter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Claude (drafting)": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Draft a reply",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Label: Needs reply": {
+      "main": [
+        [
+          {
+            "node": "Draft a reply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Draft a reply": {
+      "main": [
+        [
+          {
+            "node": "Save as draft (never send)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Claude (brief)": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Write the brief",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Every weekday 7:30": {
+      "main": [
+        [
+          {
+            "node": "Get last 24 hours",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get last 24 hours": {
+      "main": [
+        [
+          {
+            "node": "List them",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "List them": {
+      "main": [
+        [
+          {
+            "node": "Write the brief",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write the brief": {
+      "main": [
+        [
+          {
+            "node": "Send brief to me",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true
+  },
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "tags": [
+    {
+      "name": "Hours back every week"
+    }
+  ],
+  "pinData": {}
+}

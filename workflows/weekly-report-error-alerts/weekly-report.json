@@ -1,0 +1,233 @@
+{
+  "name": "Weekly report",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Weekly report\nEvery Monday the numbers are pulled from one sheet, compared with last week, and turned into a short draft. The draft waits in Gmail for a person to check before it goes to the leader.\n\nNumbers are calculated in code. The AI only writes sentences around them.",
+        "height": 200,
+        "width": 440,
+        "color": 4
+      },
+      "id": "f8ff44e7-c244-5e8b-8c01-a5dcdfc2891e",
+      "name": "About this workflow",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -80,
+        -300
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 8 * * 1"
+            }
+          ]
+        }
+      },
+      "id": "01e43159-cc90-59ed-a966-229085f48bbe",
+      "name": "Every Monday 8:00",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "read",
+        "documentId": {
+          "__rl": true,
+          "mode": "url",
+          "value": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "KPIs"
+        },
+        "options": {}
+      },
+      "id": "38d334a0-8447-5139-8814-73a9f2297484",
+      "name": "Read KPI sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        220,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Compare this week with last week for every metric. Status uses the target and the direction.\nconst rows = $input.all().map(i => i.json);\nconst weeks = [...new Set(rows.map(r => r.week_start))].sort();\nconst [prev, cur] = weeks.slice(-2);\nconst pick = (w, m) => rows.find(r => r.week_start === w && r.metric === m);\nconst out = [...new Set(rows.map(r => r.metric))].map(m => {\n  const a = pick(cur, m), b = pick(prev, m);\n  const v = Number(a.value), t = Number(a.target), p = b ? Number(b.value) : null;\n  const good = a.direction === 'down' ? v <= t : v >= t;\n  return { metric: m, value: v, target: t, previous: p, change: p === null ? null : +(v - p).toFixed(2), status: good ? 'On track' : 'Watch' };\n});\nreturn [{ json: { week: cur, metrics: out, table: out.map(o => `${o.metric}: ${o.value} (target ${o.target}, last week ${o.previous}) ${o.status}`).join('\\n') } }];\n"
+      },
+      "id": "9477becb-a55b-5c3e-8217-3328bd24f37c",
+      "name": "Compare weeks",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        440,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Write a weekly update of 5 to 7 short lines for the leadership team. Start with what improved, then what needs attention, then one suggested next step. Use only these numbers, exactly as written. Do not round or add figures.\n\nWeek of {{ $json.week }}\n{{ $json.table }}"
+      },
+      "id": "14a372da-c779-5173-b7a2-f43f39fa10f0",
+      "name": "Write the summary",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        660,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "id",
+          "value": "claude-sonnet-5-5"
+        },
+        "options": {
+          "temperature": 0.2
+        }
+      },
+      "id": "129f36fc-a938-51fa-9f1d-eb36ee555dc4",
+      "name": "Claude",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        660,
+        220
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "draft",
+        "subject": "=Weekly update, week of {{ $('Compare weeks').item.json.week }}",
+        "emailType": "text",
+        "message": "={{ $json.text }}\n\nNumbers:\n{{ $('Compare weeks').item.json.table }}",
+        "options": {
+          "sendTo": "leader@example.com"
+        }
+      },
+      "id": "31873e88-92b3-56da-8f5a-a150104dc487",
+      "name": "Draft for review",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        900,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "mode": "name",
+          "value": "#ops"
+        },
+        "text": "=Weekly update draft is ready in Gmail for review.",
+        "otherOptions": {}
+      },
+      "id": "a8e10d5a-5789-567b-9a6c-2277b380f0ea",
+      "name": "Ping me to review",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        1120,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Claude": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Write the summary",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Every Monday 8:00": {
+      "main": [
+        [
+          {
+            "node": "Read KPI sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read KPI sheet": {
+      "main": [
+        [
+          {
+            "node": "Compare weeks",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Compare weeks": {
+      "main": [
+        [
+          {
+            "node": "Write the summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write the summary": {
+      "main": [
+        [
+          {
+            "node": "Draft for review",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Draft for review": {
+      "main": [
+        [
+          {
+            "node": "Ping me to review",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true
+  },
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "tags": [
+    {
+      "name": "Reports that write themselves"
+    }
+  ],
+  "pinData": {}
+}

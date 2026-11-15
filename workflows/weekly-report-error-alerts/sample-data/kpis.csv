@@ -1,0 +1,9 @@
+week_start,metric,value,target,direction
+2026-11-02,New leads,42,50,up
+2026-11-02,Calls booked,11,12,up
+2026-11-02,Response time (hours),6.5,2,down
+2026-11-02,Open support tickets,14,10,down
+2026-11-09,New leads,55,50,up
+2026-11-09,Calls booked,13,12,up
+2026-11-09,Response time (hours),2.4,2,down
+2026-11-09,Open support tickets,9,10,down

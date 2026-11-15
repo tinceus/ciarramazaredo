@@ -1,0 +1,7 @@
+[
+  {"from": "board@example.com", "subject": "Board deck due Thursday", "body": "Can you confirm the Q4 numbers by Wednesday noon?"},
+  {"from": "vendor@example.com", "subject": "Invoice #4821", "body": "Attached is the invoice for October services, due Nov 30."},
+  {"from": "candidate@example.com", "subject": "Re: Operations Associate interview", "body": "Thanks for the call. Is Friday 2pm still okay for the second round?"},
+  {"from": "news@example.com", "subject": "This week in SaaS", "body": "Top 10 links from the week."},
+  {"from": "client@example.com", "subject": "URGENT: login not working", "body": "Our team cannot log in since this morning."}
+]

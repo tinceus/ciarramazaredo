@@ -10,7 +10,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         super().do_GET()
     def translate_path(self, path):
         p = super().translate_path(path)
-        if not os.path.exists(p) and os.path.isfile(p + '.html'):
+        if not os.path.isfile(p) and os.path.isfile(p + '.html'):  # page beats a same-named folder, like Vercel
             return p + '.html'
         return p
     def send_error(self, code, message=None, explain=None):

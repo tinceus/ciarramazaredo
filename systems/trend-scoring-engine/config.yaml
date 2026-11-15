@@ -1,0 +1,148 @@
+# Example configuration. The verticals, keywords and phrases below are fictional
+# placeholders for a B2B lead-generation brand that sells to three industries.
+# Swap them for your own; the scoring code reads everything from this file.
+
+max_cache_age_hours: 24
+served_window_days: 30
+max_cache_size: 100
+
+weights:
+  vertical: 0.30
+  audience: 0.20
+  reframe:  0.25
+  recency:  0.15
+  signal:   0.10
+
+thresholds:
+  cache_inclusion: 0.30
+  serve_minimum:   0.45
+  serve_dedup_days: 14
+
+source_weights:
+  google_trends: 1.00
+  reddit:        1.00
+  twitter:       0.90
+  instagram:     0.80
+  tiktok:        0.70
+
+# Engagement that counts as "full signal" for each source. Log-scaled against this.
+source_baselines:
+  google_trends: 100
+  reddit:        1000
+  twitter:       10000
+  instagram:     50000
+  tiktok:        100000
+
+keywords:
+  # Seed keywords for Google Trends rising queries.
+  all:
+    - "lead quality"
+    - "cost per lead"
+    - "lead vendor"
+    - "home services leads"
+    - "law firm intake"
+    - "dental new patients"
+    - "agent productivity"
+  verticals:
+    home_services:
+      - "home services"
+      - "hvac"
+      - "roofing"
+      - "plumbing"
+      - "service area"
+      - "contractor"
+    legal:
+      - "law firm"
+      - "personal injury"
+      - "case intake"
+      - "signed case"
+      - "legal marketing"
+    dental:
+      - "dental practice"
+      - "new patient"
+      - "hygiene schedule"
+      - "dental marketing"
+      - "chair time"
+
+audience_signals:
+  b2b:
+    - "lead quality"
+    - "close rate"
+    - "cpl"
+    - "cost per lead"
+    - "pipeline"
+    - "rep productivity"
+    - "vendor"
+    - "cancel rate"
+    - "booking rate"
+    - "show rate"
+    - "vp of"
+    - "director of"
+    - "owner"
+  consumer:
+    - "my home"
+    - "my bill"
+    - "should i get"
+    - "is it worth it"
+    - "for my parent"
+    - "near me"
+
+reframe_triggers:
+  input_quality:
+    - "lead quality"
+    - "bad leads"
+    - "junk leads"
+    - "scrub"
+    - "dead lead"
+    - "tire kicker"
+    - "wasted dial"
+  opportunity_cost:
+    - "wasted hour"
+    - "best closer"
+    - "rep time"
+    - "cpl is fine"
+    - "we close fine"
+    - "killing margin"
+  denominator:
+    - "close rate"
+    - "skip"
+    - "didn't work"
+    - "passed on"
+    - "team rejected"
+    - "unworkable"
+
+# Claims the brand never makes. Any match drops the trend before scoring.
+red_lines:
+  - "free install"
+  - "100% free"
+  - "no cost to you"
+  - "government pays for"
+  - "guaranteed savings"
+  - "guaranteed results"
+  - "guaranteed leads"
+
+# Framing that makes the buyer the villain. The villain is the system, never the prospect.
+prospect_blame:
+  - "contractors are scammers"
+  - "lawyers are crooks"
+  - "dentists overcharge"
+  - "all sales reps lie"
+  - "salesman scam"
+
+sources:
+  reddit:
+    subreddits: [smallbusiness, sales, marketing, leadgeneration, HVAC, Roofing, LawFirm, Dentistry]
+    refresh_hours: 12
+    max_items: 200
+  twitter:
+    search_terms: ["lead quality", "cost per lead", "lead vendor", "law firm intake", "home services leads"]
+    refresh_hours: 6
+    max_items: 200
+  instagram:
+    hashtags: ["contractorlife", "lawfirmmarketing", "dentalmarketing", "leadgen"]
+    refresh_hours: 24
+    max_items: 50
+  tiktok:
+    hashtags: ["contractorlife", "smallbusinessowner", "leadgen"]
+    refresh_hours: 24
+    max_items: 50

@@ -1,0 +1,13 @@
+{
+  "_note": "Copy to config.json. Sheet IDs are the long id in each spreadsheet's URL. Keep config.json out of git.",
+  "sheets": {
+    "Brand A": {"sheet_id": "YOUR_SPREADSHEET_ID_A"},
+    "Brand B": {"sheet_id": "YOUR_SPREADSHEET_ID_B"}
+  },
+  "vertical_aliases": {
+    "a": "Brand A",
+    "brand-a": "Brand A",
+    "b": "Brand B",
+    "brand-b": "Brand B"
+  }
+}

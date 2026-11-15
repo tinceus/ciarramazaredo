@@ -1,0 +1,6 @@
+created_at,name,email,phone,company,source,budget,message,status,score,tier
+2026-11-10T09:12:00Z,Dana Reyes,dana@example.com,+1 555 0101,Brightline Dental,google_ads,5000+,We need help booking more new patients this quarter,new,,
+2026-11-10T10:40:00Z,Sam Patel,sam@example.com,,Patel Fitness,instagram,under 1000,Just curious about pricing,new,,
+2026-11-10T13:05:00Z,Lee Ortiz,lee@example.com,+1 555 0103,Ortiz Realty,referral,1000-5000,Can we talk this week about follow-up for our listings,new,,
+2026-11-11T08:30:00Z,Kim Novak,kim@example.com,+1 555 0104,Novak Coaching,website,5000+,Ready to start. Need a system for discovery calls,new,,
+2026-11-11T16:22:00Z,Ali Hassan,ali@example.com,,,newsletter,,Send me the guide,new,,

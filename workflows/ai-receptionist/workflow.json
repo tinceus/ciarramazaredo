@@ -1,0 +1,242 @@
+{
+  "name": "AI receptionist",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## AI receptionist\nAnswers questions from a fixed knowledge base, qualifies the visitor, offers real calendar times, books, and hands off to a person when it should.\n\nConnect Anthropic, Google Calendar and Slack after import. Edit the knowledge in the agent system message.",
+        "height": 200,
+        "width": 440,
+        "color": 4
+      },
+      "id": "f8ff44e7-c244-5e8b-8c01-a5dcdfc2891e",
+      "name": "About this workflow",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -80,
+        -300
+      ]
+    },
+    {
+      "parameters": {
+        "public": true,
+        "options": {
+          "title": "Front desk",
+          "subtitle": "Questions or bookings, I can help.",
+          "initialMessages": "Hi, how can I help you today?"
+        }
+      },
+      "id": "45515701-4101-58bb-a829-7d6e57939431",
+      "name": "Website chat",
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "b367b442-eca8-5cb0-b1d7-e8b235d7768b"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are the front desk for the business described below. Be warm, brief and exact.\n\nRules:\n1. Answer only from the knowledge below. If the answer is not there, say you will check and use the handoff tool.\n2. Never quote prices, diagnoses or guarantees.\n3. To book: ask for name, email and the reason for the visit, check availability, offer two times, then create the event.\n4. Hand off to a human for emergencies, complaints, or any request you are not sure about.\n5. Confirm every booking back to the visitor with the date, time and time zone.\n\nKnowledge:\n# Brightline Dental (fictional) - receptionist knowledge\n\nHours: Monday to Friday, 8:00 to 17:00 US Eastern. Closed weekends.\nServices: cleanings, whitening, fillings, crowns, Invisalign consultations.\nNew patients: first visit is a 45-minute exam and cleaning.\nInsurance: most PPO plans. Ask the office for a specific plan.\nPrices: never quote prices. Offer a free 15-minute call with the office manager.\nLocation: 120 Main Street, Springfield (fictional).\nEmergencies: tell the visitor to call the office line, and hand off to a human."
+        }
+      },
+      "id": "596ee9ec-a67c-51e8-b68e-0c27f44b0bc4",
+      "name": "Receptionist agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        260,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "id",
+          "value": "claude-sonnet-5-5"
+        },
+        "options": {
+          "temperature": 0.2
+        }
+      },
+      "id": "129f36fc-a938-51fa-9f1d-eb36ee555dc4",
+      "name": "Claude",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        140,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 12
+      },
+      "id": "cf6a958c-d171-5998-9de5-e4f4faaf664e",
+      "name": "Conversation memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        300,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Check when the calendar is busy between two ISO date-times.",
+        "resource": "calendar",
+        "calendar": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "timeMin": "={{ $fromAI('start', 'ISO start of the window to check', 'string') }}",
+        "timeMax": "={{ $fromAI('end', 'ISO end of the window to check', 'string') }}",
+        "options": {}
+      },
+      "id": "c8884507-30a4-5858-9049-0b99b19f5de9",
+      "name": "Check availability",
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        460,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Create the appointment once the visitor confirms a time.",
+        "calendar": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "start": "={{ $fromAI('start', 'ISO start time of the appointment', 'string') }}",
+        "end": "={{ $fromAI('end', 'ISO end time of the appointment', 'string') }}",
+        "additionalFields": {
+          "summary": "={{ $fromAI('title', 'Visitor name and reason', 'string') }}",
+          "attendees": [
+            "={{ $fromAI('email', 'Visitor email', 'string') }}"
+          ]
+        }
+      },
+      "id": "d2291405-81b3-575e-bd8d-799fdbe2d2ec",
+      "name": "Book the visit",
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        620,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Alert the team when a human should take over. Include the visitor contact and the reason.",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "mode": "name",
+          "value": "#front-desk"
+        },
+        "text": "={{ $fromAI('message', 'Who needs help, how to reach them, and why', 'string') }}",
+        "otherOptions": {}
+      },
+      "id": "aff29beb-4486-5501-9a6d-41f6cf1abddc",
+      "name": "Hand off to a person",
+      "type": "n8n-nodes-base.slackTool",
+      "typeVersion": 2.3,
+      "position": [
+        780,
+        240
+      ]
+    }
+  ],
+  "connections": {
+    "Website chat": {
+      "main": [
+        [
+          {
+            "node": "Receptionist agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Claude": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Receptionist agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Conversation memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Receptionist agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check availability": {
+      "ai_tool": [
+        [
+          {
+            "node": "Receptionist agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Book the visit": {
+      "ai_tool": [
+        [
+          {
+            "node": "Receptionist agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Hand off to a person": {
+      "ai_tool": [
+        [
+          {
+            "node": "Receptionist agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true
+  },
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "tags": [
+    {
+      "name": "More booked calls"
+    }
+  ],
+  "pinData": {}
+}

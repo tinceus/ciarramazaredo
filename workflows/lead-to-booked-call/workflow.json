@@ -1,0 +1,619 @@
+{
+  "name": "Lead to booked call",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Lead to booked call\nEvery lead is saved before anything else runs, scored with plain rules, answered within a minute, and followed up until they book or the sequence ends.\n\nSample data and a test live in the repo folder. Connect Google Sheets, Gmail and Slack after import.",
+        "height": 200,
+        "width": 420,
+        "color": 4
+      },
+      "id": "f8ff44e7-c244-5e8b-8c01-a5dcdfc2891e",
+      "name": "About this workflow",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -80,
+        -300
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "new-lead",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "46522b79-17ea-5714-b0bb-feaa0ff174d3",
+      "name": "New lead (form webhook)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "8f4566c0-0ea0-5c6a-9510-a741268d22e1"
+    },
+    {
+      "parameters": {
+        "mode": "manual",
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1f937f14-bca0-5c7e-aef4-163ed897657b",
+              "name": "created_at",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "cf00813c-d511-5a78-a00b-d6c921bf1516",
+              "name": "name",
+              "value": "={{ ($json.body.name || \"\").trim() }}",
+              "type": "string"
+            },
+            {
+              "id": "a339de62-640c-5122-984f-f347aa1614e1",
+              "name": "email",
+              "value": "={{ ($json.body.email || \"\").trim().toLowerCase() }}",
+              "type": "string"
+            },
+            {
+              "id": "eca6ba45-34de-5368-b316-940344be0b94",
+              "name": "phone",
+              "value": "={{ ($json.body.phone || \"\").trim() }}",
+              "type": "string"
+            },
+            {
+              "id": "8c8fc44c-cfcd-51a0-ad8a-945c16afc0b5",
+              "name": "company",
+              "value": "={{ ($json.body.company || \"\").trim() }}",
+              "type": "string"
+            },
+            {
+              "id": "5d35d75e-d6d6-58d8-89d6-8282de9822cd",
+              "name": "source",
+              "value": "={{ $json.body.source || \"website\" }}",
+              "type": "string"
+            },
+            {
+              "id": "bfa1c4e8-d4c0-5fd3-ab2e-64e7e9fda507",
+              "name": "budget",
+              "value": "={{ $json.body.budget || \"\" }}",
+              "type": "string"
+            },
+            {
+              "id": "9cf37c74-c26d-5afa-b6db-b1f5d7fac813",
+              "name": "message",
+              "value": "={{ $json.body.message || \"\" }}",
+              "type": "string"
+            },
+            {
+              "id": "528d9f02-bc3b-5f2c-af4b-098beaa3a78f",
+              "name": "status",
+              "value": "new",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "6c5acd5c-f93f-5d6c-80a8-9ca518ab59e6",
+      "name": "Clean fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        220,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "mode": "url",
+          "value": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "Leads"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": []
+        },
+        "options": {}
+      },
+      "id": "56c9eda0-8b77-59c1-a834-fe20d4821d96",
+      "name": "Save lead first",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        440,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Lead scoring used inside the \"Score lead\" Code node. Plain rules, no AI, so every score can be explained.\nfunction scoreLead(lead) {\n  let score = 0;\n  const reasons = [];\n  const add = (points, why) => { score += points; reasons.push(`+${points} ${why}`); };\n  const msg = (lead.message || '').toLowerCase();\n\n  if (lead.phone) add(15, 'left a phone number');\n  if (lead.company) add(10, 'named a company');\n  if (lead.budget === '5000+') add(30, 'budget 5000+');\n  else if (lead.budget === '1000-5000') add(20, 'budget 1000-5000');\n  if (['google_ads', 'referral', 'website'].includes(lead.source)) add(10, `high-intent source (${lead.source})`);\n  if (/(this week|ready|start|need|asap|book)/.test(msg)) add(20, 'message shows urgency');\n  if (/(just curious|send me|guide|newsletter)/.test(msg)) add(-15, 'message shows research, not buying');\n\n  score = Math.max(0, Math.min(100, score));\n  const tier = score >= 60 ? 'hot' : score >= 30 ? 'warm' : 'nurture';\n  return { score, tier, reasons };\n}\n\nreturn $input.all().map(item => ({ json: { ...item.json, ...scoreLead(item.json), reasons: scoreLead(item.json).reasons.join('; ') } }));\n"
+      },
+      "id": "771c894f-5a6a-5c37-9e80-35631631ea1d",
+      "name": "Score lead",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        660,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "mode": "url",
+          "value": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "Leads"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "email": "={{ $json.email }}",
+            "score": "={{ $json.score }}",
+            "tier": "={{ $json.tier }}"
+          },
+          "matchingColumns": [
+            "email"
+          ],
+          "schema": []
+        },
+        "options": {}
+      },
+      "id": "173c41ff-a52d-507b-a3ae-906cdaa74a3c",
+      "name": "Record score",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        880,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "31fb5334-3c83-5fae-a588-07a086e10b8b",
+              "leftValue": "={{ $json.tier }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              },
+              "rightValue": "hot"
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "id": "d647f645-ceeb-5fcd-af74-56740dd6a58f",
+      "name": "Hot lead?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1100,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Score lead').item.json.email }}",
+        "subject": "Your intro call",
+        "emailType": "text",
+        "message": "=Hi {{ $('Score lead').item.json.name.split(' ')[0] }},\n\nThanks for reaching out. You can pick a time that suits you here: https://cal.com/your-name/intro-call\n\nIf none of the times work, reply with two that do and I will make it happen.\n\nTalk soon",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "id": "9ce55537-d814-55b0-a952-f7e0d26d03f8",
+      "name": "Reply with booking link",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1340,
+        -120
+      ]
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "mode": "name",
+          "value": "#new-leads"
+        },
+        "text": "=Hot lead: {{ $('Score lead').item.json.name }} ({{ $('Score lead').item.json.company }}), score {{ $('Score lead').item.json.score }}. Why: {{ $('Score lead').item.json.reasons }}",
+        "otherOptions": {}
+      },
+      "id": "03a1852e-739a-5f24-bdf8-83d755e33508",
+      "name": "Alert owner on Slack",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        1560,
+        -120
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.email }}",
+        "subject": "Thanks, here is what happens next",
+        "emailType": "text",
+        "message": "=Hi {{ $json.name.split(' ')[0] }},\n\nThanks for getting in touch. When you are ready to talk it through, book a time here: https://cal.com/your-name/intro-call\n\nTalk soon",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "id": "711069ff-8575-57b0-8602-f1bd10f3eb8a",
+      "name": "Helpful reply",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1340,
+        140
+      ]
+    },
+    {
+      "parameters": {
+        "amount": 2,
+        "unit": "days"
+      },
+      "id": "4ee2faa4-e841-5e42-8478-4184dd19f1d2",
+      "name": "Wait 2 days",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1560,
+        140
+      ],
+      "webhookId": "8df084b1-658b-5438-95d5-c93ebaf7b044"
+    },
+    {
+      "parameters": {
+        "operation": "read",
+        "documentId": {
+          "__rl": true,
+          "mode": "url",
+          "value": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "Leads"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "email",
+              "lookupValue": "={{ $('Score lead').item.json.email }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "dd385a82-87e0-5519-989b-36774a937161",
+      "name": "Check status",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        1780,
+        140
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "4e290a92-a919-5cb2-be87-445e36913ec6",
+              "leftValue": "={{ $json.status }}",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              },
+              "rightValue": "booked"
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "id": "954acd6d-c8c7-5fe1-8ab7-1362e85f7e62",
+      "name": "Still not booked?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2000,
+        140
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.email }}",
+        "subject": "Quick follow-up",
+        "emailType": "text",
+        "message": "=Hi {{ $json.name.split(' ')[0] }},\n\nChecking in once. If a short call would help, here is the link: https://cal.com/your-name/intro-call\n\nIf the timing is wrong, no reply needed.",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "id": "970d7287-bc8d-51db-8f1a-52f1958a6bbc",
+      "name": "Follow-up email",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        2220,
+        120
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "booking-made",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "f29d6115-9149-5ec7-bd3d-205d31db47fa",
+      "name": "Booking made (calendar webhook)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        420
+      ],
+      "webhookId": "ba7d5fb9-e907-55a3-8589-f3342b19d99d"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "mode": "url",
+          "value": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "Leads"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "email": "={{ ($json.body.payload?.attendees?.[0]?.email || $json.body.email || \"\").toLowerCase() }}",
+            "status": "booked"
+          },
+          "matchingColumns": [
+            "email"
+          ],
+          "schema": []
+        },
+        "options": {}
+      },
+      "id": "386b4c79-23c2-5494-ae70-17dd14fa66c7",
+      "name": "Mark as booked",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        220,
+        420
+      ]
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "mode": "name",
+          "value": "#new-leads"
+        },
+        "text": "=Booked: {{ $json.email }}",
+        "otherOptions": {}
+      },
+      "id": "3859b4a7-9ea1-53ff-a379-fc99bc9ea132",
+      "name": "Tell the team",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        440,
+        420
+      ]
+    }
+  ],
+  "connections": {
+    "New lead (form webhook)": {
+      "main": [
+        [
+          {
+            "node": "Clean fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clean fields": {
+      "main": [
+        [
+          {
+            "node": "Save lead first",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save lead first": {
+      "main": [
+        [
+          {
+            "node": "Score lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Score lead": {
+      "main": [
+        [
+          {
+            "node": "Record score",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Record score": {
+      "main": [
+        [
+          {
+            "node": "Hot lead?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reply with booking link": {
+      "main": [
+        [
+          {
+            "node": "Alert owner on Slack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Helpful reply": {
+      "main": [
+        [
+          {
+            "node": "Wait 2 days",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 2 days": {
+      "main": [
+        [
+          {
+            "node": "Check status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check status": {
+      "main": [
+        [
+          {
+            "node": "Still not booked?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Booking made (calendar webhook)": {
+      "main": [
+        [
+          {
+            "node": "Mark as booked",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mark as booked": {
+      "main": [
+        [
+          {
+            "node": "Tell the team",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Hot lead?": {
+      "main": [
+        [
+          {
+            "node": "Reply with booking link",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Helpful reply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Still not booked?": {
+      "main": [
+        [
+          {
+            "node": "Follow-up email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true
+  },
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "tags": [
+    {
+      "name": "No lead left behind"
+    }
+  ],
+  "pinData": {}
+}

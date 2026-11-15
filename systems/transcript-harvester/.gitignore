@@ -1,0 +1,9 @@
+raw/
+videos/
+tmp/
+.lock
+inventory.json
+harvest_log.json
+state.json
+fetch_run.out
+__pycache__/

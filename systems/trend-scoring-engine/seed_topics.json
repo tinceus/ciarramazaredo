@@ -1,0 +1,31 @@
+{
+  "_note": "Fictional example seeds. Tier 2 of the fallback. Each must pass the same red-line and prospect-blame filters as live trends.",
+  "topics": [
+    {
+      "id": "seed_home_001",
+      "source": "seed",
+      "title": "Why a cheaper lead vendor can raise your cost per booked job",
+      "text": "Owners switch vendors to cut cost per lead, then booked jobs drop. The cheaper list was full of dead leads, so every booked job cost more.",
+      "first_seen": "2026-01-01T00:00:00Z",
+      "engagement": 100,
+      "metric": {"sourced_from": "example only"},
+      "context": {"claim_to_verify": "booked-job rate before and after a vendor switch"},
+      "scores": {"total": 0.72, "vertical": 0.9, "audience": 0.85, "reframe": 1.0, "recency": 0.5, "signal": 0.4},
+      "tagged_vertical": "home_services",
+      "tagged_reframe": "input_quality"
+    },
+    {
+      "id": "seed_dental_001",
+      "source": "seed",
+      "title": "New patient cost looks fine until you count no-shows",
+      "text": "Practices celebrate a low cost per new patient lead. Count the leads that never showed and the real number moves.",
+      "first_seen": "2026-01-01T00:00:00Z",
+      "engagement": 100,
+      "metric": {"sourced_from": "example only"},
+      "context": {"claim_to_verify": "show rate by lead source"},
+      "scores": {"total": 0.70, "vertical": 0.85, "audience": 0.85, "reframe": 1.0, "recency": 0.5, "signal": 0.4},
+      "tagged_vertical": "dental",
+      "tagged_reframe": "denominator"
+    }
+  ]
+}
