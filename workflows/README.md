@@ -41,3 +41,5 @@ Checked 2026-11-16. See `assets/workflow-evidence.json` at the repository root f
 ## Reuse
 
 Original starter examples in this folder use the [scoped MIT license](LICENSE). Historical system artifacts elsewhere in the repository are excluded; see [ownership notes](../LICENSING.md).
+
+Maintainer parameter check: `N8N_MODULES=/path/to/n8n/node_modules node tools/check_n8n_params.js workflows/*/*.json`. Upstream reported import and parameter checks before these revisions. The revised files still require a fresh import and connected test; prior results do not establish their runtime behavior.

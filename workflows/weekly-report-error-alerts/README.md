@@ -33,7 +33,7 @@ Set it as the **Error workflow** in each other workflow's settings. Delivery dep
 
 1. In n8n: **Import from file** → `weekly-report.json` and `error-alerts.json`.
 2. Connect Google Sheets, Anthropic, Gmail and Slack.
-3. Make a sheet tab `KPIs` with the columns in `sample-data/kpis.csv`: `week_start, metric, value, target, direction`.
+3. Make a sheet tab `KPIs` with the columns in `sample-data/kpis.csv`: `week_start, metric, value, target, direction`. Pick that spreadsheet in the Read KPI sheet node, which ships blank on purpose.
 4. Change `leader@example.com` and `you@example.com`.
 
 ## Files

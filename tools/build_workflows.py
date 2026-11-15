@@ -149,8 +149,8 @@ def ai_receptionist():
               "Knowledge:\n" + faq)
     n, c = [], {}
     n.append(note('About this workflow', '## AI receptionist\nAnswers questions from a fixed knowledge base, qualifies the visitor, offers real calendar times, books, and hands off to a person when it should.\n\nConnect Anthropic, Google Calendar and Slack after import. Edit the knowledge in the agent system message.', [-80, -300], 440, 200))
-    n.append(node('Website chat', '@n8n/n8n-nodes-langchain.chatTrigger', 1.1, {'public': True, 'options': {
-        'title': 'Front desk', 'subtitle': 'Questions or bookings, I can help.', 'initialMessages': 'Hi, how can I help you today?'}}, [0, 0], webhookId=uid('chat')))
+    n.append(node('Website chat', '@n8n/n8n-nodes-langchain.chatTrigger', 1.1, {'public': True, 'mode': 'hostedChat', 'initialMessages': 'Hi, how can I help you today?', 'options': {
+        'title': 'Front desk', 'subtitle': 'Questions or bookings, I can help.'}}, [0, 0], webhookId=uid('chat')))
     n.append(node('Receptionist agent', '@n8n/n8n-nodes-langchain.agent', 2.2, {'options': {'systemMessage': system}}, [260, 0]))
     n.append(node('Claude', '@n8n/n8n-nodes-langchain.lmChatAnthropic', 1.3, {'model': rl(MODEL, 'id'), 'options': {'temperature': 0.2}}, [140, 240]))
     n.append(node('Conversation memory', '@n8n/n8n-nodes-langchain.memoryBufferWindow', 1.3, {'contextWindowLength': 12}, [300, 240]))
@@ -218,7 +218,7 @@ def inbox_triage():
     # Morning brief
     n.append(node('Every weekday 7:30', 'n8n-nodes-base.scheduleTrigger', 1.2, {'rule': {'interval': [{'field': 'cronExpression', 'expression': '30 7 * * 1-5'}]}}, [0, 520]))
     n.append(node('Get recent action emails', 'n8n-nodes-base.gmail', 2.1, {'operation': 'getAll', 'returnAll': True, 'simple': True,
-                                                                     'filters': {'q': '=newer_than:{{ $now.weekday === 1 ? 3 : 1 }}d (label:Urgent OR label:"Needs reply" OR label:Billing OR label:"Needs review")'}, 'options': {}}, [260, 520]))
+                                                                     'filters': {'q': '=newer_than:{{ $now.weekday === 1 ? 3 : 1 }}d (label:Urgent OR label:"Needs reply" OR label:Billing OR label:"Needs review")'}}, [260, 520]))
     n.append(node('List them', 'n8n-nodes-base.code', 2, {'jsCode': "const lines = $input.all().map(i => `- ${i.json.From || i.json.from}: ${i.json.Subject || i.json.subject}`);\nreturn [{ json: { list: lines.join('\\n'), count: lines.length } }];"}, [480, 520]))
     n.append(node('Write the brief', '@n8n/n8n-nodes-langchain.chainLlm', 1.7, {
         'promptType': 'define',

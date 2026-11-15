@@ -6,7 +6,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const root = path.resolve(__dirname, '..');
 const base = process.env.BASE_URL || 'http://127.0.0.1:8781';
-const routes = ['/', '/case-studies', '/workflows', '/roles', '/industries', '/contact', '/ai-sprint', '/sample-assessment', '/ai-notes',
+const routes = ['/', '/case-studies', '/workflows', '/roles', '/industries', '/contact', '/ai-sprint', '/sample-assessment', '/ai-notes', '/test-me', '/how-i-work',
   ...['roles','industries','case-studies'].flatMap(dir=>fs.readdirSync(path.join(root,dir)).filter(f=>f.endsWith('.html')).map(f=>'/'+dir+'/'+f.slice(0,-5)))];
 
 (async()=>{

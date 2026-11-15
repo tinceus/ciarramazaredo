@@ -772,7 +772,6 @@
     .case-cover { aspect-ratio: 16 / 9; }
   }
   @media (max-width: 560px) {
-    nav ul { display: none; }
     .nav-cta { padding: 8px 16px; font-size: 12px; }
     .cs-page-title { font-size: 38px; }
   }
@@ -783,7 +782,16 @@
   .skip-link:focus { left: 16px; }
   a:focus-visible, button:focus-visible, .btn:focus-visible { outline: 3px solid var(--lime); outline-offset: 3px; }
   .next-case-wrap { cursor: pointer; }
-  @media (max-width: 820px) { nav ul li:not(.keep) { display: none; } }
+  .nav-wrap { position: relative; }
+  .nav-cta { white-space: nowrap; }
+  .nav-toggle { display: none; font: inherit; font-size: 13px; font-weight: 600; background: var(--paper); border: 2px solid var(--ink); border-radius: 999px; padding: 7px 14px; cursor: pointer; }
+  @media (max-width: 820px) {
+    nav ul { display: none; }
+    .nav-toggle { display: inline-flex; }
+    .nav-cta { margin-left: auto; }
+    nav ul.open { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; position: absolute; top: 100%; left: 0; right: 0; background: var(--paper); border-bottom: 1px solid var(--whisper); padding: 12px 20px 18px; box-shadow: 0 16px 32px rgba(14,14,18,0.08); }
+    nav ul.open a { display: block; padding: 10px 0; font-size: 16px; }
+  }
 </style>
 <link rel="stylesheet" href="/assets/additions.css">
 </head>
@@ -796,16 +804,18 @@
   <div class="nav-wrap">
     <a href="/" class="logo">ciarra<span class="dot">.</span>mazaredo</a>
     <nav aria-label="Primary">
-      <ul>
+      <ul id="nav-menu">
         <li><a href="/#numbers">Numbers</a></li>
         <li><a href="/#what-i-run">What I run</a></li>
         <li><a href="/#experience">Experience</a></li>
         <li><a href="/case-studies" style="color:var(--purple);" aria-current="page">Case studies</a></li>
         <li><a href="/workflows">Workflows</a></li>
+        <li><a href="/test-me">Test me</a></li>
         <li><a href="/#recognition">Recognition</a></li>
-        <li class="keep"><a href="mailto:ciarramazaredo@gmail.com?subject=Chief%20of%20Staff%20role" class="nav-cta">Email me</a></li>
       </ul>
     </nav>
+    <a href="mailto:ciarramazaredo@gmail.com?subject=Chief%20of%20Staff%20role" class="nav-cta" data-book>Email me</a>
+    <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="nav-menu">Menu</button>
   </div>
 </header>
 
@@ -925,7 +935,9 @@
   </div>
 </footer>
 
+<script src="/assets/site-config.js"></script>
 <script src="/assets/case-studies.js"></script>
+<script src="/assets/site.js"></script>
 <script>
   const caseStudies = window.CASE_STUDIES || [];
   /* STATE */
@@ -1099,7 +1111,7 @@
 
   /* KEYBOARD */
   document.addEventListener('keydown', (e) => {
-    if (e.target.matches('input, textarea, button')) return;
+    if (!(e.target instanceof Element) || e.target.matches('input, textarea, select, button')) return;
     if (e.key === 'ArrowLeft' && currentIdx > 0) { currentIdx--; render(); }
     if (e.key === 'ArrowRight' && currentIdx < activeList.length - 1) { currentIdx++; render(); }
   });

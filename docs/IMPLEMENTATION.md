@@ -32,8 +32,8 @@ A push to main deploys production. Review this branch and preview before merging
 
 Checked 2026-11-16 with Node 24.22.1, Python 3.12 and Playwright 1.62.1 Chromium.
 
-- 23 routes at 1440px and 390px; automated WCAG A/AA checks pass.
-- 75 local links resolve; four fit routes, workflow context, configured booking/fallback, keyboard menu and no-JavaScript access pass.
+- 25 routes at 1440px and 390px; automated WCAG A/AA checks pass.
+- 81 local links resolve; four fit routes, workflow context, configured booking/fallback, keyboard menu and no-JavaScript access pass.
 - 12 Node tests pass for reporting/error normalization and fit routing; lead-scoring fixture checks pass.
 - Existing offline suites: trend scoring 35, transcript harvester 4, sheet router 6 pass.
 - Copy gate passes; both résumé formats parse and the PDFs have two pages.
@@ -42,3 +42,5 @@ Checked 2026-11-16 with Node 24.22.1, Python 3.12 and Playwright 1.62.1 Chromium
 Run `npm ci`, install Playwright Chromium, and start the local server on 8781 before `npm run test:site`. `BASE_URL` overrides the preview URL. The accessibility suite is automated coverage, not a complete manual accessibility certification. No n8n connected execution is included in these results.
 
 The résumé authoring source is `tools/resume/resume-ats.html`. Build DOCX with `tools/build_resume.py` (python-docx), then both PDFs with `tools/build_resume.js` (Playwright). The established presentation-PDF filename is retained for existing download links.
+
+The branch incorporates concurrent main commits through `a7dc9be`: hiring-kit and working-style pages, print-scorecard and mobile-menu corrections, and n8n parameter fixes are preserved. The hiring kit distinguishes free resources from paid custom trials; its employment pilot remains separate from the feasibility sprint. Sitemap and llms.txt include the new portfolio paths.
