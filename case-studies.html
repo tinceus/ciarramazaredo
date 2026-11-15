@@ -833,7 +833,7 @@
         <span class="dot">·</span>
         <span id="hero-tag"></span>
       </div>
-      <h2 class="case-title" id="hero-title"></h2>
+      <h2 class="case-title" id="hero-title">The 24 to 53 Year</h2>
       <div class="case-client">for <strong id="hero-client"></strong> · <span id="hero-client-type"></span></div>
     </div>
 
@@ -1107,7 +1107,7 @@
     if (!hash) return false;
     const idx = caseStudies.findIndex(cs => cs.id === hash);
     if (idx === -1) return false;
-    if (activeList[currentIdx] && activeList[currentIdx].id === hash && document.getElementById('hero-title').textContent) return true;
+    if (activeList[currentIdx] && activeList[currentIdx].id === hash && document.getElementById('hero-progress').textContent) return true;
     currentIdx = activeList.findIndex(c => c.id === caseStudies[idx].id);
     if (currentIdx === -1) currentIdx = 0;
     render();

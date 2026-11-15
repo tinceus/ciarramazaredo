@@ -4,6 +4,10 @@ import functools, http.server, os, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 class Handler(http.server.SimpleHTTPRequestHandler):
+    def do_GET(self):
+        if self.path.startswith('/_vercel/'):  # Vercel analytics exists only in production
+            self.send_response(204); self.end_headers(); return
+        super().do_GET()
     def translate_path(self, path):
         p = super().translate_path(path)
         if not os.path.exists(p) and os.path.isfile(p + '.html'):

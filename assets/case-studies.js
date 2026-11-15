@@ -16,7 +16,7 @@ window.CASE_STUDIES = [
     coverTagline: "Eskola De Gracia Y Verdad International School",
     about: "EDGYVIS is an international school in Dili, Timor-Leste. I first worked with the school in 2016, on its social media. In June 2024 I joined its senior management team as Head of People &amp; Culture.",
     problem: "The school was growing fast. Its workforce went from about 24 employees in January 2025 to 53 a year later. Growth at that pace puts pressure on hiring, onboarding and coordination across every function.",
-    move: "I led recruitment and employee relations. I set owners, priorities and deadlines across functions. I designed the <strong>processes, forms, reporting structures and meeting workflows</strong> that coordinated delivery. I also prepared management reports and contributed to budgeting and financial oversight.",
+    move: "My remit covered recruitment and employee relations. Across functions, I set owners, priorities and deadlines. I designed the <strong>processes, forms, reporting structures and meeting workflows</strong> that coordinated delivery. I also prepared management reports and contributed to budgeting and financial oversight.",
     metrics: [
       { value: "24 → 53", label: "Employees in one year", arrow: "" },
       { value: "50+", label: "Staff organization", arrow: "" },
@@ -43,8 +43,8 @@ window.CASE_STUDIES = [
     move: "I trained <strong>3 to 6 support staff</strong> in real estate marketing. I wrote the <strong>training manual</strong> that standardized their onboarding. I also contributed to internal marketing projects that supported lead generation.",
     metrics: [
       { value: "3 to 6", label: "Support staff trained", arrow: "" },
-      { value: "1", label: "Training manual written", arrow: "" },
-      { value: "1", label: "Senior VP supported", arrow: "" },
+      { value: "Manual", label: "Onboarding standardized", arrow: "" },
+      { value: "SVP", label: "Client assignment supported", arrow: "" },
     ],
     result: "New staff were onboarded from one written standard. I also took a client assignment at Kidder Matthews in Los Angeles. There I supported a Senior Vice President of Investment with transactions, listings, letters of intent and correspondence.",
     testimonials: [],
@@ -125,12 +125,12 @@ window.CASE_STUDIES = [
     move: "I built the case from seven institutional sources: <strong>Verizon DBIR, IBM Ponemon, WEF, ENISA, INTERPOL, Hiscox and ISC2.</strong> I anchored the market sizing to the $32B Google and Wiz acquisition as a precedent. Judges scored the pitch on 11+ dimensions.",
     metrics: [
       { value: "$86B", label: "Market validated", arrow: "" },
-      { value: "15.47%", label: "Annual growth, fastest segment", arrow: "" },
+      { value: "15.47%", label: "Annual growth, per my research", arrow: "" },
       { value: "2nd", label: "Place, ₱30,000 prize", arrow: "" },
     ],
-    result: "<strong>2nd place, individual,</strong> and a ₱30,000 prize. The market grows 15.47 percent a year, the fastest segment in cybersecurity. The method held up under questioning.",
+    result: "<strong>2nd place, individual,</strong> and a ₱30,000 prize. My research put the market at 15.47 percent growth a year, the fastest segment I found in cybersecurity. The method held up under questioning.",
     testimonials: [],
-    skills: ["Primary Research", "Market Sizing", "Pitch Delivery", "Source Triangulation", "Evidence-Led Strategy"],
-    tools: "NotebookLM · Verizon DBIR · IBM Ponemon · IBIS World · Claude",
+    skills: ["Desk Research", "Market Sizing", "Pitch Delivery", "Source Triangulation", "Evidence-Led Strategy"],
+    tools: "NotebookLM · Claude",
   },
 ];
