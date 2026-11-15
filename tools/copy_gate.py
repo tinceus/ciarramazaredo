@@ -10,7 +10,7 @@ import html, os, re, sys
 from html.parser import HTMLParser
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-PAGES = ['index.html', 'case-studies.html', 'workflows.html', '404.html']
+PAGES = ['index.html', 'case-studies.html', 'workflows.html', 'test-me.html', 'how-i-work.html', '404.html']
 DATA = 'assets/case-studies.js'
 BANNED = [
     'leverage', 'delve', 'unlock', 'elevate', r'optimi[sz]e', 'transformative', 'innovative',
