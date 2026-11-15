@@ -5,6 +5,11 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 class Handler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
+        redirects = {'/resume': '/assets/Ciarra_Mazaredo_Resume_ChiefOfStaff.pdf', '/resume-ats': '/assets/Ciarra_Mazaredo_Resume_ATS.pdf'}
+        if self.path.split('?')[0] in redirects:
+            self.send_response(307)
+            self.send_header('Location', redirects[self.path.split('?')[0]])
+            self.end_headers(); return
         if self.path.startswith('/_vercel/'):  # Vercel analytics exists only in production
             self.send_response(204); self.end_headers(); return
         super().do_GET()

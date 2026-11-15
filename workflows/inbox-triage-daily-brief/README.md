@@ -1,6 +1,6 @@
 # Inbox triage and daily brief
 
-**Outcome: Hours back every week.** Every new email is sorted and labeled. Emails that need a reply get a draft. Each weekday morning, one short brief lists what needs the leader.
+**Outcome: Recurring admin support.** Every new email is sorted and labeled. Emails that need a reply get a draft. Each weekday morning, one short brief lists what needs the leader.
 
 > **Built on sample data.** The emails are fictional. This is how I build it, not a client's live system.
 
@@ -11,7 +11,7 @@ flowchart LR
   A[New email] --> B[Sort into 5 labels]
   B --> U[Urgent] & R[Needs reply] & P[Billing] & F[FYI] & N[Newsletter]
   R --> D[Draft a reply] --> S[Save as draft, never send]
-  T[Weekdays 7:30] --> G[Get last 24 hours] --> L[List them] --> W[Write the brief] --> M[Email the brief]
+  T[Weekdays 7:30] --> G[Get recent action emails] --> L[List them] --> W[Write the brief] --> M[Email the brief]
 ```
 
 ## The human check
@@ -35,5 +35,18 @@ flowchart LR
 
 | File | What it is |
 |---|---|
-| `workflow.json` | Importable n8n workflow (n8n 2.47) |
+| `workflow.json` | n8n example authored for 2.47; import unverified |
 | `sample-data/emails.json` | Fictional emails for testing |
+
+## Evidence and configuration limits
+
+Checked 2026-11-16. See `assets/workflow-evidence.json` at the repository root for the exact tested scope. These are inactive examples, not verified production deployments.
+
+- Select an available model in every AI model node. `SELECT_A_MODEL_IN_N8N` is an intentional configuration placeholder, not a model name. The generator accepts `WORKFLOW_ANTHROPIC_MODEL`.
+- Schedule timezone defaults to `Asia/Manila`; change it explicitly for the intended operator. The generator accepts `WORKFLOW_TIMEZONE`.
+- Connect client-owned credentials and replace every sample recipient, channel, URL, sheet, label ID and calendar.
+- Attach an error workflow in each workflow’s settings. Test notification failures separately.
+- Use fictional data and isolated accounts first. External services and hosting incur their own charges.
+- Human review is specific to each workflow: fixed lead replies and internal briefs send automatically; the receptionist can book events.
+
+The Monday brief uses a three-day window; other weekdays use one day. This is not a persistent unread-work queue. Holidays and interrupted runs need an operator check. Select real Gmail label IDs, including Needs review. An empty search may produce no brief.

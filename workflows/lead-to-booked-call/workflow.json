@@ -3,7 +3,7 @@
   "nodes": [
     {
       "parameters": {
-        "content": "## Lead to booked call\nEvery lead is saved before anything else runs, scored with plain rules, answered within a minute, and followed up until they book or the sequence ends.\n\nSample data and a test live in the repo folder. Connect Google Sheets, Gmail and Slack after import.",
+        "content": "## Lead to booked call\nSample leads are saved and scored. Hot leads get a fixed reply and owner alert. Other leads get one follow-up after two days unless marked booked. Connected delivery is unverified.\n\nSample data and a test live in the repo folder. Connect Google Sheets, Gmail and Slack after import.",
         "height": 200,
         "width": 420,
         "color": 4
@@ -605,14 +605,15 @@
   "active": false,
   "settings": {
     "executionOrder": "v1",
-    "saveManualExecutions": true
+    "saveManualExecutions": true,
+    "timezone": "Asia/Manila"
   },
   "meta": {
     "templateCredsSetupCompleted": false
   },
   "tags": [
     {
-      "name": "No lead left behind"
+      "name": "Lead handoffs"
     }
   ],
   "pinData": {}

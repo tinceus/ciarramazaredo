@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 """Writes the importable n8n workflow files under workflows/*/.
 Edit this file (not the JSON), then run: python3 tools/build_workflows.py
-Node versions match n8n 2.47. Credentials are left empty on purpose: you connect your own after import."""
+Node versions are authored for n8n 2.47; import and connected execution remain unverified. Credentials are left empty on purpose: you connect your own after import."""
 import json, os, re, uuid
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 W = os.path.join(ROOT, 'workflows')
-MODEL = 'claude-sonnet-5-5'
+MODEL = os.environ.get('WORKFLOW_ANTHROPIC_MODEL', 'SELECT_A_MODEL_IN_N8N')
+TIMEZONE = os.environ.get('WORKFLOW_TIMEZONE', 'Asia/Manila')
 
 
 def uid(name):
@@ -62,7 +63,7 @@ def ai(conns, sub, parent, kind):
 
 def workflow(name, nodes, conns, tags):
     return {'name': name, 'nodes': nodes, 'connections': conns, 'active': False,
-            'settings': {'executionOrder': 'v1', 'saveManualExecutions': True},
+            'settings': {'executionOrder': 'v1', 'saveManualExecutions': True, 'timezone': TIMEZONE},
             'meta': {'templateCredsSetupCompleted': False},
             'tags': [{'name': t} for t in tags], 'pinData': {}}
 
@@ -82,7 +83,7 @@ def lead_to_booked_call():
     js += "\n\nreturn $input.all().map(item => ({ json: { ...item.json, ...scoreLead(item.json), reasons: scoreLead(item.json).reasons.join('; ') } }));\n"
     booking = 'https://cal.com/your-name/intro-call'
     n, c = [], {}
-    n.append(note('About this workflow', '## Lead to booked call\nEvery lead is saved before anything else runs, scored with plain rules, answered within a minute, and followed up until they book or the sequence ends.\n\nSample data and a test live in the repo folder. Connect Google Sheets, Gmail and Slack after import.', [-80, -300], 420, 200))
+    n.append(note('About this workflow', '## Lead to booked call\nSample leads are saved and scored. Hot leads get a fixed reply and owner alert. Other leads get one follow-up after two days unless marked booked. Connected delivery is unverified.\n\nSample data and a test live in the repo folder. Connect Google Sheets, Gmail and Slack after import.', [-80, -300], 420, 200))
     n.append(node('New lead (form webhook)', 'n8n-nodes-base.webhook', 2.1, {'httpMethod': 'POST', 'path': 'new-lead', 'responseMode': 'onReceived', 'options': {}}, [0, 0], webhookId=uid('lead-hook')))
     n.append(node('Clean fields', 'n8n-nodes-base.set', 3.4, assign([
         ('created_at', '={{ $now.toISO() }}', 'string'),
@@ -132,7 +133,7 @@ def lead_to_booked_call():
     link(c, 'Hot lead?', 'Reply with booking link', 0)
     link(c, 'Hot lead?', 'Helpful reply', 1)
     link(c, 'Still not booked?', 'Follow-up email', 0)
-    write('lead-to-booked-call', 'workflow.json', workflow('Lead to booked call', n, c, ['No lead left behind']))
+    write('lead-to-booked-call', 'workflow.json', workflow('Lead to booked call', n, c, ['Lead handoffs']))
 
 
 # 2. AI receptionist -----------------------------------------------------------------------------
@@ -174,13 +175,13 @@ def ai_receptionist():
     ai(c, 'Conversation memory', 'Receptionist agent', 'ai_memory')
     for t in ['Check availability', 'Book the visit', 'Hand off to a person']:
         ai(c, t, 'Receptionist agent', 'ai_tool')
-    write('ai-receptionist', 'workflow.json', workflow('AI receptionist', n, c, ['More booked calls']))
+    write('ai-receptionist', 'workflow.json', workflow('AI receptionist', n, c, ['Booking support']))
 
 
 # 3. Inbox triage + daily brief ------------------------------------------------------------------
 def inbox_triage():
     n, c = [], {}
-    n.append(note('About this workflow', '## Inbox triage and daily brief\nEvery new email is sorted and labeled. Emails that need a reply get a draft, never a sent message. Each morning one short brief lists what needs the leader.\n\nConnect Gmail and Anthropic after import, and create the five labels.', [-80, -320], 440, 200))
+    n.append(note('About this workflow', '## Inbox triage and daily brief\nEvery new email is sorted and labeled. Emails that need a reply get a draft, never a sent message. Each morning one short brief lists what needs the leader.\n\nConnect Gmail and Anthropic after import, and create the five category labels plus Needs review.', [-80, -320], 440, 200))
     n.append(node('New email', 'n8n-nodes-base.gmailTrigger', 1.2, {
         'pollTimes': {'item': [{'mode': 'everyX', 'value': 5, 'unit': 'minutes'}]}, 'simple': False,
         'filters': {'labelIds': ['INBOX']}, 'options': {}}, [0, 0]))
@@ -201,6 +202,8 @@ def inbox_triage():
         name = f'Label: {k}'
         n.append(node(name, 'n8n-nodes-base.gmail', 2.1, {'operation': 'addLabels', 'messageId': '={{ $json.id }}', 'labelIds': [k]}, [560, y + i * 130]))
         link(c, 'Sort email', name, i)
+    n.append(node('Label: Needs review', 'n8n-nodes-base.gmail', 2.1, {'operation': 'addLabels', 'messageId': '={{ $json.id }}', 'labelIds': ['Needs review']}, [560, 430]))
+    link(c, 'Sort email', 'Label: Needs review', len(cats))
     n.append(node('Draft a reply', '@n8n/n8n-nodes-langchain.chainLlm', 1.7, {
         'promptType': 'define',
         'text': "=Draft a short, polite reply for the leader to review. Match their tone, answer only what was asked, and mark anything you are unsure of with [CHECK].\n\nFrom: {{ $('New email').item.json.from.text }}\nSubject: {{ $('New email').item.json.subject }}\n\n{{ $('New email').item.json.text }}"}, [820, -130]))
@@ -214,8 +217,8 @@ def inbox_triage():
     link(c, 'Draft a reply', 'Save as draft (never send)')
     # Morning brief
     n.append(node('Every weekday 7:30', 'n8n-nodes-base.scheduleTrigger', 1.2, {'rule': {'interval': [{'field': 'cronExpression', 'expression': '30 7 * * 1-5'}]}}, [0, 520]))
-    n.append(node('Get last 24 hours', 'n8n-nodes-base.gmail', 2.1, {'operation': 'getAll', 'returnAll': True, 'simple': True,
-                                                                     'filters': {'q': 'newer_than:1d (label:Urgent OR label:"Needs reply" OR label:Billing)'}, 'options': {}}, [260, 520]))
+    n.append(node('Get recent action emails', 'n8n-nodes-base.gmail', 2.1, {'operation': 'getAll', 'returnAll': True, 'simple': True,
+                                                                     'filters': {'q': '=newer_than:{{ $now.weekday === 1 ? 3 : 1 }}d (label:Urgent OR label:"Needs reply" OR label:Billing OR label:"Needs review")'}, 'options': {}}, [260, 520]))
     n.append(node('List them', 'n8n-nodes-base.code', 2, {'jsCode': "const lines = $input.all().map(i => `- ${i.json.From || i.json.from}: ${i.json.Subject || i.json.subject}`);\nreturn [{ json: { list: lines.join('\\n'), count: lines.length } }];"}, [480, 520]))
     n.append(node('Write the brief', '@n8n/n8n-nodes-langchain.chainLlm', 1.7, {
         'promptType': 'define',
@@ -224,29 +227,20 @@ def inbox_triage():
     ai(c, 'Claude (brief)', 'Write the brief', 'ai_languageModel')
     n.append(node('Send brief to me', 'n8n-nodes-base.gmail', 2.1, {'sendTo': 'you@example.com', 'subject': "=Morning brief {{ $now.toFormat('ccc d LLL') }}",
                                                                    'emailType': 'text', 'message': '={{ $json.text }}', 'options': {'appendAttribution': False}}, [940, 520]))
-    for a, b in [('Every weekday 7:30', 'Get last 24 hours'), ('Get last 24 hours', 'List them'), ('List them', 'Write the brief'), ('Write the brief', 'Send brief to me')]:
+    for a, b in [('Every weekday 7:30', 'Get recent action emails'), ('Get recent action emails', 'List them'), ('List them', 'Write the brief'), ('Write the brief', 'Send brief to me')]:
         link(c, a, b)
-    write('inbox-triage-daily-brief', 'workflow.json', workflow('Inbox triage and daily brief', n, c, ['Hours back every week']))
+    write('inbox-triage-daily-brief', 'workflow.json', workflow('Inbox triage and daily brief', n, c, ['Recurring admin support']))
 
 
 # 4. Weekly report + error alerts ----------------------------------------------------------------
 def weekly_report():
-    calc = ("// Compare this week with last week for every metric. Status uses the target and the direction.\n"
-            "const rows = $input.all().map(i => i.json);\n"
-            "const weeks = [...new Set(rows.map(r => r.week_start))].sort();\n"
-            "const [prev, cur] = weeks.slice(-2);\n"
-            "const pick = (w, m) => rows.find(r => r.week_start === w && r.metric === m);\n"
-            "const out = [...new Set(rows.map(r => r.metric))].map(m => {\n"
-            "  const a = pick(cur, m), b = pick(prev, m);\n"
-            "  const v = Number(a.value), t = Number(a.target), p = b ? Number(b.value) : null;\n"
-            "  const good = a.direction === 'down' ? v <= t : v >= t;\n"
-            "  return { metric: m, value: v, target: t, previous: p, change: p === null ? null : +(v - p).toFixed(2), status: good ? 'On track' : 'Watch' };\n"
-            "});\n"
-            "return [{ json: { week: cur, metrics: out, table: out.map(o => `${o.metric}: ${o.value} (target ${o.target}, last week ${o.previous}) ${o.status}`).join('\\n') } }];\n")
+    calc = open(os.path.join(W, 'weekly-report-error-alerts/compare-weeks.js'), encoding='utf-8').read()
+    calc = re.sub(r"if \(typeof module.*", '', calc)
+    calc += "\nreturn [{json: compareWeeks($input.all().map(i => i.json))}];\n"
     n, c = [], {}
-    n.append(note('About this workflow', '## Weekly report\nEvery Monday the numbers are pulled from one sheet, compared with last week, and turned into a short draft. The draft waits in Gmail for a person to check before it goes to the leader.\n\nNumbers are calculated in code. The AI only writes sentences around them.', [-80, -300], 440, 200))
+    n.append(note('About this workflow', '## Weekly report\nEvery Monday the numbers are pulled from one sheet, compared with the previous available week, and turned into a short draft. The draft waits in Gmail for a person to check before it goes to the leader.\n\nNumbers are calculated in code. The AI only writes sentences around them.', [-80, -300], 440, 200))
     n.append(node('Every Monday 8:00', 'n8n-nodes-base.scheduleTrigger', 1.2, {'rule': {'interval': [{'field': 'cronExpression', 'expression': '0 8 * * 1'}]}}, [0, 0]))
-    n.append(node('Read KPI sheet', 'n8n-nodes-base.googleSheets', 4.6, sheets('read', 'KPIs', {'options': {}}), [220, 0]))
+    n.append(node('Read KPI sheet', 'n8n-nodes-base.googleSheets', 4.6, sheets('read', 'KPIs', {'options': {}}), [220, 0], alwaysOutputData=True))
     n.append(node('Compare weeks', 'n8n-nodes-base.code', 2, {'jsCode': calc}, [440, 0]))
     n.append(node('Write the summary', '@n8n/n8n-nodes-langchain.chainLlm', 1.7, {
         'promptType': 'define',
@@ -261,20 +255,25 @@ def weekly_report():
     for a, b in [('Every Monday 8:00', 'Read KPI sheet'), ('Read KPI sheet', 'Compare weeks'), ('Compare weeks', 'Write the summary'),
                  ('Write the summary', 'Draft for review'), ('Draft for review', 'Ping me to review')]:
         link(c, a, b)
-    write('weekly-report-error-alerts', 'weekly-report.json', workflow('Weekly report', n, c, ['Reports that write themselves']))
+    write('weekly-report-error-alerts', 'weekly-report.json', workflow('Weekly report', n, c, ['Reviewable report drafts']))
 
     n2, c2 = [], {}
-    n2.append(note('About this workflow', '## Error alerts\nSet this as the error workflow for every other workflow (Workflow settings, Error workflow). When any run fails, the team hears about it within a minute, with a link to the failed run.', [-80, -280], 420, 180))
+    n2.append(note('About this workflow', '## Error alerts\nSet this as the error workflow for every other workflow (Workflow settings, Error workflow). Assigned workflows can notify Slack and email. Delivery latency and channel availability are not guaranteed. Trigger failures may have no execution URL.', [-80, -280], 420, 180))
     n2.append(node('When any workflow fails', 'n8n-nodes-base.errorTrigger', 1, {}, [0, 0]))
+    error_code = open(os.path.join(W, 'weekly-report-error-alerts/normalize-error.js'), encoding='utf-8').read()
+    error_code = re.sub(r"if \(typeof module.*", '', error_code)
+    error_code += "\nreturn $input.all().map(i => ({json: normalizeError(i.json)}));\n"
+    n2.append(node('Normalize error', 'n8n-nodes-base.code', 2, {'jsCode': error_code}, [160, 0]))
     n2.append(node('Alert on Slack', 'n8n-nodes-base.slack', 2.3, {
         'select': 'channel', 'channelId': rl('#ops-alerts', 'name'),
-        'text': '=Failed: {{ $json.workflow.name }}\nStep: {{ $json.execution.lastNodeExecuted }}\nError: {{ $json.execution.error.message }}\nRun: {{ $json.execution.url }}', 'otherOptions': {}}, [240, 0]))
+        'text': '=Failed: {{ $json.workflow }}\nStep: {{ $json.step }}\nError: {{ $json.message }}\nRun: {{ $json.url }}', 'otherOptions': {}}, [400, 0], onError='continueRegularOutput'))
     n2.append(node('Email backup alert', 'n8n-nodes-base.gmail', 2.1, {
-        'sendTo': 'you@example.com', 'subject': '=Workflow failed: {{ $json.workflow.name }}', 'emailType': 'text',
-        'message': '=Step: {{ $json.execution.lastNodeExecuted }}\nError: {{ $json.execution.error.message }}\nRun: {{ $json.execution.url }}', 'options': {'appendAttribution': False}}, [240, 200]))
-    link(c2, 'When any workflow fails', 'Alert on Slack')
-    link(c2, 'When any workflow fails', 'Email backup alert')
-    write('weekly-report-error-alerts', 'error-alerts.json', workflow('Error alerts', n2, c2, ['Nothing breaks silently']))
+        'sendTo': 'you@example.com', 'subject': '=Workflow failed: {{ $json.workflow }}', 'emailType': 'text',
+        'message': '=Step: {{ $json.step }}\nError: {{ $json.message }}\nRun: {{ $json.url }}', 'options': {'appendAttribution': False}}, [240, 200]))
+    link(c2, 'When any workflow fails', 'Normalize error')
+    link(c2, 'Normalize error', 'Alert on Slack')
+    link(c2, 'Normalize error', 'Email backup alert')
+    write('weekly-report-error-alerts', 'error-alerts.json', workflow('Error alerts', n2, c2, ['Workflow error alerts']))
 
 
 if __name__ == '__main__':
@@ -284,6 +283,8 @@ if __name__ == '__main__':
     weekly_report()
     # self-check: every connection points at a node that exists
     for folder in os.listdir(W):
+        if not os.path.isdir(os.path.join(W, folder)):
+            continue
         for f in os.listdir(os.path.join(W, folder)):
             if f.endswith('.json') and 'sample' not in f:
                 p = os.path.join(W, folder, f)

@@ -4,3 +4,8 @@ README.md
 .gitignore
 .env*
 systems/
+
+docs/
+tests/
+package*.json
+playwright*

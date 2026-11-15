@@ -1,0 +1,13 @@
+{
+  "name": "ciarra-portfolio-checks",
+  "private": true,
+  "scripts": {
+    "test": "node --test tests/fit-check.test.js workflows/weekly-report-error-alerts/report.test.js && node workflows/lead-to-booked-call/score-lead.test.js",
+    "test:site": "node tests/site-smoke.js",
+    "resume:pdf": "node tools/build_resume.js"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.11.1",
+    "playwright": "1.62.1"
+  }
+}

@@ -3,7 +3,7 @@
   "nodes": [
     {
       "parameters": {
-        "content": "## Error alerts\nSet this as the error workflow for every other workflow (Workflow settings, Error workflow). When any run fails, the team hears about it within a minute, with a link to the failed run.",
+        "content": "## Error alerts\nSet this as the error workflow for every other workflow (Workflow settings, Error workflow). Assigned workflows can notify Slack and email. Delivery latency and channel availability are not guaranteed. Trigger failures may have no execution URL.",
         "height": 180,
         "width": 420,
         "color": 4
@@ -30,13 +30,26 @@
     },
     {
       "parameters": {
+        "jsCode": "function normalizeError(event) {\n  const execution = event.execution || {}, trigger = event.trigger || {};\n  const error = execution.error || trigger.error || {};\n  return {\n    workflow: event.workflow?.name || 'Unknown workflow',\n    step: execution.lastNodeExecuted || error.node?.name || trigger.mode || 'Trigger / unavailable',\n    message: error.message || error.cause?.message || 'No error message supplied',\n    url: execution.url || 'No execution URL supplied'\n  };\n}\n\n\nreturn $input.all().map(i => ({json: normalizeError(i.json)}));\n"
+      },
+      "id": "36ff4435-d6a8-55ab-b5cc-9164f505f75f",
+      "name": "Normalize error",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        160,
+        0
+      ]
+    },
+    {
+      "parameters": {
         "select": "channel",
         "channelId": {
           "__rl": true,
           "mode": "name",
           "value": "#ops-alerts"
         },
-        "text": "=Failed: {{ $json.workflow.name }}\nStep: {{ $json.execution.lastNodeExecuted }}\nError: {{ $json.execution.error.message }}\nRun: {{ $json.execution.url }}",
+        "text": "=Failed: {{ $json.workflow }}\nStep: {{ $json.step }}\nError: {{ $json.message }}\nRun: {{ $json.url }}",
         "otherOptions": {}
       },
       "id": "1cc7a4aa-f2ba-58ba-ad0e-59497425cb1a",
@@ -44,16 +57,17 @@
       "type": "n8n-nodes-base.slack",
       "typeVersion": 2.3,
       "position": [
-        240,
+        400,
         0
-      ]
+      ],
+      "onError": "continueRegularOutput"
     },
     {
       "parameters": {
         "sendTo": "you@example.com",
-        "subject": "=Workflow failed: {{ $json.workflow.name }}",
+        "subject": "=Workflow failed: {{ $json.workflow }}",
         "emailType": "text",
-        "message": "=Step: {{ $json.execution.lastNodeExecuted }}\nError: {{ $json.execution.error.message }}\nRun: {{ $json.execution.url }}",
+        "message": "=Step: {{ $json.step }}\nError: {{ $json.message }}\nRun: {{ $json.url }}",
         "options": {
           "appendAttribution": false
         }
@@ -73,6 +87,17 @@
       "main": [
         [
           {
+            "node": "Normalize error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize error": {
+      "main": [
+        [
+          {
             "node": "Alert on Slack",
             "type": "main",
             "index": 0
@@ -89,14 +114,15 @@
   "active": false,
   "settings": {
     "executionOrder": "v1",
-    "saveManualExecutions": true
+    "saveManualExecutions": true,
+    "timezone": "Asia/Manila"
   },
   "meta": {
     "templateCredsSetupCompleted": false
   },
   "tags": [
     {
-      "name": "Nothing breaks silently"
+      "name": "Workflow error alerts"
     }
   ],
   "pinData": {}

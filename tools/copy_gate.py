@@ -6,11 +6,12 @@ phrases, sentences over 18 words, H1/H2 outside 4 to 7 words.
 Report only: Flesch-Kincaid grade of the visible body text.
 Usage: python3 tools/copy_gate.py
 """
-import html, os, re, sys
+import html, os, re, sys, json
+from pathlib import Path
 from html.parser import HTMLParser
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-PAGES = ['index.html', 'case-studies.html', 'workflows.html', '404.html']
+PAGES = sorted(str(p.relative_to(ROOT)) for p in Path(ROOT).rglob('*.html') if not any(part in ('tools', 'node_modules', '.git') for part in p.relative_to(ROOT).parts))
 DATA = 'assets/case-studies.js'
 BANNED = [
     'leverage', 'delve', 'unlock', 'elevate', r'optimi[sz]e', 'transformative', 'innovative',
@@ -41,7 +42,7 @@ class Visible(HTMLParser):
             self.quote += 1
         if tag in ('h1', 'h2'):
             self._head = [tag, '']
-        if tag in ('p', 'li', 'div', 'h1', 'h2', 'h3', 'h4', 'br', 'section', 'span', 'a', 'figcaption'):
+        if tag in ('p', 'li', 'div', 'h1', 'h2', 'h3', 'h4', 'br', 'section', 'span', 'a', 'figcaption', 'td', 'th', 'tr', 'caption', 'summary', 'label'):
             self.text.append('\n')
 
     def handle_endtag(self, tag):
@@ -52,7 +53,7 @@ class Visible(HTMLParser):
         if tag in ('h1', 'h2') and self._head:
             self.heads.append((self._head[0], self._head[1].strip()))
             self._head = None
-        if tag in ('p', 'li', 'div', 'h1', 'h2', 'h3', 'h4', 'figcaption'):
+        if tag in ('p', 'li', 'div', 'h1', 'h2', 'h3', 'h4', 'figcaption', 'td', 'th', 'tr', 'caption', 'summary', 'label'):
             self.text.append('\n')
 
     def handle_data(self, data):
@@ -84,11 +85,10 @@ def syllables(word):
 
 def data_strings(js):
     """Prose fields from the case-studies data, minus quotes, ids and authors."""
-    out = []
-    for key, val in re.findall(r'\b(\w+):\s*"((?:[^"\\]|\\.)*)"', js):
-        if key in ('about', 'problem', 'move', 'result', 'title', 'headlineLabel', 'clientType', 'coverTagline', 'label'):
-            out.append(re.sub(r'<[^>]+>', '', html.unescape(val)))
-    return out
+    data = json.loads(js.split('window.CASE_STUDIES = ', 1)[1].rstrip().removesuffix(';'))
+    fields = ('about', 'problem', 'move', 'result', 'title', 'headlineLabel', 'clientType', 'coverTagline', 'ai', 'human', 'evidence')
+    return [re.sub(r'<[^>]+>', '', html.unescape(item.get(key, ''))) for item in data for key in fields]
+
 
 
 def main():

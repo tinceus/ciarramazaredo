@@ -1,0 +1,98 @@
+[
+  {
+    "id": "lead-to-booked-call",
+    "status": "Component-tested",
+    "tested_scope": "Scoring logic only; no connected delivery test.",
+    "prerequisites": "Gmail, Sheets and Slack credentials; field mapping; booking webhook.",
+    "limitations": "Fixed email replies are automatic. Hot-lead follow-up belongs to the owner.",
+    "source": "workflows/lead-to-booked-call",
+    "last_checked": "2026-11-16",
+    "tested_stack": "Node 24 / Python 3.12; offline checks only",
+    "authored_stack": "n8n node versions authored for 2.47; import not verified",
+    "costs": "Client-owned accounts; software plans, API usage and hosting are separate. No fixed operating cost is verified."
+  },
+  {
+    "id": "ai-receptionist",
+    "status": "Example",
+    "tested_scope": "Connected chat, calendar and escalation unverified.",
+    "prerequisites": "Choose an available Anthropic model; calendar and Slack access; reviewed FAQ.",
+    "limitations": "An agent can create calendar events. Test conflicts and explicit confirmation.",
+    "source": "workflows/ai-receptionist",
+    "last_checked": "2026-11-16",
+    "tested_stack": "Node 24 / Python 3.12; offline checks only",
+    "authored_stack": "n8n node versions authored for 2.47; import not verified",
+    "costs": "Client-owned accounts; software plans, API usage and hosting are separate. No fixed operating cost is verified."
+  },
+  {
+    "id": "inbox-triage",
+    "status": "Example",
+    "tested_scope": "Classifier, Gmail and schedule integration unverified.",
+    "prerequisites": "Create and select Gmail label IDs; choose a model; set brief recipient and timezone.",
+    "limitations": "External replies are drafts; internal briefs send automatically.",
+    "source": "workflows/inbox-triage-daily-brief",
+    "last_checked": "2026-11-16",
+    "tested_stack": "Node 24 / Python 3.12; offline checks only",
+    "authored_stack": "n8n node versions authored for 2.47; import not verified",
+    "costs": "Client-owned accounts; software plans, API usage and hosting are separate. No fixed operating cost is verified."
+  },
+  {
+    "id": "weekly-report",
+    "status": "Component-tested",
+    "tested_scope": "Pure calculator regression cases; no connected report delivery.",
+    "prerequisites": "KPI sheet with dated metrics; Gmail and Slack; select a model and timezone.",
+    "limitations": "Output is a draft for human review. Empty or invalid data blocks calculation.",
+    "source": "workflows/weekly-report-error-alerts",
+    "last_checked": "2026-11-16",
+    "tested_stack": "Node 24 / Python 3.12; offline checks only",
+    "authored_stack": "n8n node versions authored for 2.47; import not verified",
+    "costs": "Client-owned accounts; software plans, API usage and hosting are separate. No fixed operating cost is verified."
+  },
+  {
+    "id": "error-alerts",
+    "status": "Component-tested",
+    "tested_scope": "Error-payload normalization only; channel delivery unverified.",
+    "prerequisites": "Assign as error workflow; configure Slack and Gmail; test both channel failures.",
+    "limitations": "Delivery and response time are not guaranteed. Trigger errors may lack a run URL.",
+    "source": "workflows/weekly-report-error-alerts",
+    "last_checked": "2026-11-16",
+    "tested_stack": "Node 24 / Python 3.12; offline checks only",
+    "authored_stack": "n8n node versions authored for 2.47; import not verified",
+    "costs": "Client-owned accounts; software plans, API usage and hosting are separate. No fixed operating cost is verified."
+  },
+  {
+    "id": "trend-scoring",
+    "status": "Component-tested",
+    "tested_scope": "35 offline tests; live sources and business outcomes unverified.",
+    "prerequisites": "Python dependencies; source accounts and API credentials; configured fallback bank.",
+    "limitations": "Source availability varies; writers verify claims.",
+    "source": "systems/trend-scoring-engine",
+    "last_checked": "2026-11-16",
+    "tested_stack": "Node 24 / Python 3.12; offline checks only",
+    "authored_stack": "See source requirements",
+    "costs": "Client-owned accounts; software plans, API usage and hosting are separate. No fixed operating cost is verified."
+  },
+  {
+    "id": "transcript-harvester",
+    "status": "Component-tested",
+    "tested_scope": "Four offline tests; transcription accuracy unverified.",
+    "prerequisites": "Python, yt-dlp and optional local speech model; permission to process source material.",
+    "limitations": "Review quotes against the source video.",
+    "source": "systems/transcript-harvester",
+    "last_checked": "2026-11-16",
+    "tested_stack": "Node 24 / Python 3.12; offline checks only",
+    "authored_stack": "See source requirements",
+    "costs": "Client-owned accounts; software plans, API usage and hosting are separate. No fixed operating cost is verified."
+  },
+  {
+    "id": "content-routing",
+    "status": "Component-tested",
+    "tested_scope": "Six mocked router tests; live permissions and concurrency unverified.",
+    "prerequisites": "Python; a configured Apps Script endpoint; calendar row and field mapping.",
+    "limitations": "Confirm approval externally; this sample does not implement an approval gate.",
+    "source": "systems/sheet-push-router",
+    "last_checked": "2026-11-16",
+    "tested_stack": "Node 24 / Python 3.12; offline checks only",
+    "authored_stack": "See source requirements",
+    "costs": "Client-owned accounts; software plans, API usage and hosting are separate. No fixed operating cost is verified."
+  }
+]

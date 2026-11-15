@@ -56,7 +56,7 @@
         "model": {
           "__rl": true,
           "mode": "id",
-          "value": "claude-sonnet-5-5"
+          "value": "SELECT_A_MODEL_IN_N8N"
         },
         "options": {
           "temperature": 0.2
@@ -228,14 +228,15 @@
   "active": false,
   "settings": {
     "executionOrder": "v1",
-    "saveManualExecutions": true
+    "saveManualExecutions": true,
+    "timezone": "Asia/Manila"
   },
   "meta": {
     "templateCredsSetupCompleted": false
   },
   "tags": [
     {
-      "name": "More booked calls"
+      "name": "Booking support"
     }
   ],
   "pinData": {}

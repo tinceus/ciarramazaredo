@@ -1,6 +1,6 @@
 # AI receptionist
 
-**Outcome: More booked calls.** A website chat that answers questions, offers real open times, books the visit, and hands off to a person when it should.
+**Outcome: Booking support.** A website chat that answers questions, offers real open times, books the visit, and hands off to a person when it should.
 
 > **Built on sample data.** "Brightline Dental" is a fictional clinic. This is how I build it, not a client's live system.
 
@@ -44,5 +44,16 @@ Written into the agent's instructions:
 
 | File | What it is |
 |---|---|
-| `workflow.json` | Importable n8n workflow (n8n 2.47) |
+| `workflow.json` | n8n example authored for 2.47; import unverified |
 | `sample-data/faq.md` | Fictional clinic FAQ used as the knowledge base |
+
+## Evidence and configuration limits
+
+Checked 2026-11-16. See `assets/workflow-evidence.json` at the repository root for the exact tested scope. These are inactive examples, not verified production deployments.
+
+- Select an available model in every AI model node. `SELECT_A_MODEL_IN_N8N` is an intentional configuration placeholder, not a model name. The generator accepts `WORKFLOW_ANTHROPIC_MODEL`.
+- Schedule timezone defaults to `Asia/Manila`; change it explicitly for the intended operator. The generator accepts `WORKFLOW_TIMEZONE`.
+- Connect client-owned credentials and replace every sample recipient, channel, URL, sheet, label ID and calendar.
+- Attach an error workflow in each workflow’s settings. Test notification failures separately.
+- Use fictional data and isolated accounts first. External services and hosting incur their own charges.
+- Human review is specific to each workflow: fixed lead replies and internal briefs send automatically; the receptionist can book events.

@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Workflows · Ciarra Amor G. Mazaredo</title>
-<meta name="description" content="Automation workflows by Ciarra Amor G. Mazaredo, grouped by the result they bring: more booked calls, no lead left behind, hours back, reports that write themselves. Free n8n files.">
+<meta name="description" content="AI workflow examples with setup requirements, component tests, and clear limits. Free n8n starters and scoped implementation inquiries.">
 <link rel="canonical" href="https://ciarramazaredo.vercel.app/workflows">
 <meta name="author" content="Ciarra Amor G. Mazaredo">
 <meta name="theme-color" content="#5B3FE9">
@@ -123,6 +123,7 @@
   @media (max-width: 520px) { .rules ul { grid-template-columns: 1fr; } .card { padding: 22px; } }
   @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; } }
 </style>
+<link rel="stylesheet" href="/assets/additions.css">
 </head>
 
 <body>
@@ -133,13 +134,7 @@
   <div class="nav-wrap">
     <a href="/" class="logo">ciarra<span class="dot">.</span>mazaredo</a>
     <nav aria-label="Primary">
-      <ul id="nav-menu">
-        <li><a href="/#numbers">Numbers</a></li>
-        <li><a href="/#what-i-run">What I run</a></li>
-        <li><a href="/#experience">Experience</a></li>
-        <li><a href="/case-studies">Case studies</a></li>
-        <li><a href="/workflows" aria-current="page">Workflows</a></li>
-      </ul>
+      <ul id="nav-menu"><li><a href="/case-studies">Work</a></li><li><a href="/roles">Roles</a></li><li><a href="/industries">Industries</a></li><li><a href="/workflows">Workflows</a></li><li><a href="/ai-sprint">AI Sprint</a></li><li><a href="/contact">Contact</a></li></ul>
     </nav>
     <a href="mailto:ciarramazaredo@gmail.com?subject=Workflow%20for%20my%20business" class="nav-cta" data-book>Email me</a>
     <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="nav-menu">Menu</button>
@@ -151,18 +146,18 @@
   <div class="container">
     <a href="/" class="back">← Back to portfolio</a>
     <p><span class="eyebrow">Workflows I build</span></p>
-    <h1>Systems that give you <span class="accent">time back.</span></h1>
-    <p class="sub">Each one solves a job business owners keep hiring for. Download the file, connect your own accounts, and run it. Or have me set it up for you.</p>
+    <h1>Explore practical <span class="accent">AI workflow examples.</span></h1>
+    <p class="sub">Explore sample workflows and their evidence. Configure and test them on isolated accounts before using business data.</p>
   </div>
 </section>
 
 <section class="rules" aria-label="How every workflow is built">
   <div class="container">
     <ul>
-      <li><strong>Save the data first</strong>Every lead or email is stored before anything else runs.</li>
+      <li><strong>Save the data first</strong>Storage behavior is documented per workflow. Check the required fields before testing.</li>
       <li><strong>Rules for numbers</strong>Scores and totals come from plain code anyone can check.</li>
-      <li><strong>A person checks</strong>AI drafts the words. A person approves before anything goes out.</li>
-      <li><strong>Failures speak up</strong>A failed run alerts a person within a minute.</li>
+      <li><strong>A person checks</strong>Some examples draft; others send fixed messages or book events. Review each action boundary.</li>
+      <li><strong>Failures speak up</strong>Configure error handling and test notification delivery. No latency guarantee is made.</li>
     </ul>
   </div>
 </section>
@@ -170,39 +165,39 @@
 <section class="filters" aria-label="Filter by result">
   <div class="container" id="filters">
     <button type="button" class="chip" aria-pressed="true" data-filter="all">All results</button>
-    <button type="button" class="chip" aria-pressed="false" data-filter="booked">More booked calls</button>
-    <button type="button" class="chip" aria-pressed="false" data-filter="leads">No lead left behind</button>
-    <button type="button" class="chip" aria-pressed="false" data-filter="hours">Hours back every week</button>
-    <button type="button" class="chip" aria-pressed="false" data-filter="reports">Reports that write themselves</button>
-    <button type="button" class="chip" aria-pressed="false" data-filter="silent">Nothing breaks silently</button>
-    <button type="button" class="chip" aria-pressed="false" data-filter="research">Research in minutes</button>
-    <button type="button" class="chip" aria-pressed="false" data-filter="content">Content that ships on time</button>
+    <button type="button" class="chip" aria-pressed="false" data-filter="booked">Booking support</button>
+    <button type="button" class="chip" aria-pressed="false" data-filter="leads">Lead handoffs</button>
+    <button type="button" class="chip" aria-pressed="false" data-filter="hours">Recurring admin support</button>
+    <button type="button" class="chip" aria-pressed="false" data-filter="reports">Reviewable report drafts</button>
+    <button type="button" class="chip" aria-pressed="false" data-filter="silent">Workflow error alerts</button>
+    <button type="button" class="chip" aria-pressed="false" data-filter="research">Structured research</button>
+    <button type="button" class="chip" aria-pressed="false" data-filter="content">Content calendar handoffs</button>
   </div>
 </section>
 
 <section class="grid" aria-label="Workflows">
   <div class="container" id="cards">
 
-    <article class="card" data-outcome="leads booked">
-      <div class="card-top"><span class="outcome">No lead left behind</span><span class="label">Built on sample data</span></div>
+    <article id="lead-to-booked-call" class="card" data-workflow="lead-to-booked-call" data-outcome="leads booked">
+      <div class="card-top"><span class="outcome">Lead handoffs</span><span class="label">Component-tested</span></div>
       <h2>Lead to booked call</h2>
-      <p>Every new lead is saved, scored and answered within a minute. Then it gets followed up until they book.</p>
+      <p>Sample leads are saved and scored. Hot leads get a fixed reply and an owner alert.</p>
       <ol>
         <li>Save the lead to the sheet before anything else.</li>
         <li>Score it with plain rules, with the reasons shown.</li>
         <li>Hot leads get the booking link and the owner gets a Slack alert.</li>
-        <li>No booking after two days means one polite follow-up.</li>
+        <li>Other leads receive one follow-up after two days unless marked booked.</li>
       </ol>
-      <p class="check"><strong>Human check:</strong> a person owns the scoring rules and acts on every hot-lead alert.</p>
+      <p class="check"><strong>Human check:</strong> fixed replies send automatically. A person owns the scoring rules and hot-lead follow-up.</p>
       <ul class="tools" aria-label="Tools"><li>n8n</li><li>Google Sheets</li><li>Gmail</li><li>Slack</li></ul>
       <div class="actions">
         <a class="btn btn-primary" href="/workflows/lead-to-booked-call/workflow.json" download="lead-to-booked-call.json">Get the n8n file</a>
         <a class="btn" href="https://github.com/tinceus/ciarramazaredo/tree/main/workflows/lead-to-booked-call" target="_blank" rel="noopener">See how it works</a>
       </div>
-    </article>
+    <!-- proof:start --><div class="proof-detail"><p><strong>Checked 2026-11-16:</strong> Scoring logic only; no connected delivery test.</p><p><strong>Setup:</strong> Gmail, Sheets and Slack credentials; field mapping; booking webhook.</p><p><strong>Limits:</strong> Fixed email replies are automatic. Hot-lead follow-up belongs to the owner.</p><p>Client-owned accounts; software plans, API usage and hosting are separate. No fixed operating cost is verified.</p><a href="https://github.com/tinceus/ciarramazaredo/tree/main/workflows/lead-to-booked-call">Versions, sample inputs and setup notes</a></div><a class="btn" href="/ai-sprint?workflow=lead-to-booked-call#fit-check">Adapt this to my business</a><!-- proof:end --></article>
 
-    <article class="card" data-outcome="booked">
-      <div class="card-top"><span class="outcome">More booked calls</span><span class="label">Built on sample data</span></div>
+    <article id="ai-receptionist" class="card" data-workflow="ai-receptionist" data-outcome="booked">
+      <div class="card-top"><span class="outcome">Booking support</span><span class="label">Example</span></div>
       <h2>AI receptionist that books visits</h2>
       <p>A website chat that answers questions, offers real open times, and books the visit.</p>
       <ol>
@@ -211,38 +206,38 @@
         <li>Books the visit and confirms the date, time and time zone.</li>
         <li>Hands emergencies and complaints to a person on Slack.</li>
       </ol>
-      <p class="check"><strong>Human check:</strong> tested against tricky questions before launch, and every handoff lands with a person.</p>
+      <p class="check"><strong>Human check:</strong> test booking conflicts and handoffs before launch. Agent instructions alone do not establish reliable safeguards.</p>
       <ul class="tools" aria-label="Tools"><li>n8n</li><li>Claude</li><li>Google Calendar</li><li>Slack</li></ul>
       <div class="actions">
         <a class="btn btn-primary" href="/workflows/ai-receptionist/workflow.json" download="ai-receptionist.json">Get the n8n file</a>
         <a class="btn" href="https://github.com/tinceus/ciarramazaredo/tree/main/workflows/ai-receptionist" target="_blank" rel="noopener">See how it works</a>
       </div>
-    </article>
+    <!-- proof:start --><div class="proof-detail"><p><strong>Checked 2026-11-16:</strong> Connected chat, calendar and escalation unverified.</p><p><strong>Setup:</strong> Choose an available Anthropic model; calendar and Slack access; reviewed FAQ.</p><p><strong>Limits:</strong> An agent can create calendar events. Test conflicts and explicit confirmation.</p><p>Client-owned accounts; software plans, API usage and hosting are separate. No fixed operating cost is verified.</p><a href="https://github.com/tinceus/ciarramazaredo/tree/main/workflows/ai-receptionist">Versions, sample inputs and setup notes</a></div><a class="btn" href="/ai-sprint?workflow=ai-receptionist#fit-check">Adapt this to my business</a><!-- proof:end --></article>
 
-    <article class="card" data-outcome="hours">
-      <div class="card-top"><span class="outcome">Hours back every week</span><span class="label">Built on sample data</span></div>
+    <article id="inbox-triage" class="card" data-workflow="inbox-triage" data-outcome="hours">
+      <div class="card-top"><span class="outcome">Recurring admin support</span><span class="label">Example</span></div>
       <h2>Inbox triage and daily brief</h2>
-      <p>Every new email is sorted and labeled. Each weekday morning, one short brief lists what needs the leader.</p>
+      <p>This sample sorts email, saves reply drafts, and sends an internal weekday brief. Connected behavior remains unverified.</p>
       <ol>
         <li>Sorts each email into Urgent, Needs reply, Billing, FYI or Newsletter.</li>
         <li>Drafts a reply for emails that need one.</li>
         <li>Sends a brief at 7:30 grouped into Do today, Reply and Pay.</li>
       </ol>
-      <p class="check"><strong>Human check:</strong> it never sends a reply. Drafts wait for a person, with unsure parts marked.</p>
+      <p class="check"><strong>Human check:</strong> external replies remain drafts. The internal brief sends automatically. Uncertain classification routes to a review label.</p>
       <ul class="tools" aria-label="Tools"><li>n8n</li><li>Gmail</li><li>Claude</li></ul>
       <div class="actions">
         <a class="btn btn-primary" href="/workflows/inbox-triage-daily-brief/workflow.json" download="inbox-triage-daily-brief.json">Get the n8n file</a>
         <a class="btn" href="https://github.com/tinceus/ciarramazaredo/tree/main/workflows/inbox-triage-daily-brief" target="_blank" rel="noopener">See how it works</a>
       </div>
-    </article>
+    <!-- proof:start --><div class="proof-detail"><p><strong>Checked 2026-11-16:</strong> Classifier, Gmail and schedule integration unverified.</p><p><strong>Setup:</strong> Create and select Gmail label IDs; choose a model; set brief recipient and timezone.</p><p><strong>Limits:</strong> External replies are drafts; internal briefs send automatically.</p><p>Client-owned accounts; software plans, API usage and hosting are separate. No fixed operating cost is verified.</p><a href="https://github.com/tinceus/ciarramazaredo/tree/main/workflows/inbox-triage-daily-brief">Versions, sample inputs and setup notes</a></div><a class="btn" href="/ai-sprint?workflow=inbox-triage#fit-check">Adapt this to my business</a><!-- proof:end --></article>
 
-    <article class="card" data-outcome="reports hours">
-      <div class="card-top"><span class="outcome">Reports that write themselves</span><span class="label">Built on sample data</span></div>
+    <article id="weekly-report" class="card" data-workflow="weekly-report" data-outcome="reports hours">
+      <div class="card-top"><span class="outcome">Reviewable report drafts</span><span class="label">Component-tested</span></div>
       <h2>The Monday weekly report</h2>
       <p>The numbers are pulled, compared with last week, and turned into a short update before the team starts.</p>
       <ol>
         <li>Reads the KPI sheet every Monday at 8:00.</li>
-        <li>Code compares the weeks and marks each metric On track or Watch.</li>
+        <li>Code compares available weeks, flags missing metrics, and rejects invalid numbers.</li>
         <li>AI writes the sentences around those exact numbers.</li>
       </ol>
       <p class="check"><strong>Human check:</strong> the update lands as a draft. A person checks it before the leader sees it.</p>
@@ -251,44 +246,44 @@
         <a class="btn btn-primary" href="/workflows/weekly-report-error-alerts/weekly-report.json" download="weekly-report.json">Get the n8n file</a>
         <a class="btn" href="https://github.com/tinceus/ciarramazaredo/tree/main/workflows/weekly-report-error-alerts" target="_blank" rel="noopener">See how it works</a>
       </div>
-    </article>
+    <!-- proof:start --><div class="proof-detail"><p><strong>Checked 2026-11-16:</strong> Pure calculator regression cases; no connected report delivery.</p><p><strong>Setup:</strong> KPI sheet with dated metrics; Gmail and Slack; select a model and timezone.</p><p><strong>Limits:</strong> Output is a draft for human review. Empty or invalid data blocks calculation.</p><p>Client-owned accounts; software plans, API usage and hosting are separate. No fixed operating cost is verified.</p><a href="https://github.com/tinceus/ciarramazaredo/tree/main/workflows/weekly-report-error-alerts">Versions, sample inputs and setup notes</a></div><a class="btn" href="/ai-sprint?workflow=weekly-report#fit-check">Adapt this to my business</a><!-- proof:end --></article>
 
-    <article class="card" data-outcome="silent">
-      <div class="card-top"><span class="outcome">Nothing breaks silently</span><span class="label">Built on sample data</span></div>
+    <article id="error-alerts" class="card" data-workflow="error-alerts" data-outcome="silent">
+      <div class="card-top"><span class="outcome">Workflow error alerts</span><span class="label">Component-tested</span></div>
       <h2>Error alerts for every workflow</h2>
-      <p>When any automation fails, a person hears within a minute. The alert links to the failed run.</p>
+      <p>Assigned workflows can notify Slack and email. Trigger errors may have no execution link.</p>
       <ol>
-        <li>Runs whenever any other workflow fails.</li>
+        <li>Assign this error workflow in each monitored workflow’s settings.</li>
         <li>Posts the workflow, the step and the error to Slack.</li>
-        <li>Sends a backup email in case Slack is down.</li>
+        <li>Attempts email as a separate branch. Test channel failures before relying on delivery.</li>
       </ol>
-      <p class="check"><strong>Human check:</strong> every alert goes to a named owner who fixes the cause.</p>
+      <p class="check"><strong>Human check:</strong> assign an owner to inspect each alert and fix its cause.</p>
       <ul class="tools" aria-label="Tools"><li>n8n</li><li>Slack</li><li>Gmail</li></ul>
       <div class="actions">
         <a class="btn btn-primary" href="/workflows/weekly-report-error-alerts/error-alerts.json" download="error-alerts.json">Get the n8n file</a>
         <a class="btn" href="https://github.com/tinceus/ciarramazaredo/tree/main/workflows/weekly-report-error-alerts" target="_blank" rel="noopener">See how it works</a>
       </div>
-    </article>
+    <!-- proof:start --><div class="proof-detail"><p><strong>Checked 2026-11-16:</strong> Error-payload normalization only; channel delivery unverified.</p><p><strong>Setup:</strong> Assign as error workflow; configure Slack and Gmail; test both channel failures.</p><p><strong>Limits:</strong> Delivery and response time are not guaranteed. Trigger errors may lack a run URL.</p><p>Client-owned accounts; software plans, API usage and hosting are separate. No fixed operating cost is verified.</p><a href="https://github.com/tinceus/ciarramazaredo/tree/main/workflows/weekly-report-error-alerts">Versions, sample inputs and setup notes</a></div><a class="btn" href="/ai-sprint?workflow=error-alerts#fit-check">Adapt this to my business</a><!-- proof:end --></article>
 
-    <article class="card" data-outcome="research">
-      <div class="card-top"><span class="outcome">Research in minutes</span><span class="label">Details removed</span></div>
+    <article id="trend-scoring" class="card" data-workflow="trend-scoring" data-outcome="research">
+      <div class="card-top"><span class="outcome">Structured research</span><span class="label">Component-tested</span></div>
       <h2>Trend scoring engine for writers</h2>
       <p>Pulls trends from five public sources daily and hands a writer one ready topic brief.</p>
       <ol>
         <li>Collects rising searches and posts from five sources each morning.</li>
         <li>Drops anything that breaks the brand claim rules.</li>
         <li>Scores the rest on fit and freshness, and removes repeats.</li>
-        <li>Falls back to a saved topic bank, so it never comes back empty.</li>
+        <li>Uses a configured fallback bank when sources fail. The bank must contain usable topics.</li>
       </ol>
       <p class="check"><strong>Human check:</strong> a writer verifies every claim in the brief before anything is published.</p>
       <ul class="tools" aria-label="Tools"><li>Python</li><li>Google Trends</li><li>Reddit</li><li>Apify</li></ul>
       <div class="actions">
         <a class="btn btn-primary" href="https://github.com/tinceus/ciarramazaredo/tree/main/systems/trend-scoring-engine" target="_blank" rel="noopener">See the code</a>
       </div>
-    </article>
+    <!-- proof:start --><div class="proof-detail"><p><strong>Checked 2026-11-16:</strong> 35 offline tests; live sources and business outcomes unverified.</p><p><strong>Setup:</strong> Python dependencies; source accounts and API credentials; configured fallback bank.</p><p><strong>Limits:</strong> Source availability varies; writers verify claims.</p><p>Client-owned accounts; software plans, API usage and hosting are separate. No fixed operating cost is verified.</p><a href="https://github.com/tinceus/ciarramazaredo/tree/main/systems/trend-scoring-engine">Versions, sample inputs and setup notes</a></div><a class="btn" href="/ai-sprint?workflow=trend-scoring#fit-check">Adapt this to my business</a><!-- proof:end --></article>
 
-    <article class="card" data-outcome="hours research">
-      <div class="card-top"><span class="outcome">Hours back every week</span><span class="label">Details removed</span></div>
+    <article id="transcript-harvester" class="card" data-workflow="transcript-harvester" data-outcome="hours research">
+      <div class="card-top"><span class="outcome">Recurring admin support</span><span class="label">Component-tested</span></div>
       <h2>Video transcript harvester at scale</h2>
       <p>Saves a clean transcript of every video on a channel, so writers can quote the real voice.</p>
       <ol>
@@ -302,10 +297,10 @@
       <div class="actions">
         <a class="btn btn-primary" href="https://github.com/tinceus/ciarramazaredo/tree/main/systems/transcript-harvester" target="_blank" rel="noopener">See the code</a>
       </div>
-    </article>
+    <!-- proof:start --><div class="proof-detail"><p><strong>Checked 2026-11-16:</strong> Four offline tests; transcription accuracy unverified.</p><p><strong>Setup:</strong> Python, yt-dlp and optional local speech model; permission to process source material.</p><p><strong>Limits:</strong> Review quotes against the source video.</p><p>Client-owned accounts; software plans, API usage and hosting are separate. No fixed operating cost is verified.</p><a href="https://github.com/tinceus/ciarramazaredo/tree/main/systems/transcript-harvester">Versions, sample inputs and setup notes</a></div><a class="btn" href="/ai-sprint?workflow=transcript-harvester#fit-check">Adapt this to my business</a><!-- proof:end --></article>
 
-    <article class="card" data-outcome="content hours">
-      <div class="card-top"><span class="outcome">Content that ships on time</span><span class="label">Details removed</span></div>
+    <article id="content-routing" class="card" data-workflow="content-routing" data-outcome="content hours">
+      <div class="card-top"><span class="outcome">Content calendar handoffs</span><span class="label">Component-tested</span></div>
       <h2>Approved copy into the calendar</h2>
       <p>Pushes approved posts into the right row of each content calendar, by date, in one call.</p>
       <ol>
@@ -313,12 +308,12 @@
         <li>Merges new copy with what is already there.</li>
         <li>Rejects values the sheet would refuse, with a clear reason.</li>
       </ol>
-      <p class="check"><strong>Human check:</strong> only copy a person approved is pushed. Nothing is written to a date that does not exist.</p>
+      <p class="check"><strong>Human check:</strong> the operator confirms approval before running the script. Approval is not enforced by the sample itself.</p>
       <ul class="tools" aria-label="Tools"><li>Python</li><li>Google Sheets</li><li>Apps Script</li></ul>
       <div class="actions">
         <a class="btn btn-primary" href="https://github.com/tinceus/ciarramazaredo/tree/main/systems/sheet-push-router" target="_blank" rel="noopener">See the code</a>
       </div>
-    </article>
+    <!-- proof:start --><div class="proof-detail"><p><strong>Checked 2026-11-16:</strong> Six mocked router tests; live permissions and concurrency unverified.</p><p><strong>Setup:</strong> Python; a configured Apps Script endpoint; calendar row and field mapping.</p><p><strong>Limits:</strong> Confirm approval externally; this sample does not implement an approval gate.</p><p>Client-owned accounts; software plans, API usage and hosting are separate. No fixed operating cost is verified.</p><a href="https://github.com/tinceus/ciarramazaredo/tree/main/systems/sheet-push-router">Versions, sample inputs and setup notes</a></div><a class="btn" href="/ai-sprint?workflow=content-routing#fit-check">Adapt this to my business</a><!-- proof:end --></article>
 
   </div>
 </section>
@@ -337,9 +332,9 @@
 </section>
 
 <section class="cta">
-  <h2>Get one running this week</h2>
-  <p>Pick a workflow. I set it up on your accounts during a paid pilot week. Then I test it and hand it over with notes.</p>
-  <a class="btn btn-primary" href="mailto:ciarramazaredo@gmail.com?subject=Workflow%20for%20my%20business" data-book>Email me</a>
+  <h2>Start with a scoped workflow project</h2>
+  <p>Bring one process. We can discuss a starter setup or the US$750 feasibility sprint. Implementation is quoted separately.</p>
+  <a class="btn btn-primary" href="/ai-sprint#fit-check">Check project fit</a>
 </section>
 </main>
 
@@ -365,5 +360,6 @@
     }));
   })();
 </script>
+<script src="/assets/portfolio.js"></script>
 </body>
 </html>
