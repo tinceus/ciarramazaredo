@@ -21,7 +21,9 @@ Automations grouped by the result they bring. Each folder holds an importable n8
 
 ## Import one
 
-n8n → **Workflows** → **Import from file** → pick the `.json`. Built and import-tested on n8n 2.47.
+n8n → **Workflows** → **Import from file** → pick the `.json`. Built and import-tested on n8n 2.47, and every node passes n8n's own parameter check. The only fields left blank are your own spreadsheet and calendar, which you pick after import.
+
+Maintainer check: `N8N_MODULES=/path/to/n8n/node_modules node tools/check_n8n_params.js workflows/*/*.json`
 
 Past systems from earlier roles, with company details removed, are in [`../systems/`](../systems/).
 

@@ -37,6 +37,7 @@ Pair it with [`../weekly-report-error-alerts/error-alerts.json`](../weekly-repor
 
 1. In n8n: **Import from file** → `workflow.json`.
 2. Connect Google Sheets, Gmail and Slack. Create a sheet tab `Leads` with the columns in `sample-data/leads.csv` plus `score`, `tier`, `status`.
+   Then pick that spreadsheet in all four Sheets nodes (Save lead first, Record score, Check status, Mark as booked). They ship blank on purpose.
 3. Change the booking link (`https://cal.com/your-name/intro-call`) in the three email nodes.
 4. Point your form at the `new-lead` webhook and your calendar tool at `booking-made`.
 

@@ -271,8 +271,7 @@
         "simple": true,
         "filters": {
           "q": "newer_than:1d (label:Urgent OR label:\"Needs reply\" OR label:Billing)"
-        },
-        "options": {}
+        }
       },
       "id": "43cd1b07-3f7e-54b3-b1c4-0959e10e8698",
       "name": "Get last 24 hours",

@@ -20,10 +20,11 @@
     {
       "parameters": {
         "public": true,
+        "mode": "hostedChat",
+        "initialMessages": "Hi, how can I help you today?",
         "options": {
           "title": "Front desk",
-          "subtitle": "Questions or bookings, I can help.",
-          "initialMessages": "Hi, how can I help you today?"
+          "subtitle": "Questions or bookings, I can help."
         }
       },
       "id": "45515701-4101-58bb-a829-7d6e57939431",

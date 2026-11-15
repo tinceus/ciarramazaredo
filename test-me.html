@@ -141,7 +141,8 @@
   .score table { width: 100%; border-collapse: collapse; font-size: 15px; }
   .score th, .score td { text-align: left; padding: 12px 10px; border-bottom: 1px solid var(--whisper); vertical-align: middle; }
   .score thead th { font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--smoke); }
-  .score tbody td:nth-child(2) { color: var(--smoke); }
+  .score .look { display: block; font-weight: 400; font-size: 14px; color: var(--smoke); margin-top: 2px; }
+  .score td { width: 1%; white-space: nowrap; }
   .score select { font: inherit; padding: 6px 10px; border: 1.5px solid var(--hairline); border-radius: 10px; background: var(--paper); }
   .score tfoot th, .score tfoot td { font-weight: 700; font-size: 17px; border-bottom: none; }
   .score output { font-family: 'Space Grotesk', sans-serif; font-size: 24px; }
@@ -157,12 +158,13 @@
   .swap a { color: var(--purple); font-weight: 600; text-decoration: underline; }
   .price { margin-bottom: 18px; }
   @media (max-width: 960px) { .task-grid { grid-template-columns: 1fr; } .rules ul.steps3 { grid-template-columns: 1fr; } }
-  @media (max-width: 820px) { .tasks, .refs, .score-wrap, .pilot { padding-left: 20px; padding-right: 20px; } .score, .pilot-box { padding: 22px; } .score tbody td:nth-child(2) { display: none; } .score thead th:nth-child(2) { display: none; } .score tfoot th { } }
+  @media (max-width: 820px) { .tasks, .refs, .score-wrap, .pilot { padding-left: 20px; padding-right: 20px; } .score, .pilot-box { padding: 22px; } }
   @media print {
     header, footer, .skip-link, main > section:not(#scorecard), .score-actions { display: none !important; }
     .score-wrap { padding: 0; } .score { border: none; padding: 0; }
-    .score tbody td:nth-child(2), .score thead th:nth-child(2) { display: table-cell !important; }
     .score select { border: none; appearance: none; }
+    .score select:invalid { color: transparent; border: 1px solid #000; border-radius: 6px; min-width: 56px; }
+    .score output[data-empty] { color: transparent; display: inline-block; min-width: 56px; border-bottom: 1px solid #000; }
   }
 </style>
 </head>
@@ -203,7 +205,7 @@
   <div class="container">
     <ul class="steps3">
       <li><strong>1. Pick one task</strong>Choose the one closest to the work you need done.</li>
-      <li><strong>2. Send the inputs</strong>Real or made up, both work. I start within one working day.</li>
+      <li><strong>2. Send the inputs</strong>Real or made up, both work. Remove anything private first.</li>
       <li><strong>3. Score the result</strong>Use the scorecard below, so the decision rests on evidence.</li>
     </ul>
   </div>
@@ -291,16 +293,16 @@
       <p class="score-sub">Rate each line from 1 to 4. Score every candidate the same way, so the comparison is fair.</p>
       <table>
         <caption class="sr-only">Trial task scorecard</caption>
-        <thead><tr><th scope="col">Criterion</th><th scope="col">What to look for</th><th scope="col">Score</th></tr></thead>
+        <thead><tr><th scope="col">What to look for</th><th scope="col">Score</th></tr></thead>
         <tbody>
-          <tr><th scope="row">Followed the brief</th><td>Format, length and deadline match what you asked for.</td><td><label class="sr-only" for="s1">Followed the brief score</label><select id="s1" class="s"><option value="">Pick</option><option>1</option><option>2</option><option>3</option><option>4</option></select></td></tr>
-          <tr><th scope="row">Quality of the work</th><td>You could use it today with light edits.</td><td><label class="sr-only" for="s2">Quality score</label><select id="s2" class="s"><option value="">Pick</option><option>1</option><option>2</option><option>3</option><option>4</option></select></td></tr>
-          <tr><th scope="row">Judgment</th><td>The right things were put first, flagged or left out.</td><td><label class="sr-only" for="s3">Judgment score</label><select id="s3" class="s"><option value="">Pick</option><option>1</option><option>2</option><option>3</option><option>4</option></select></td></tr>
-          <tr><th scope="row">Clear writing</th><td>Short, plain and easy to scan.</td><td><label class="sr-only" for="s4">Clear writing score</label><select id="s4" class="s"><option value="">Pick</option><option>1</option><option>2</option><option>3</option><option>4</option></select></td></tr>
-          <tr><th scope="row">Questions first</th><td>Smart questions before starting, not after.</td><td><label class="sr-only" for="s5">Questions score</label><select id="s5" class="s"><option value="">Pick</option><option>1</option><option>2</option><option>3</option><option>4</option></select></td></tr>
-          <tr><th scope="row">Honesty</th><td>Gaps and guesses are named, not hidden.</td><td><label class="sr-only" for="s6">Honesty score</label><select id="s6" class="s"><option value="">Pick</option><option>1</option><option>2</option><option>3</option><option>4</option></select></td></tr>
+          <tr><th scope="row">Followed the brief<span class="look">Format, length and deadline match what you asked for.</span></th><td><label class="sr-only" for="s1">Followed the brief score</label><select id="s1" class="s" required><option value="">Pick</option><option>1</option><option>2</option><option>3</option><option>4</option></select></td></tr>
+          <tr><th scope="row">Quality of the work<span class="look">You could use it today with light edits.</span></th><td><label class="sr-only" for="s2">Quality score</label><select id="s2" class="s" required><option value="">Pick</option><option>1</option><option>2</option><option>3</option><option>4</option></select></td></tr>
+          <tr><th scope="row">Judgment<span class="look">The right things were put first, flagged or left out.</span></th><td><label class="sr-only" for="s3">Judgment score</label><select id="s3" class="s" required><option value="">Pick</option><option>1</option><option>2</option><option>3</option><option>4</option></select></td></tr>
+          <tr><th scope="row">Clear writing<span class="look">Short, plain and easy to scan.</span></th><td><label class="sr-only" for="s4">Clear writing score</label><select id="s4" class="s" required><option value="">Pick</option><option>1</option><option>2</option><option>3</option><option>4</option></select></td></tr>
+          <tr><th scope="row">Questions first<span class="look">Smart questions before starting, not after.</span></th><td><label class="sr-only" for="s5">Questions score</label><select id="s5" class="s" required><option value="">Pick</option><option>1</option><option>2</option><option>3</option><option>4</option></select></td></tr>
+          <tr><th scope="row">Honesty<span class="look">Gaps and guesses are named, not hidden.</span></th><td><label class="sr-only" for="s6">Honesty score</label><select id="s6" class="s" required><option value="">Pick</option><option>1</option><option>2</option><option>3</option><option>4</option></select></td></tr>
         </tbody>
-        <tfoot><tr><th scope="row" colspan="2">Total out of 24</th><td><output id="total" for="s1 s2 s3 s4 s5 s6" aria-live="polite">0</output></td></tr></tfoot>
+        <tfoot><tr><th scope="row">Total out of 24</th><td><output id="total" for="s1 s2 s3 s4 s5 s6" aria-live="polite" data-empty>0</output></td></tr></tfoot>
       </table>
       <p class="key"><strong>1</strong> Missed · <strong>2</strong> Partly there · <strong>3</strong> Met the bar · <strong>4</strong> Beyond it</p>
       <div class="score-actions"><button type="button" class="btn" id="print-score">Print the scorecard</button><button type="button" class="btn" id="reset-score">Clear scores</button></div>
@@ -365,7 +367,7 @@
   (function () {
     const sel = [...document.querySelectorAll('.score select.s')];
     const out = document.getElementById('total');
-    const sum = () => { out.textContent = sel.reduce((t, s) => t + (+s.value || 0), 0); };
+    const sum = () => { const t = sel.reduce((n, s) => n + (+s.value || 0), 0); out.textContent = t; out.toggleAttribute('data-empty', t === 0); };
     sel.forEach(s => s.addEventListener('change', sum));
     document.getElementById('reset-score').addEventListener('click', () => { sel.forEach(s => { s.value = ''; }); sum(); sel[0].focus(); });
     document.getElementById('print-score').addEventListener('click', () => window.print());

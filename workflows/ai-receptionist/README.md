@@ -36,7 +36,7 @@ Written into the agent's instructions:
 ## Set it up
 
 1. In n8n: **Import from file** → `workflow.json`.
-2. Connect Anthropic, Google Calendar and Slack. Pick the calendar in both calendar tools.
+2. Connect Anthropic, Google Calendar and Slack. Pick your calendar in both calendar tools. They ship blank on purpose.
 3. Replace the knowledge in the agent's system message with the business's own FAQ.
 4. Use the chat's public URL, or embed it on the site.
 
