@@ -1,6 +1,6 @@
 # Ciarra Amor G. Mazaredo
 
-> Open to Chief of Staff, Executive Assistant to CEO and Operations Manager roles. Remote, based in Mandaluyong City, Philippines (UTC+8). Available immediately.
+> Open to Chief of Staff, Executive Assistant to CEO and Operations Manager roles. Also open to Marketing Operations and AI Automation roles. Remote, based in Mandaluyong City, Philippines (UTC+8). Available immediately.
 
 ## Pages
 - [Home](https://ciarramazaredo.vercel.app/): numbers, what I run, experience, recognition, testimonials, ways to work together
@@ -9,6 +9,15 @@
 - [Test me](https://ciarramazaredo.vercel.app/test-me): six trial tasks, a scorecard, reference questions and a paid pilot week
 - [How I work](https://ciarramazaredo.vercel.app/how-i-work): communication, mistakes, AI use, first 90 days, fit
 - [Résumé (PDF)](https://ciarramazaredo.vercel.app/resume) · [Plain résumé for job boards](https://ciarramazaredo.vercel.app/resume-ats)
+
+## Roles and industries
+- [Chief of Staff, remote](https://ciarramazaredo.vercel.app/roles/chief-of-staff): Senior management team of a 50+ person school. Workforce grew from about 24 to 53 in one year.
+- [Executive Assistant to CEO, remote](https://ciarramazaredo.vercel.app/roles/executive-assistant): Supported a Senior Vice President of Investment at Kidder Mathews with transactions, listings and correspondence.
+- [Operations Manager, remote](https://ciarramazaredo.vercel.app/roles/operations-manager): Designed the processes, forms and reports behind a school that grew from about 24 to 53 staff.
+- [Marketing Operations Specialist](https://ciarramazaredo.vercel.app/roles/marketing-operations): Six email automation workflows and an 83.57% click-to-open rate for a real estate coach.
+- [AI Automation Specialist](https://ciarramazaredo.vercel.app/roles/ai-automation): Five free sample workflows and three past systems, each with its human check written down.
+- [Real estate operations support](https://ciarramazaredo.vercel.app/industries/real-estate): Kidder Mathews, Yokly and a real estate coach: executive support, staff training and email automation.
+- [School operations and people support](https://ciarramazaredo.vercel.app/industries/education): Head of People & Culture on the senior management team of a school that grew to 53 staff.
 
 ## Case studies
 - [The 24 to 53 Year](https://ciarramazaredo.vercel.app/case-studies/edgyvis-people-ops): 24 → 53 employees in one year

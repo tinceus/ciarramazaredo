@@ -3,7 +3,7 @@
   "nodes": [
     {
       "parameters": {
-        "content": "## AI receptionist\nAnswers questions from a fixed knowledge base, qualifies the visitor, offers real calendar times, books, and hands off to a person when it should.\n\nConnect Anthropic, Google Calendar and Slack after import. Edit the knowledge in the agent system message.",
+        "content": "## AI receptionist\nAnswers questions, checks open times and can book the visit. Its rules are instructions, not hard limits, so a person watches the handoffs.\n\nConnect Anthropic, Google Calendar and Slack after import. Edit the knowledge in the agent system message.",
         "height": 200,
         "width": 440,
         "color": 4

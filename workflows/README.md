@@ -7,7 +7,7 @@ Automations grouped by the result they bring. Each folder holds an importable n8
 | Result | Workflow | What it does |
 |---|---|---|
 | No lead left behind | [Lead to booked call](lead-to-booked-call/) | Saves, scores and answers every lead, then sends one follow-up to leads who have not booked |
-| More booked calls | [AI receptionist](ai-receptionist/) | Website chat that answers from a fixed FAQ, checks open times, can book, and hands off to a person |
+| More booked calls | [AI receptionist](ai-receptionist/) | Website chat that is told to answer from a FAQ you write, checks open times, can book, and hands off to a person |
 | Hours back every week | [Inbox triage and daily brief](inbox-triage-daily-brief/) | Sorts every email, drafts replies (never sends), and emails a morning brief |
 | Reports that write themselves | [Weekly report](weekly-report-error-alerts/) | Compares the two latest weeks in code, then drafts the update for a person to check |
 | Nothing breaks silently | [Error alerts](weekly-report-error-alerts/) | A failed run sends the step and error to Slack and email, with a link when n8n gives one |

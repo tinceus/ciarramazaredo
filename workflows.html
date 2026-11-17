@@ -124,6 +124,7 @@
   @media (max-width: 520px) { .rules ul { grid-template-columns: 1fr; } .card { padding: 22px; } }
   @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; } }
 .label-key{padding:0 0 8px}.label-key p{font-size:14px;color:var(--smoke);max-width:900px;margin:0}
+.lead-in{font-size:14px;font-weight:600;margin:4px 0 -4px}
 </style>
 </head>
 
@@ -136,12 +137,11 @@
     <a href="/" class="logo">ciarra<span class="dot">.</span>mazaredo</a>
     <nav aria-label="Primary">
       <ul id="nav-menu">
-        <li><a href="/#numbers">Numbers</a></li>
-        <li><a href="/#what-i-run">What I run</a></li>
-        <li><a href="/#experience">Experience</a></li>
+        <li><a href="/roles">Roles</a></li>
         <li><a href="/case-studies">Case studies</a></li>
         <li><a href="/workflows" aria-current="page">Workflows</a></li>
         <li><a href="/test-me">Test me</a></li>
+        <li><a href="/resume">Résumé</a></li>
       </ul>
     </nav>
     <a href="mailto:ciarramazaredo@gmail.com?subject=Workflow%20for%20my%20business" class="nav-cta" data-book>Email me</a>
@@ -214,11 +214,12 @@
       <div class="card-top"><span class="outcome">More booked calls</span><span class="label">Sample · 17 Nov 2026</span></div>
       <h2>AI receptionist that books visits</h2>
       <p>A website chat that answers questions, checks open times, and can book the visit.</p>
+      <p class="lead-in">Its instructions tell it to:</p>
       <ol>
-        <li>Is told to answer only from a knowledge base the business writes.</li>
-        <li>Is told to check the calendar and offer two open times.</li>
-        <li>Books the visit and is told to confirm the date, time and time zone.</li>
-        <li>Hands emergencies and complaints to a person on Slack.</li>
+        <li>Answer only from a knowledge base the business writes.</li>
+        <li>Check the calendar and offer two open times.</li>
+        <li>Book the visit and confirm the date, time and time zone.</li>
+        <li>Hand emergencies and complaints to a person on Slack.</li>
       </ol>
       <p class="check"><strong>Human check:</strong> run it against tricky questions before launch. Its rules are instructions, not hard limits, so a person watches the handoffs.</p>
       <ul class="tools" aria-label="Tools"><li>n8n</li><li>Claude</li><li>Google Calendar</li><li>Slack</li></ul>
@@ -248,7 +249,7 @@
     <article id="weekly-report" class="card" data-outcome="reports hours">
       <div class="card-top"><span class="outcome">Reports that write themselves</span><span class="label">Parts tested · 17 Nov 2026</span></div>
       <h2>The Monday weekly report</h2>
-      <p>The numbers are pulled, compared with the previous week, and turned into a short draft update.</p>
+      <p>The numbers are pulled, compared with the week before it on the sheet, and turned into a draft.</p>
       <ol>
         <li>Reads the KPI sheet every Monday at 8:00.</li>
         <li>Code compares the weeks and marks each metric On track or Watch.</li>
@@ -356,7 +357,7 @@
 <footer class="site-footer">
   <div class="footer-inner">
     <span>© 2026 Ciarra Amor G. Mazaredo · Mandaluyong City, Philippines</span>
-    <span class="footer-links"><a href="/how-i-work">How I work</a></span>
+    <span class="footer-links"><a href="/how-i-work">How I work</a> · <a href="/industries">Industries</a> · <a href="/#contact">Contact</a></span>
     <span class="footer-connect">Connect with me <a href="https://www.linkedin.com/in/ciarra-m/" target="_blank" rel="noopener" aria-label="LinkedIn" class="footer-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.95v5.66H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.26 2.37 4.26 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zm1.78 13.02H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/></svg></a></span>
   </div>
 </footer>

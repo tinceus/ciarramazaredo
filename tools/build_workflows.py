@@ -148,7 +148,7 @@ def ai_receptionist():
               "5. Confirm every booking back to the visitor with the date, time and time zone.\n\n"
               "Knowledge:\n" + faq)
     n, c = [], {}
-    n.append(note('About this workflow', '## AI receptionist\nAnswers questions from a fixed knowledge base, qualifies the visitor, offers real calendar times, books, and hands off to a person when it should.\n\nConnect Anthropic, Google Calendar and Slack after import. Edit the knowledge in the agent system message.', [-80, -300], 440, 200))
+    n.append(note('About this workflow', '## AI receptionist\nAnswers questions, checks open times and can book the visit. Its rules are instructions, not hard limits, so a person watches the handoffs.\n\nConnect Anthropic, Google Calendar and Slack after import. Edit the knowledge in the agent system message.', [-80, -300], 440, 200))
     n.append(node('Website chat', '@n8n/n8n-nodes-langchain.chatTrigger', 1.1, {'public': True, 'mode': 'hostedChat', 'initialMessages': 'Hi, how can I help you today?', 'options': {
         'title': 'Front desk', 'subtitle': 'Questions or bookings, I can help.'}}, [0, 0], webhookId=uid('chat')))
     n.append(node('Receptionist agent', '@n8n/n8n-nodes-langchain.agent', 2.2, {'options': {'systemMessage': system}}, [260, 0]))

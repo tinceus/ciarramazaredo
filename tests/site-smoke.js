@@ -59,6 +59,8 @@ const fail = msg => { fails.push(msg); console.log('FAIL ' + msg); };
       if (!(await p.locator('nav a[href="/workflows"]').isVisible())) fail(`${route}: menu links hidden without JavaScript`);
       if (!(await p.locator('h1').isVisible())) fail(`${route}: h1 hidden without JavaScript`);
     }
+    await p.goto(base + '/case-studies');
+    if (!(await p.locator('.cs-static a').first().isVisible())) fail('/case-studies: story list hidden without JavaScript');
     await plain.close();
     // Stage 7 adds the AI Sprint and fit check flows here.
     console.log(fails.length ? `\nsite smoke: ${fails.length} problem(s)` : `site smoke: PASS (${routes.length} routes at 1440 and 390, axe WCAG A/AA, ${links.size} local links, keyboard menu, no-JS menu)`);

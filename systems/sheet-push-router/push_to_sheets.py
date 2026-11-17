@@ -30,7 +30,7 @@ def _endpoint() -> tuple:
     """(web_app_url, token) from the environment. Fails loudly before any network call."""
     missing = [k for k in ("SHEET_ROUTER_URL", "SHEET_ROUTER_TOKEN") if not os.environ.get(k)]
     if missing:
-        raise RuntimeError(f"Missing env var(s): {', '.join(missing)}. See .env.example.")
+        raise RuntimeError(f"Missing env var(s): {', '.join(missing)}. Set them in a local .env file.")
     return os.environ["SHEET_ROUTER_URL"], os.environ["SHEET_ROUTER_TOKEN"]
 
 

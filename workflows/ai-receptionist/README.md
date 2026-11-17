@@ -1,6 +1,6 @@
 # AI receptionist
 
-**Outcome: More booked calls.** A website chat that answers questions, offers real open times, books the visit, and hands off to a person when it should.
+**Outcome: More booked calls.** A website chat that answers questions, checks open times and can book the visit. Its rules are instructions, not hard limits, so a person watches the handoffs.
 
 > **Built on sample data.** "Brightline Dental" is a fictional clinic. This is how I build it, not a client's live system.
 

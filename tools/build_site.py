@@ -14,9 +14,12 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE = 'https://ciarramazaredo.vercel.app'
 NAME = 'Ciarra Amor G. Mazaredo'
 EMAIL = 'ciarramazaredo@gmail.com'
-NAV = [('/#numbers', 'Numbers'), ('/#what-i-run', 'What I run'), ('/#experience', 'Experience'),
-       ('/case-studies', 'Case studies'), ('/workflows', 'Workflows'), ('/test-me', 'Test me')]
-FOOTER_LINKS = [('/how-i-work', 'How I work')]
+NAV = [('/roles', 'Roles'), ('/case-studies', 'Case studies'), ('/workflows', 'Workflows'), ('/test-me', 'Test me'),
+       ('/resume', 'Résumé')]  # AI Sprint joins once stage 7 is live
+FOOTER_LINKS = [('/how-i-work', 'How I work'), ('/industries', 'Industries'), ('/#contact', 'Contact')]
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import site_pages  # noqa: E402  (copy for role and industry pages)
+ROLE_LASTMOD = '2026-11-17'
 REDIRECTS = {'/resume', '/resume-ats'}  # vercel.json
 IGNORED = ('tools/', 'systems/', 'README.md', 'tests/')  # .vercelignore: never served
 
@@ -196,10 +199,14 @@ def case_page(cs):
     <ul class="skills">{''.join('<li>%s</li>' % s for s in cs['skills'])}</ul>
     {tools}
 
+    <div class="cta-row">
+      <a class="btn btn-primary" href="{mailto('Chief of Staff role')}" data-book>Email me about a role like this</a>
+    </div>
     <h2>See the same skills at work</h2>
     <ul class="next">
       <li><a href="/workflows#{wf}">Workflow: {wf_name}</a></li>
       <li><a href="/test-me#{task}">Trial task: {task_name}</a></li>
+      <li><a href="/roles/{site_pages.CASE_ROLE[cs['id']]}">Role: {role_name(site_pages.CASE_ROLE[cs['id']])}</a></li>
       <li><a href="/case-studies">All case studies</a></li>
     </ul>
   </article>
@@ -212,6 +219,125 @@ def case_page(cs):
 </html>
 '''
     return route, title, head(title, desc, route, '<script type="application/ld+json">%s</script>\n' % crumbs) + body
+
+
+def role_name(slug):
+    return [r['role'] for r in site_pages.ROLES if r['slug'] == slug][0]
+
+
+def crumbs_ld(trail):
+    return json.dumps({'@context': 'https://schema.org', '@type': 'BreadcrumbList', 'itemListElement': [
+        {'@type': 'ListItem', 'position': i + 1, 'name': n, 'item': BASE + u} for i, (n, u) in enumerate(trail)]}, ensure_ascii=False)
+
+
+def crumbs_nav(trail):
+    parts = ['<a href="%s">%s</a>' % (u, esc(n)) for n, u in trail[:-1]] + ['<span aria-current="page">%s</span>' % esc(trail[-1][0])]
+    return '<nav class="crumbs" aria-label="Breadcrumb">' + ' <span aria-hidden="true">/</span> '.join(parts) + '</nav>'
+
+
+def detail_page(item, hub_route, stories_by_id):
+    """A role or industry page, in the order the plan sets for stage 4."""
+    hub = site_pages.HUBS[hub_route]
+    route = hub['prefix'] + item['slug']
+    title = '%s · %s' % (item['title'], NAME)
+    trail = [('Home', '/'), (hub['crumb'], hub_route), (item['title'], route)]
+    eyebrow = ('Open to · ' + item['role']) if hub_route == '/roles' else ('Industry · ' + item['role'])
+    values = '\n'.join('      <li><strong>%s.</strong> %s</li>' % (esc(a), esc(b)) for a, b in item['values'])
+    nums = '\n'.join('      <div><dt>%s</dt><dd>%s</dd></div>' % (esc(v), esc(l)) for v, l in item['numbers'])
+    plate = '\n'.join('      <li>%s</li>' % esc(x) for x in item['plate'])
+    links = ['<li><a href="/case-studies/%s">Case study: %s<span class="sub">%s %s</span></a></li>' % (
+        c, stories_by_id[c]['title'], stories_by_id[c]['headline'], stories_by_id[c]['headlineLabel'].lower()) for c in item['cases']]
+    start = '\n'.join('      <li><strong>%s.</strong> %s</li>' % (esc(a), esc(b)) for a, b in site_pages.START)
+    links.append('<li><a href="/test-me#%s">Paid trial task: %s</a></li>' % (item['task'][0], esc(item['task'][1])))
+    links.append('<li><a href="/workflows#%s">Workflow: %s</a></li>' % (item['workflow'][0], esc(item['workflow'][1])))
+    if item.get('extra_link'):
+        links.append('<li><a href="%s">%s</a></li>' % (item['extra_link'][0], esc(item['extra_link'][1])))
+    quote = ''
+    if item.get('quote'):
+        quote = '    <figure class="quote"><blockquote>%s</blockquote><figcaption>%s</figcaption></figure>\n' % (esc(item['quote'][0]), esc(item['quote'][1]))
+    body = f'''{header(route, item['subject'])}
+
+<main id="main">
+  <article class="detail container">
+    {crumbs_nav(trail)}
+    <p class="eyebrow">{esc(eyebrow)}</p>
+    <h1>{esc(item['h1'])}</h1>
+    <p class="lede">{esc(' '.join(item['lede']))}</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="{mailto(item['subject'])}" data-book>Email me about this role</a>
+      <a class="btn" href="/test-me">See the free hiring kit</a>
+    </div>
+    <p class="objection">{esc(item['objection'])}</p>
+    <ul class="values">
+{values}
+    </ul>
+    <dl class="metrics">
+{nums}
+    </dl>
+    <h2>What I take off your plate</h2>
+    <ul class="plate">
+{plate}
+    </ul>
+{quote}    <h2>See the proof for yourself</h2>
+    <ul class="next">
+      {"""
+      """.join(links)}
+    </ul>
+    <p class="tools"><strong>Tools I use:</strong> {item['tools']}</p>
+    <h2>How I would start with you</h2>
+    <ol class="start">
+{start}
+    </ol>
+    <p>Each day can end with a short written update. More on my habits is on <a href="/how-i-work">how I work</a>.</p>
+    <h2>Talk about the role with me</h2>
+    <p>Email me with the role and your hours. I reply with when I can start and one question about your team.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="{mailto(item['subject'])}" data-book>Email me about this role</a>
+      <a class="btn" href="/resume">Download my résumé</a>
+    </div>
+  </article>
+</main>
+
+{footer()}
+
+<script src="/assets/site.js"></script>
+</body>
+</html>
+'''
+    return route, head(title, item['desc'], route, '<script type="application/ld+json">%s</script>\n' % crumbs_ld(trail)).replace('og:type" content="article"', 'og:type" content="website"') + body
+
+
+def hub_page(hub_route, stories_by_id):
+    hub = site_pages.HUBS[hub_route]
+    title = '%s · %s' % (hub['title'], NAME)
+    trail = [('Home', '/'), (hub['crumb'], hub_route)]
+    cards = '\n'.join(f'''    <li class="hub-card"><a href="{hub['prefix']}{it['slug']}"><strong>{esc(it['title'])}</strong></a><span>{esc(it['h1'])} {esc(it['proof_line'])}</span></li>''' for it in hub['items'])
+    body = f'''{header(hub_route, 'Chief of Staff role')}
+
+<main id="main">
+  <article class="detail container">
+    {crumbs_nav(trail)}
+    <h1>{esc(hub['h1'])}</h1>
+    <p class="lede">{esc(' '.join(hub['lede']))}</p>
+    <ul class="hub">
+{cards}
+    </ul>
+    <h2>Not sure which one fits</h2>
+    <p>Email me with the job post. I will tell you which of these it matches and what I would do first.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="{mailto('Which role fits')}" data-book>Email me the job post</a>
+      <a class="btn" href="/test-me">See the free hiring kit</a>
+    </div>
+  </article>
+</main>
+
+{footer()}
+
+<script src="/assets/site.js"></script>
+</body>
+</html>
+'''
+    return head(title, hub['desc'], hub_route, '<script type="application/ld+json">%s</script>\n' % crumbs_ld(trail)).replace('og:type" content="article"', 'og:type" content="website"') + body
 
 
 def case_list(all_cs):
@@ -265,6 +391,12 @@ class Facts(HTMLParser):
 
 def all_pages(cs_list):
     pages = [dict(route=r, file=f, floor=fl, lastmod=lm, subject=sub, llms=ll) for r, f, fl, lm, sub, ll in PAGES]
+    for hub_route, hub in site_pages.HUBS.items():
+        pages.append(dict(route=hub_route, file=hub_route.lstrip('/') + '.html', floor=150, lastmod=ROLE_LASTMOD,
+                          subject='Chief of Staff role', llms=None, hub=hub_route))
+        for it in hub['items']:
+            pages.append(dict(route=hub['prefix'] + it['slug'], file=hub['prefix'].lstrip('/') + it['slug'] + '.html', floor=300,
+                              lastmod=ROLE_LASTMOD, subject=it['subject'], llms=None, detail=(it, hub_route)))
     for cs in cs_list:
         pages.append(dict(route='/case-studies/' + cs['id'], file='case-studies/%s.html' % cs['id'], floor=150,
                           lastmod=CASE_LASTMOD, subject='Chief of Staff role', llms=None, story=cs))
@@ -295,13 +427,18 @@ def llms(pages):
     lines = ['- [%s](%s%s): %s' % (names[p['route']], BASE, p['route'], p['llms']) for p in pages if p['llms']]
     stories = ['- [%s](%s%s): %s %s' % (plain(p['story']['title']), BASE, p['route'], plain(p['story']['headline']), plain(p['story']['headlineLabel']).lower())
                for p in pages if p.get('story')]
+    roles = ['- [%s](%s%s): %s' % (it['title'], BASE, hub['prefix'] + it['slug'], it['proof_line'])
+             for hub in site_pages.HUBS.values() for it in hub['items']]
     return f"""# {NAME}
 
-> Open to Chief of Staff, Executive Assistant to CEO and Operations Manager roles. Remote, based in Mandaluyong City, Philippines (UTC+8). Available immediately.
+> Open to Chief of Staff, Executive Assistant to CEO and Operations Manager roles. Also open to Marketing Operations and AI Automation roles. Remote, based in Mandaluyong City, Philippines (UTC+8). Available immediately.
 
 ## Pages
 """ + '\n'.join(lines) + f"""
 - [Résumé (PDF)]({BASE}/resume) · [Plain résumé for job boards]({BASE}/resume-ats)
+
+## Roles and industries
+""" + '\n'.join(roles) + """
 
 ## Case studies
 """ + '\n'.join(stories) + f"""
@@ -317,8 +454,13 @@ def build():
     cs_list = stories()
     pages = all_pages(cs_list)
     out = {}
+    by_id = {c['id']: c for c in cs_list}
     for p in pages:
-        if p.get('story'):
+        if p.get('hub'):
+            text = hub_page(p['hub'], by_id)
+        elif p.get('detail'):
+            _, text = detail_page(p['detail'][0], p['detail'][1], by_id)
+        elif p.get('story'):
             _, _, text = case_page(p['story'])
         else:
             text = open(os.path.join(ROOT, p['file']), encoding='utf-8').read()

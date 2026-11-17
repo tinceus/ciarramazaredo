@@ -3,8 +3,14 @@
 import functools, http.server, os, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+import json
+REDIRECTS = {r['source']: r['destination'] for r in json.load(open(os.path.join(ROOT, 'vercel.json'))).get('redirects', [])}
+
+
 class Handler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
+        if self.path.split('?')[0] in REDIRECTS:  # mirror vercel.json redirects
+            self.send_response(307); self.send_header('Location', REDIRECTS[self.path.split('?')[0]]); self.end_headers(); return
         if self.path.startswith('/_vercel/'):  # Vercel analytics exists only in production
             self.send_response(204); self.end_headers(); return
         super().do_GET()
