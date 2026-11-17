@@ -860,6 +860,15 @@
   .contact-email a { color: var(--lime); font-weight: 600; }
   .contact-email a:hover { color: var(--paper); }
 
+  .wa-card { display: inline-flex; align-items: center; gap: 22px; margin-top: 36px; padding: 18px 24px 18px 18px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); border-radius: 22px; text-align: left; }
+  .wa-card img { width: 132px; height: 132px; background: #fff; border-radius: 12px; padding: 6px; flex: none; }
+  .contact .wa-card p { margin: 0 0 8px; max-width: none; }
+  .contact .wa-card .wa-title { font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 700; color: var(--paper); }
+  .contact .wa-card .wa-sub { font-size: 15px; }
+  .wa-link { display: inline-block; margin-top: 4px; color: var(--lime); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+  .wa-link:hover { color: var(--paper); }
+  @media (max-width: 560px) { .wa-card { flex-direction: column; text-align: center; padding: 18px; } }
+
   /* FOOTER */
   footer {
     background: var(--ink);
@@ -1436,6 +1445,14 @@
       <span class="arrow">→</span>
     </a>
     <div class="contact-email">or write to <a href="mailto:ciarramazaredo@gmail.com">ciarramazaredo@gmail.com</a> · <a href="https://www.linkedin.com/in/ciarra-m/" target="_blank" rel="noopener">LinkedIn</a></div>
+    <div class="wa-card">
+      <img src="/assets/img/whatsapp-qr.svg" alt="QR code that opens a WhatsApp chat with Ciarra" width="132" height="132">
+      <div class="wa-text">
+        <p class="wa-title">Prefer WhatsApp</p>
+        <p class="wa-sub">Scan the code with your phone camera to start a chat.</p>
+        <a class="wa-link" href="https://wa.me/message/6D7T7R5ZGZVHL1" target="_blank" rel="noopener">Chat on WhatsApp</a>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -1445,7 +1462,7 @@
 <footer class="site-footer">
   <div class="footer-inner">
     <span>© 2026 Ciarra Amor G. Mazaredo · Mandaluyong City, Philippines</span>
-    <span class="footer-links"><a href="/how-i-work">How I work</a> · <a href="/industries">Industries</a> · <a href="/contact">Contact</a></span>
+    <span class="footer-links"><a href="/how-i-work">How I work</a> · <a href="/industries">Industries</a> · <a href="/contact">Contact</a> · <a href="https://wa.me/message/6D7T7R5ZGZVHL1">WhatsApp</a></span>
     <span class="footer-connect">Connect with me <a href="https://www.linkedin.com/in/ciarra-m/" target="_blank" rel="noopener" aria-label="LinkedIn" class="footer-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.95v5.66H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.26 2.37 4.26 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zm1.78 13.02H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/></svg></a></span>
   </div>
 </footer>

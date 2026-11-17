@@ -14,9 +14,10 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE = 'https://ciarramazaredo.vercel.app'
 NAME = 'Ciarra Amor G. Mazaredo'
 EMAIL = 'ciarramazaredo@gmail.com'
+WHATSAPP = 'https://wa.me/message/6D7T7R5ZGZVHL1'  # her WhatsApp Business link (no phone number shown); QR in assets/img/whatsapp-qr.svg
 NAV = [('/roles', 'Roles'), ('/case-studies', 'Case studies'), ('/workflows', 'Workflows'), ('/test-me', 'Test me'),
        ('/ai-sprint', 'AI Sprint'), ('/resume', 'Résumé')]
-FOOTER_LINKS = [('/how-i-work', 'How I work'), ('/industries', 'Industries'), ('/contact', 'Contact')]
+FOOTER_LINKS = [('/how-i-work', 'How I work'), ('/industries', 'Industries'), ('/contact', 'Contact'), (WHATSAPP, 'WhatsApp')]
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import site_pages  # noqa: E402  (copy for role and industry pages)
 ROLE_LASTMOD = '2026-11-17'
@@ -518,6 +519,14 @@ def contact_page():
       <a class="btn" href="{mailto('AI Sprint fit call')}" data-sprint-inquiry>Book a free 15-minute fit call</a>
       <a class="btn" href="/ai-sprint">Read about the AI Sprint</a>
     </div>
+    <h2>Chat with me on WhatsApp</h2>
+    <div class="wa-block">
+      <img src="/assets/img/whatsapp-qr.svg" alt="QR code that opens a WhatsApp chat with Ciarra" width="150" height="150">
+      <div>
+        <p>Scan the code with your phone camera to start a chat. On your phone already, tap the button instead.</p>
+        <a class="btn" href="{WHATSAPP}" target="_blank" rel="noopener">Chat on WhatsApp</a>
+      </div>
+    </div>
     <h2>What happens after you write</h2>
     <p>For a role, I reply with when I can start and one question about your team.</p>
     <p>If it is about a process, I reply with times for the fit call. If the Sprint is not a fit, I say so and say why. I point you to a free workflow if one fits.</p>
@@ -639,6 +648,7 @@ def llms(pages):
 ## Contact
 - Email: {EMAIL}
 - LinkedIn: https://www.linkedin.com/in/ciarra-m/
+- WhatsApp: {WHATSAPP}
 """
 
 
