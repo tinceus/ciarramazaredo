@@ -1,6 +1,6 @@
 # Lead to booked call
 
-**Outcome: No lead left behind.** Every lead is saved, scored and answered within a minute, then followed up until they book.
+**Outcome: No lead left behind.** Every lead is saved, scored and answered. Leads who have not booked get one follow-up.
 
 > **Built on sample data.** The business, the leads and the emails are fictional. This is how I build it, not a client's live system.
 

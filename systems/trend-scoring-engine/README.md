@@ -60,7 +60,7 @@ The engine only suggests. A writer turns the brief into a topic card and checks 
 
 ```bash
 pip install -r requirements.txt
-cp .env.example .env              # add your SerpAPI key and Apify token
+# create .env with your SerpAPI key and Apify token
 python3 -m pytest                 # offline tests, no keys needed
 python3 runner.py --refresh       # fetch, score, cache
 python3 runner.py --print-status  # cache age and per-source health
@@ -91,4 +91,3 @@ Swap the verticals, keywords and phrases in `config.yaml` for your own. The ones
 | `sources/*.py` | One fetcher per source, all returning the same record shape |
 | `sources/util.py` | Stable ids, timestamps, error types, required env vars |
 | `tests/` | Offline tests for scoring, filters, dedup and failure handling |
-| `.env.example` | Placeholder keys |

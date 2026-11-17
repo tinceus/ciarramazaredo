@@ -37,7 +37,7 @@ flowchart LR
 
 ## The human check
 
-Nothing is pushed until a person has approved the copy. The router only ever writes the copy columns; date, approval, file and posting status columns stay human-owned. The return value lists every row written, every date not found, and every dropdown warning, so the person pushing can check the result line by line.
+A person decides which copy to push. The router only ever writes the copy columns; date, approval, file and posting status columns stay human-owned. The return value lists every row written, every date not found, and every dropdown warning, so the person pushing can check the result line by line.
 
 ## Failure handling
 
@@ -92,5 +92,4 @@ A note on the design: the GET read sends the token as a query parameter because 
 | `appscript/Code.gs` | Router web app: token check and all ops |
 | `appscript/appsscript.json` | Manifest: V8, web app access, spreadsheet scope |
 | `config.example.json` | Brand to spreadsheet map with placeholder ids |
-| `.env.example` | Placeholder URL and token |
 | `tests/test_push.py` | Error parsing, env check, row matching, merge and warnings |

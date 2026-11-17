@@ -10,4 +10,4 @@ Cleaned versions of automation systems I built at past jobs.
 | [Transcript Harvester](transcript-harvester/) | Hours back every week | Resumable YouTube transcript harvest, caption engines with a local Whisper fallback, tamper check |
 | [Sheet Push Router](sheet-push-router/) | Content that ships on time | Date-matched row writes into Google Sheets through one Apps Script router, clear validation errors |
 
-Each code folder has its own README, a `.env.example` where keys are needed, and offline tests that run on fictional fixtures.
+Each code folder has its own README and offline tests that run on fictional fixtures. Where keys are needed, the README names them, and they go in a local `.env` file.

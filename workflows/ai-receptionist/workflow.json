@@ -59,9 +59,7 @@
           "mode": "id",
           "value": "claude-sonnet-5-5"
         },
-        "options": {
-          "temperature": 0.2
-        }
+        "options": {}
       },
       "id": "129f36fc-a938-51fa-9f1d-eb36ee555dc4",
       "name": "Claude",
@@ -229,7 +227,8 @@
   "active": false,
   "settings": {
     "executionOrder": "v1",
-    "saveManualExecutions": true
+    "saveManualExecutions": true,
+    "timezone": "Asia/Manila"
   },
   "meta": {
     "templateCredsSetupCompleted": false

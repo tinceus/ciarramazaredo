@@ -122,6 +122,7 @@
   }
   @media (max-width: 520px) { .rules ul { grid-template-columns: 1fr; } .card { padding: 22px; } }
   @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; } }
+.label-key{padding:0 0 8px}.label-key p{font-size:14px;color:var(--smoke);max-width:900px;margin:0}
 </style>
 </head>
 
@@ -160,14 +161,19 @@
 <section class="rules" aria-label="How every workflow is built">
   <div class="container">
     <ul>
-      <li><strong>Save the data first</strong>Every lead or email is stored before anything else runs.</li>
+      <li><strong>Save the data first</strong>Leads are saved to a sheet before anything else runs.</li>
       <li><strong>Rules for numbers</strong>Scores and totals come from plain code anyone can check.</li>
-      <li><strong>A person checks</strong>AI drafts the words. A person approves before anything goes out.</li>
-      <li><strong>Failures speak up</strong>A failed run alerts a person within a minute.</li>
+      <li><strong>A person checks</strong>AI drafts reports and replies, and a person checks them. Fixed emails and chat answers follow set rules.</li>
+      <li><strong>Failures speak up</strong>A failed run sends a Slack alert and a backup email.</li>
     </ul>
   </div>
 </section>
 
+<section class="label-key" aria-label="What the labels mean">
+<div class="container">
+<p><strong>Sample:</strong> built on made-up data, not yet run with live accounts. <strong>Parts tested:</strong> its logic passes tests, its connections have not run live. <strong>Run live:</strong> ran end to end on test accounts. <strong>In use:</strong> used in real work. The last three cards are past systems, with company details removed.</p>
+</div>
+</section>
 <section class="filters" aria-label="Filter by result">
   <div class="container" id="filters">
     <button type="button" class="chip" aria-pressed="true" data-filter="all">All results</button>
@@ -185,12 +191,12 @@
   <div class="container" id="cards">
 
     <article class="card" data-outcome="leads booked">
-      <div class="card-top"><span class="outcome">No lead left behind</span><span class="label">Built on sample data</span></div>
+      <div class="card-top"><span class="outcome">No lead left behind</span><span class="label">Parts tested · 17 Nov 2026</span></div>
       <h2>Lead to booked call</h2>
-      <p>Every new lead is saved, scored and answered within a minute. Then it gets followed up until they book.</p>
+      <p>Every new lead is saved, scored and answered. Leads who have not booked get one follow-up.</p>
       <ol>
         <li>Save the lead to the sheet before anything else.</li>
-        <li>Score it with plain rules, with the reasons shown.</li>
+        <li>Score it with plain rules. Hot-lead alerts show the reasons.</li>
         <li>Hot leads get the booking link and the owner gets a Slack alert.</li>
         <li>No booking after two days means one polite follow-up.</li>
       </ol>
@@ -203,16 +209,16 @@
     </article>
 
     <article class="card" data-outcome="booked">
-      <div class="card-top"><span class="outcome">More booked calls</span><span class="label">Built on sample data</span></div>
+      <div class="card-top"><span class="outcome">More booked calls</span><span class="label">Sample · 17 Nov 2026</span></div>
       <h2>AI receptionist that books visits</h2>
-      <p>A website chat that answers questions, offers real open times, and books the visit.</p>
+      <p>A website chat that answers questions, checks open times, and can book the visit.</p>
       <ol>
-        <li>Answers only from a knowledge base the business writes.</li>
-        <li>Checks the calendar and offers two open times.</li>
-        <li>Books the visit and confirms the date, time and time zone.</li>
+        <li>Is told to answer only from a knowledge base the business writes.</li>
+        <li>Is told to check the calendar and offer two open times.</li>
+        <li>Books the visit and is told to confirm the date, time and time zone.</li>
         <li>Hands emergencies and complaints to a person on Slack.</li>
       </ol>
-      <p class="check"><strong>Human check:</strong> tested against tricky questions before launch, and every handoff lands with a person.</p>
+      <p class="check"><strong>Human check:</strong> run it against tricky questions before launch. Its rules are instructions, not hard limits, so a person watches the handoffs.</p>
       <ul class="tools" aria-label="Tools"><li>n8n</li><li>Claude</li><li>Google Calendar</li><li>Slack</li></ul>
       <div class="actions">
         <a class="btn btn-primary" href="/workflows/ai-receptionist/workflow.json" download="ai-receptionist.json">Get the n8n file</a>
@@ -221,13 +227,13 @@
     </article>
 
     <article class="card" data-outcome="hours">
-      <div class="card-top"><span class="outcome">Hours back every week</span><span class="label">Built on sample data</span></div>
+      <div class="card-top"><span class="outcome">Hours back every week</span><span class="label">Sample · 17 Nov 2026</span></div>
       <h2>Inbox triage and daily brief</h2>
       <p>Every new email is sorted and labeled. Each weekday morning, one short brief lists what needs the leader.</p>
       <ol>
         <li>Sorts each email into Urgent, Needs reply, Billing, FYI or Newsletter.</li>
         <li>Drafts a reply for emails that need one.</li>
-        <li>Sends a brief at 7:30 grouped into Do today, Reply and Pay.</li>
+        <li>Sends a 7:30 brief grouped into Do today, Reply and Pay. On Mondays it covers the weekend.</li>
       </ol>
       <p class="check"><strong>Human check:</strong> it never sends a reply. Drafts wait for a person, with unsure parts marked.</p>
       <ul class="tools" aria-label="Tools"><li>n8n</li><li>Gmail</li><li>Claude</li></ul>
@@ -238,13 +244,13 @@
     </article>
 
     <article class="card" data-outcome="reports hours">
-      <div class="card-top"><span class="outcome">Reports that write themselves</span><span class="label">Built on sample data</span></div>
+      <div class="card-top"><span class="outcome">Reports that write themselves</span><span class="label">Parts tested · 17 Nov 2026</span></div>
       <h2>The Monday weekly report</h2>
-      <p>The numbers are pulled, compared with last week, and turned into a short update before the team starts.</p>
+      <p>The numbers are pulled, compared with the previous week, and turned into a short draft update.</p>
       <ol>
         <li>Reads the KPI sheet every Monday at 8:00.</li>
         <li>Code compares the weeks and marks each metric On track or Watch.</li>
-        <li>AI writes the sentences around those exact numbers.</li>
+        <li>AI writes the sentences around those numbers. It is told not to change them.</li>
       </ol>
       <p class="check"><strong>Human check:</strong> the update lands as a draft. A person checks it before the leader sees it.</p>
       <ul class="tools" aria-label="Tools"><li>n8n</li><li>Google Sheets</li><li>Claude</li><li>Gmail</li><li>Slack</li></ul>
@@ -255,11 +261,11 @@
     </article>
 
     <article class="card" data-outcome="silent">
-      <div class="card-top"><span class="outcome">Nothing breaks silently</span><span class="label">Built on sample data</span></div>
+      <div class="card-top"><span class="outcome">Nothing breaks silently</span><span class="label">Parts tested · 17 Nov 2026</span></div>
       <h2>Error alerts for every workflow</h2>
-      <p>When any automation fails, a person hears within a minute. The alert links to the failed run.</p>
+      <p>When an assigned workflow fails, Slack and email both get an alert. It links to the failed run when n8n gives one.</p>
       <ol>
-        <li>Runs whenever any other workflow fails.</li>
+        <li>Runs when a workflow that names it as its error workflow fails.</li>
         <li>Posts the workflow, the step and the error to Slack.</li>
         <li>Sends a backup email in case Slack is down.</li>
       </ol>
@@ -272,11 +278,11 @@
     </article>
 
     <article class="card" data-outcome="research">
-      <div class="card-top"><span class="outcome">Research in minutes</span><span class="label">Details removed</span></div>
+      <div class="card-top"><span class="outcome">Research in minutes</span><span class="label">Parts tested · 17 Nov 2026</span></div>
       <h2>Trend scoring engine for writers</h2>
-      <p>Pulls trends from five public sources daily and hands a writer one ready topic brief.</p>
+      <p>Pulls trends from five public sources on each run and hands a writer one ready topic brief.</p>
       <ol>
-        <li>Collects rising searches and posts from five sources each morning.</li>
+        <li>Collects rising searches and posts from five sources. A daily schedule is one line to add.</li>
         <li>Drops anything that breaks the brand claim rules.</li>
         <li>Scores the rest on fit and freshness, and removes repeats.</li>
         <li>Falls back to a saved topic bank, so it never comes back empty.</li>
@@ -289,14 +295,14 @@
     </article>
 
     <article class="card" data-outcome="hours research">
-      <div class="card-top"><span class="outcome">Hours back every week</span><span class="label">Details removed</span></div>
-      <h2>Video transcript harvester at scale</h2>
+      <div class="card-top"><span class="outcome">Hours back every week</span><span class="label">Parts tested · 17 Nov 2026</span></div>
+      <h2>Video transcript harvester for writers</h2>
       <p>Saves a clean transcript of every video on a channel, so writers can quote the real voice.</p>
       <ol>
         <li>Lists every video on the channel.</li>
         <li>Tries the caption track first, then local speech to text.</li>
         <li>Runs in small batches and resumes where it stopped.</li>
-        <li>Flags any transcript that was edited by hand.</li>
+        <li>Can check whether a saved transcript was edited by hand.</li>
       </ol>
       <p class="check"><strong>Human check:</strong> writers check quotes against the video before using them.</p>
       <ul class="tools" aria-label="Tools"><li>Python</li><li>yt-dlp</li><li>Whisper</li></ul>
@@ -306,15 +312,15 @@
     </article>
 
     <article class="card" data-outcome="content hours">
-      <div class="card-top"><span class="outcome">Content that ships on time</span><span class="label">Details removed</span></div>
+      <div class="card-top"><span class="outcome">Content that ships on time</span><span class="label">Parts tested · 17 Nov 2026</span></div>
       <h2>Approved copy into the calendar</h2>
       <p>Pushes approved posts into the right row of each content calendar, by date, in one call.</p>
       <ol>
         <li>Finds the row that matches each posting date.</li>
         <li>Merges new copy with what is already there.</li>
-        <li>Rejects values the sheet would refuse, with a clear reason.</li>
+        <li>Warns about values the sheet is likely to refuse.</li>
       </ol>
-      <p class="check"><strong>Human check:</strong> only copy a person approved is pushed. Nothing is written to a date that does not exist.</p>
+      <p class="check"><strong>Human check:</strong> a person decides which copy to push. Nothing is written to a date that does not exist.</p>
       <ul class="tools" aria-label="Tools"><li>Python</li><li>Google Sheets</li><li>Apps Script</li></ul>
       <div class="actions">
         <a class="btn btn-primary" href="https://github.com/tinceus/ciarramazaredo/tree/main/systems/sheet-push-router" target="_blank" rel="noopener">See the code</a>
