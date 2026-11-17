@@ -50,3 +50,19 @@ p { margin: 0 0 14px; font-size: 17px; }
 .next .sub { display: block; font-weight: 400; font-size: 14px; color: var(--smoke); margin-top: 2px; }
 .start { margin: 0 0 14px 20px; display: grid; gap: 8px; font-size: 17px; }
 .detail .tools { margin-top: 14px; }
+/* AI Sprint */
+.sprint .price { font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 700; }
+.who { display: flex; gap: 18px; align-items: flex-start; }
+.who img { border-radius: 50%; flex: none; width: 96px; height: 96px; object-fit: cover; }
+.fit-form { display: grid; gap: 6px; max-width: 520px; margin: 8px 0 12px; }
+.fit-form label { font-weight: 600; font-size: 15px; margin-top: 8px; }
+.fit-form select { font: inherit; padding: 10px 12px; border: 1.5px solid var(--ink); border-radius: 10px; background: var(--paper); }
+.fit-form button { margin-top: 14px; justify-self: start; cursor: pointer; }
+.fit-result { margin: 12px 0; padding: 16px 20px; border: 2px solid var(--purple); border-radius: 16px; }
+.fit-result h3 { font-family: 'Space Grotesk', sans-serif; margin-bottom: 6px; }
+.fine { font-size: 14px; color: var(--smoke); }
+.js .nojs-fit { display: none; }
+.nojs-fit { font-size: 15px; }
+.fit-form[hidden], .fit-result[hidden] { display: none; }
+.fit-form select { width: 100%; max-width: 100%; min-width: 0; }
+.detail [id] { scroll-margin-top: 96px; }

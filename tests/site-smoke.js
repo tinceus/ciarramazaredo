@@ -62,7 +62,36 @@ const fail = msg => { fails.push(msg); console.log('FAIL ' + msg); };
     await p.goto(base + '/case-studies');
     if (!(await p.locator('.cs-static a').first().isVisible())) fail('/case-studies: story list hidden without JavaScript');
     await plain.close();
-    // Stage 7 adds the AI Sprint and fit check flows here.
+    // AI Sprint and fit check (stage 7).
+    const sp = await (await browser.newContext({viewport: {width: 390, height: 844}, reducedMotion: 'reduce'})).newPage();
+    sp.on('pageerror', e => fail('ai-sprint page error: ' + e.message));
+    await sp.goto(base + '/ai-sprint#fit-check'); await sp.waitForTimeout(300);
+    const hb = await sp.locator('header').boundingBox(), fb = await sp.locator('#fit-check').boundingBox();
+    if (fb.y < hb.height - 1) fail('fit check heading hides under the sticky header');
+    await sp.goto(base + '/ai-sprint?workflow=weekly-report');
+    if (await sp.inputValue('#process') !== 'weekly-report') fail('fit check does not prefill the workflow from the card link');
+    const href0 = await sp.locator('[data-sprint-inquiry]').first().getAttribute('href');
+    if (!/weekly%20report/.test(href0)) fail('Sprint email subject does not name its source: ' + href0);
+    const pick = async v => { for (const [k, val] of Object.entries(v)) await sp.selectOption('#' + k, val); await sp.locator('#fit-form button').click(); return sp.locator('#fit-result').innerText(); };
+    if (!/setup quote/i.test(await pick({frequency: 'daily', systems: 'supported', examples: 'yes', actions: 'draft'}))) fail('fit route: setup');
+    if (!(await sp.locator('#fit-result').evaluate(el => el === document.activeElement))) fail('fit result does not take focus');
+    if (!/fit call/i.test(await pick({actions: 'write'}))) fail('fit route: sprint');
+    if (!/examples first/i.test(await pick({examples: 'no'}))) fail('fit route: prepare');
+    if (!/free workflow/i.test(await pick({examples: 'yes', actions: 'draft', frequency: 'occasional'}))) fail('fit route: starter');
+    for (const configured of ['https://example.com/fit', 'javascript:alert(1)']) {
+      await sp.route('**/assets/site-config.js', r => r.fulfill({contentType: 'application/javascript', body: 'window.SITE=' + JSON.stringify({sprintBookingUrl: configured})}));
+      await sp.goto(base + '/ai-sprint?workflow=weekly-report');
+      const h = await sp.locator('[data-sprint-inquiry]').first().getAttribute('href');
+      if (configured.startsWith('https') ? !/example\.com\/fit.*workflow=weekly-report/.test(h) : !h.startsWith('mailto:')) fail('booking link handling: ' + configured + ' gave ' + h);
+      await sp.unroute('**/assets/site-config.js');
+    }
+    await sp.goto(base + '/ai-sprint?workflow=%3Cscript%3E');
+    if (await sp.inputValue('#process') !== '' || (await sp.locator('[data-sprint-inquiry]').first().getAttribute('href')).includes('script')) fail('unsafe workflow value is not ignored');
+    const np = await (await browser.newContext({javaScriptEnabled: false})).newPage();
+    await np.goto(base + '/ai-sprint');
+    if (await np.locator('#fit-form').isVisible()) fail('fit form shows without JavaScript');
+    if (!(await np.locator('a[data-sprint-inquiry]').first().isVisible())) fail('Sprint email link hidden without JavaScript');
+    if (!(await np.locator('.nojs-fit').isVisible())) fail('no-JS fit note hidden');
     console.log(fails.length ? `\nsite smoke: ${fails.length} problem(s)` : `site smoke: PASS (${routes.length} routes at 1440 and 390, axe WCAG A/AA, ${links.size} local links, keyboard menu, no-JS menu)`);
     process.exitCode = fails.length ? 1 : 0;
   } finally { await browser.close(); }

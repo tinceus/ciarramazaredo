@@ -233,3 +233,73 @@ START_FIRST = {  # page-specific first step; others use START[0]
 START = [('Days 1 to 30', 'Meet the team and map the recurring work. Take over the calendar, weekly brief and first SOPs.'),
          ('Days 31 to 60', 'Run the meeting rhythm, track priorities, and take two recurring processes fully off your plate.'),
          ('Days 61 to 90', 'Propose one improvement, agree how to measure it, then run it and report the result.')]
+
+# ---------------------------------------------------------------- stage 7: AI Sprint
+# Five terms need Ciarra's answer before this page ships (plan A8, stage 7). Until then each holds the
+# plan's suggested default and pending=True. `python3 tools/build_site.py --ship` fails while any is pending.
+SPRINT_TERMS = {
+    'size': {'pending': True, 'ask': 'The Sprint size: five business days and about 11 hours of work, or something shorter',
+             'text': 'Five business days after your inputs arrive.'},
+    'price': {'pending': True, 'ask': 'US$750 as a pilot price for the first three clients, and the price after',
+              'text': 'US$750, fixed.'},
+    'second_half': {'pending': True, 'ask': 'When the second half is due: when the brief is ready (suggested), or after the review call',
+                    'text': 'Half to book. The second half when your brief is ready, before the review call.'},
+    'refund': {'pending': True, 'ask': 'The refund line about her own work, yes or no',
+               'text': 'If I cannot give you a clear recommendation, I refund what you paid.'},
+    'credit': {'pending': True, 'ask': 'Credit the fee toward a build booked within 30 days, yes or no (shown as no until you answer)',
+               'text': ''},
+}
+
+SPRINT = {
+    'title': 'AI Sprint: what to automate next',
+    'desc': 'A fixed-fee AI Sprint by Ciarra Amor G. Mazaredo: one process reviewed in five business days, ending in a written brief that says build, simplify, use what you have, or wait.',
+    'eyebrow': 'AI Sprint · for owners and operations leads',
+    'h1': 'Know what to automate next.',
+    'lede': 'One process, reviewed with your real examples. You get a written brief that says build, simplify, use what you have, or wait.',
+    'values': [('A decision you can defend', 'Every recommendation comes with its reasons, its costs and its risks.'),
+               ('Built on your real cases', 'Up to 20 cleaned-up examples, so the plan holds up on the messy ones.'),
+               ('Yours to use anywhere', 'Take the brief to your own team or to another builder.')],
+    'problem': ['Most automation goes wrong before anyone builds it. A demo works on the clean example, then breaks on the real ones.',
+                'By then the build is paid for. The Sprint finds that out first, on paper, for a fixed fee.'],
+    'gets': ['A map of the process as it runs today',
+             'A recommendation: build, simplify, use what you have, or wait',
+             'A before-and-after measure for the process, so the result can be checked',
+             'If the answer is build: the fields, approvals, human checks and recovery steps a builder needs',
+             'A 45-minute review call, and one round of corrections within seven days'],
+    'scope': 'One process, up to three systems and up to two people from your team. Up to 20 cleaned-up examples. A 60-minute kickoff, and up to two hours on one technical unknown.',
+    'steps': [('Free fit call, 15 minutes', 'We check the process and the fit. The call diagnoses. It does not prescribe.'),
+              ('Kickoff, 60 minutes', 'After the first half of the fee, we walk through the process and your examples.'),
+              ('The work', 'Rules first, AI second. Numbers come from plain logic, and I check every AI output. You get one short update midway.'),
+              ('The brief and the review call', 'You get the written brief and a 45-minute call to go through it.'),
+              ('Corrections', 'One round of corrections within seven days.')],
+    'fit': ['A business with one process that repeats every week',
+            'An owner or lead who can share real examples and give 60 minutes',
+            'A team that wants a clear answer before paying for a build'],
+    'notfit': ['You need a live build this week',
+               'The process changes every time it runs',
+               'You want a promise of savings before anything is measured'],
+    'near_fit': 'Close to a fit but not sure. Email me anyway. If the Sprint is wrong for you, I say so and say why.',
+    'who': ['I served on the senior management team of a 50+ person international school.', 'There I designed the processes, forms and reports behind daily work.',
+            'I built six multi-touch email automation workflows for a real estate coach. I work with ChatGPT, Claude and Zapier.'],
+    'price_reason': 'The fee covers about 11 hours of focused work. That is the kickoff, the review of your examples, the brief and the review call.',
+    'no_build': 'A brief that says do not automate is a full result. It saves you the cost of a build that would not hold up.',
+    'after': ['If the answer is build, you get a fixed quote for the build. You decide.',
+              'Accounts and logins stay in your name. I never hold them.',
+              'Ongoing care is a separate plan, quoted only if you want it.'],
+    'terms': ['A finding of do not build, or access blocked, is a full result.',
+              'If you cancel, you pay for the work done and get the rest back.',
+              'If your inputs are five business days late, the Sprint pauses and we rebook it.',
+              'You may take the brief to your own team or to another builder.',
+              'After a fit call, I follow up at most twice in ten business days. Then I stop.',
+              'Not included: a live build, data clean-up, other departments, ongoing support or savings promises.'],
+    'ways_out': 'Three good ways forward. Do nothing for now. Build it yourself with the free workflows. Or book the free fit call.',
+}
+
+SAMPLE = {
+    'title': 'Sample AI Sprint brief',
+    'desc': 'A sample AI Sprint brief by Ciarra Amor G. Mazaredo, for a made-up property manager: the process, the recommendation, the measure and the next steps.',
+}
+CONTACT = {
+    'title': 'Contact',
+    'desc': 'How to reach Ciarra Amor G. Mazaredo: about a remote operations role, or about an AI Sprint for one process. What to include in your email.',
+}
