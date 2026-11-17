@@ -13,7 +13,7 @@ ROLES = [
         'desc': 'Ciarra Amor G. Mazaredo, open to remote Chief of Staff roles. Senior management team experience in priorities, reporting, hiring and processes.',
         'h1': 'Your priorities, owned and finished.',
         'lede': ['I served on the senior management team of a 50+ person international school.',
-                 'I held delegated authority over people, operations and school affairs. Now I am open to a remote Chief of Staff role.'],
+                 'I held delegated authority across people, operations and institutional affairs. Now I am open to a remote Chief of Staff role.'],
         'values': [('Priorities that hold', 'Owners, priorities and deadlines set across teams, then followed through.'),
                    ('Reporting you can read', 'Management reports that show what moved, what slipped and what needs you.'),
                    ('Processes people follow', 'Forms, SOPs and meeting routines that keep work moving while you are busy.')],
