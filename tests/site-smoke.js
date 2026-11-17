@@ -73,7 +73,7 @@ const fail = msg => { fails.push(msg); console.log('FAIL ' + msg); };
     const href0 = await sp.locator('[data-sprint-inquiry]').first().getAttribute('href');
     if (!/weekly%20report/.test(href0)) fail('Sprint email subject does not name its source: ' + href0);
     const pick = async v => { for (const [k, val] of Object.entries(v)) await sp.selectOption('#' + k, val); await sp.locator('#fit-form button').click(); return sp.locator('#fit-result').innerText(); };
-    if (!/setup quote/i.test(await pick({frequency: 'daily', systems: 'supported', examples: 'yes', actions: 'draft'}))) fail('fit route: setup');
+    if (!/setting it up/i.test(await pick({frequency: 'daily', systems: 'supported', examples: 'yes', actions: 'draft'}))) fail('fit route: setup');
     if (!(await sp.locator('#fit-result').evaluate(el => el === document.activeElement))) fail('fit result does not take focus');
     if (!/fit call/i.test(await pick({actions: 'write'}))) fail('fit route: sprint');
     if (!/examples first/i.test(await pick({examples: 'no'}))) fail('fit route: prepare');
@@ -92,6 +92,8 @@ const fail = msg => { fails.push(msg); console.log('FAIL ' + msg); };
     if (await np.locator('#fit-form').isVisible()) fail('fit form shows without JavaScript');
     if (!(await np.locator('a[data-sprint-inquiry]').first().isVisible())) fail('Sprint email link hidden without JavaScript');
     if (!(await np.locator('.nojs-fit').isVisible())) fail('no-JS fit note hidden');
+    await sp.goto(base + '/ai-sprint?workflow=error-alerts');
+    if (await sp.inputValue('#process') !== 'error-alerts') fail('fit check does not prefill error-alerts');
     console.log(fails.length ? `\nsite smoke: ${fails.length} problem(s)` : `site smoke: PASS (${routes.length} routes at 1440 and 390, axe WCAG A/AA, ${links.size} local links, keyboard menu, no-JS menu)`);
     process.exitCode = fails.length ? 1 : 0;
   } finally { await browser.close(); }

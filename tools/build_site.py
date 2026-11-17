@@ -56,9 +56,11 @@ def mailto(subject):
     return 'mailto:%s?subject=%s' % (EMAIL, subject.replace(' ', '%20'))
 
 
-def header(route, subject, skip=('#main', 'Skip to content')):
+def header(route, subject, skip=('#main', 'Skip to content'), label='Email me', attr='data-book'):
     items = []
     for href, label in NAV:
+        if href == '/ai-sprint' and site_pages.sprint_pending():
+            continue  # held: the Sprint page stays out of the menu until her five answers are in
         cur = href == route or (not href.startswith('/#') and href != '/' and route.startswith(href + '/'))
         items.append('        <li><a href="%s"%s>%s</a></li>' % (href, ' aria-current="page"' if cur else '', label))
     return '\n'.join([
@@ -70,7 +72,7 @@ def header(route, subject, skip=('#main', 'Skip to content')):
         '    <nav aria-label="Primary">',
         '      <ul id="nav-menu">', *items, '      </ul>',
         '    </nav>',
-        '    <a href="%s" class="nav-cta" data-book>Email me</a>' % mailto(subject),
+        '    <a href="%s" class="nav-cta" %s>%s</a>' % (mailto(subject), attr, label),
         '    <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="nav-menu">Menu</button>',
         '  </div>',
         '</header>',
@@ -117,7 +119,7 @@ def stories():
     return json.loads(out)
 
 
-def head(title, desc, route, extra=''):
+def head(title, desc, route, extra='', alt=NAME + ', Chief of Staff', noindex=False):
     url = BASE + route
     return f'''<!doctype html>
 <html lang="en">
@@ -139,7 +141,8 @@ def head(title, desc, route, extra=''):
 <meta property="og:image" content="{BASE}/assets/img/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="{NAME}, Chief of Staff">
+<meta property="og:image:alt" content="{alt}">
+{'<meta name="robots" content="noindex">' + chr(10) if noindex else ''}
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="{BASE}/assets/img/og.jpg">
 <script>document.documentElement.classList.add('js');</script>
@@ -351,9 +354,9 @@ def lis(items, cls=''):
     return '<ul%s>\n%s\n    </ul>' % (' class="%s"' % cls if cls else '', '\n'.join('      <li>%s</li>' % esc(x) for x in items))
 
 
-def page_shell(route, title, desc, subject, main, extra_head='', scripts=''):
-    trail_ld = ''
-    return head(title, desc, route, extra_head).replace('og:type" content="article"', 'og:type" content="website"') + f"""{header(route, subject)}
+def page_shell(route, title, desc, subject, main, extra_head='', scripts='', alt=NAME + ', Chief of Staff', noindex=False, sprint_header=False):
+    hdr = header(route, subject, label='Book a fit call', attr='data-sprint-inquiry') if sprint_header else header(route, subject)
+    return head(title, desc, route, extra_head, alt=alt, noindex=noindex).replace('og:type" content="article"', 'og:type" content="website"') + f"""{hdr}
 
 <main id="main">
 {main}
@@ -375,12 +378,14 @@ def sprint_page():
     vals = '\n'.join('      <li><strong>%s.</strong> %s</li>' % (esc(a), esc(b)) for a, b in S['values'])
     steps = '\n'.join('      <li><strong>%s.</strong> %s</li>' % (esc(a), esc(b)) for a, b in S['steps'])
     price_lines = [T['price']['text'], T['second_half']['text']] + ([T['refund']['text']] if T['refund']['text'] else []) + ([T['credit']['text']] if T['credit']['text'] else [])
-    service = json.dumps({'@context': 'https://schema.org', '@type': 'Service', 'name': 'AI Sprint', 'provider': {'@type': 'Person', 'name': NAME},
-                          'description': S['lede'], 'url': BASE + route, 'areaServed': 'Worldwide',
-                          'offers': {'@type': 'Offer', 'price': '750', 'priceCurrency': 'USD'}}, ensure_ascii=False)
+    svc = {'@context': 'https://schema.org', '@type': 'Service', 'name': 'AI Sprint', 'provider': {'@type': 'Person', 'name': NAME},
+           'description': S['lede'], 'url': BASE + route, 'areaServed': 'Worldwide'}
+    if not T['price']['pending']:  # price data only once she confirms the price (task 7.5)
+        svc['offers'] = {'@type': 'Offer', 'price': T['price']['amount'], 'priceCurrency': 'USD'}
+    service = json.dumps(svc, ensure_ascii=False)
     fit_form = """    <form id="fit-form" class="fit-form" hidden>
       <label for="process">The process</label>
-      <select id="process" name="process" required><option value="">Choose a process</option><option value="lead-to-booked-call">Lead follow-up</option><option value="weekly-report">Weekly reporting</option><option value="content-routing">Approved content into a calendar</option><option value="inbox-triage">Inbox and replies</option><option value="other">Another process</option></select>
+      <select id="process" name="process" required><option value="">Choose a process</option><option value="lead-to-booked-call">Lead follow-up</option><option value="weekly-report">Weekly reporting</option><option value="content-routing">Approved content into a calendar</option><option value="inbox-triage">Inbox and replies</option><option value="ai-receptionist">Website chat and bookings</option><option value="error-alerts">Failure alerts</option><option value="trend-scoring">Research and topic briefs</option><option value="transcript-harvester">Video transcripts</option><option value="other">Another process</option></select>
       <label for="frequency">How frequently it runs</label>
       <select id="frequency" name="frequency" required><option value="">Choose one</option><option value="occasional">Now and then</option><option value="weekly">Weekly</option><option value="daily">Daily</option></select>
       <label for="systems">The tools involved</label>
@@ -408,7 +413,7 @@ def sprint_page():
     </ul>
     <h2>The costly part comes first</h2>
     <p>{esc(' '.join(S['problem']))}</p>
-    <h2>What you get in five days</h2>
+    <h2>{esc(site_pages.sprint_fmt(S['h2_gets']))}</h2>
     {lis(S['gets'], 'plate')}
     <p class="tools"><strong>Scope:</strong> {esc(S['scope'])} {esc(T['size']['text'])}</p>
     <h2>How the Sprint works, step by step</h2>
@@ -425,7 +430,7 @@ def sprint_page():
     <h2>The price and what it covers</h2>
     <p class="price">{esc(price_lines[0])}</p>
     <p>{esc(' '.join(price_lines[1:]))}</p>
-    <p>{esc(S['price_reason'])} {esc(S['no_build'])}</p>
+    <p>{esc(site_pages.sprint_fmt(S['price_reason']))} {esc(S['no_build'])}</p>
     <h2>What happens after the brief</h2>
     {lis(S['after'], 'plate')}
     <h2>The terms, in plain words</h2>
@@ -440,8 +445,8 @@ def sprint_page():
     </div>
     <p class="objection">{esc(S['ways_out'])}</p>
   </article>"""
-    return page_shell(route, title, S['desc'], 'AI Sprint', main, '<script type="application/ld+json">%s</script>\n<script type="application/ld+json">%s</script>\n' % (service, crumbs_ld([('Home', '/'), ('AI Sprint', route)])),
-                      '<script src="/assets/portfolio.js"></script>\n')
+    return page_shell(route, title, site_pages.sprint_fmt(S['desc']), 'AI Sprint', main, '<script type="application/ld+json">%s</script>\n<script type="application/ld+json">%s</script>\n' % (service, crumbs_ld([('Home', '/'), ('AI Sprint', route)])),
+                      '<script src="/assets/portfolio.js"></script>\n', alt=NAME, noindex=site_pages.sprint_pending(), sprint_header=True)
 
 
 def sample_page():
@@ -451,7 +456,7 @@ def sample_page():
     {crumbs_nav([('Home', '/'), ('AI Sprint', '/ai-sprint'), ('Sample brief', route)])}
     <p class="eyebrow">Sample · made-up business and numbers</p>
     <h1>Sample brief: owner reports, simplified.</h1>
-    <p class="lede">This is the layout of a real AI Sprint brief. The business, Harbor Lane Property Management, is made up. So is every number.</p>
+    <p class="lede">This is the layout an AI Sprint brief follows. The business, Harbor Lane Property Management, is made up. So is every number.</p>
     <h2>The process we looked at</h2>
     <p>Each Monday, a property manager builds a report for 14 owners. She copies rent, occupancy and work orders from three systems into a sheet. Then she writes a short note to each owner.</p>
     <h2>What we used to judge it</h2>
@@ -474,12 +479,13 @@ def sample_page():
     <p>The builder gets the fields, the approval step, the recovery steps and the test cases from this brief. The build is quoted as a fixed price. Accounts stay in the owner's name.</p>
     <h2>Want a brief like this</h2>
     <div class="cta-row">
-      <a class="btn btn-primary" href="{mailto('AI Sprint fit call')}" data-book>Book a free 15-minute fit call</a>
+      <a class="btn btn-primary" href="{mailto('AI Sprint fit call')}" data-sprint-inquiry>Book a free 15-minute fit call</a>
       <a class="btn" href="/ai-sprint">Back to the AI Sprint</a>
     </div>
   </article>"""
     return page_shell(route, '%s · %s' % (S['title'], NAME), S['desc'], 'AI Sprint', main,
-                      '<script type="application/ld+json">%s</script>\n' % crumbs_ld([('Home', '/'), ('AI Sprint', '/ai-sprint'), ('Sample brief', route)]))
+                      '<script type="application/ld+json">%s</script>\n' % crumbs_ld([('Home', '/'), ('AI Sprint', '/ai-sprint'), ('Sample brief', route)]),
+                      '<script src="/assets/portfolio.js"></script>\n', alt=NAME, sprint_header=True)
 
 
 def contact_page():
@@ -501,10 +507,10 @@ def contact_page():
       <li><a href="/resume">My résumé (PDF)</a>, or the <a href="/resume-ats">plain résumé for job boards</a></li>
     </ul>
     <h2>About one process to automate</h2>
-    <p>The AI Sprint reviews one process in five business days. It ends in a written brief that says build, simplify, use what you have, or wait.</p>
+    <p>The AI Sprint reviews one process in {site_pages.SPRINT_TERMS['size']['days']}. It ends in a written brief that says build, simplify, use what you have, or wait.</p>
     <p>Tell me the process, how many times a week it runs and the tools it touches. Do not send passwords or private client records.</p>
     <div class="cta-row">
-      <a class="btn btn-primary" href="{mailto('AI Sprint fit call')}" data-sprint-inquiry>Book a free 15-minute fit call</a>
+      <a class="btn" href="{mailto('AI Sprint fit call')}" data-sprint-inquiry>Book a free 15-minute fit call</a>
       <a class="btn" href="/ai-sprint">Read about the AI Sprint</a>
     </div>
     <h2>What happens after you write</h2>
@@ -515,7 +521,7 @@ def contact_page():
     <p>My email is <a href="mailto:{EMAIL}">{EMAIL}</a>. More on how I keep you informed is on <a href="/how-i-work">how I work</a>.</p>
   </article>"""
     return page_shell(route, '%s · %s' % (C['title'], NAME), C['desc'], 'Chief of Staff role', main,
-                      '<script type="application/ld+json">%s</script>\n' % crumbs_ld([('Home', '/'), ('Contact', route)]))
+                      '<script type="application/ld+json">%s</script>\n' % crumbs_ld([('Home', '/'), ('Contact', route)]), alt=NAME)
 
 
 def case_list(all_cs):
@@ -598,7 +604,8 @@ def resolve(path):
 
 
 def sitemap(pages):
-    rows = ['  <url><loc>%s%s</loc><lastmod>%s</lastmod></url>' % (BASE, p['route'], p['lastmod']) for p in pages if p['lastmod']]
+    held = {'/ai-sprint'} if site_pages.sprint_pending() else set()
+    rows = ['  <url><loc>%s%s</loc><lastmod>%s</lastmod></url>' % (BASE, p['route'], p['lastmod']) for p in pages if p['lastmod'] and p['route'] not in held]
     return '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + '\n'.join(rows) + '\n</urlset>\n'
 
 
@@ -615,8 +622,7 @@ def llms(pages):
 
 ## Pages
 """ + '\n'.join(lines) + f"""
-- [AI Sprint]({BASE}/ai-sprint): one process reviewed in five business days, ending in a written brief (sample: {BASE}/sample-assessment)
-- [Contact]({BASE}/contact): a role, or one process to automate
+{'' if site_pages.sprint_pending() else '- [AI Sprint](' + BASE + '/ai-sprint): one process reviewed in ' + site_pages.SPRINT_TERMS['size']['days'] + ', ending in a written brief (sample: ' + BASE + '/sample-assessment)' + chr(10)}- [Contact]({BASE}/contact): a role, or one process to automate
 - [Résumé (PDF)]({BASE}/resume) · [Plain résumé for job boards]({BASE}/resume-ats) · [Marketing Operations résumé]({BASE}/resume-marketing-ops) · [AI Automation résumé]({BASE}/resume-ai-automation)
 
 ## Roles and industries

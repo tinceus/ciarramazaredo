@@ -8,7 +8,6 @@
 - [Workflows](https://ciarramazaredo.vercel.app/workflows): automation workflows grouped by result, with free n8n files (labelled Sample or Parts tested)
 - [Test me](https://ciarramazaredo.vercel.app/test-me): six trial tasks, a scorecard, reference questions and a paid pilot week
 - [How I work](https://ciarramazaredo.vercel.app/how-i-work): communication, mistakes, AI use, first 90 days, fit
-- [AI Sprint](https://ciarramazaredo.vercel.app/ai-sprint): one process reviewed in five business days, ending in a written brief (sample: https://ciarramazaredo.vercel.app/sample-assessment)
 - [Contact](https://ciarramazaredo.vercel.app/contact): a role, or one process to automate
 - [Résumé (PDF)](https://ciarramazaredo.vercel.app/resume) · [Plain résumé for job boards](https://ciarramazaredo.vercel.app/resume-ats) · [Marketing Operations résumé](https://ciarramazaredo.vercel.app/resume-marketing-ops) · [AI Automation résumé](https://ciarramazaredo.vercel.app/resume-ai-automation)
 

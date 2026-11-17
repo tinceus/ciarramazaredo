@@ -8,12 +8,12 @@
     'trend-scoring': 'trend scoring', 'transcript-harvester': 'transcript harvester', 'other': 'another process'
   };
   function routeFit({process, frequency, systems, examples, actions}) {
-    if (!['lead-to-booked-call', 'weekly-report', 'content-routing', 'inbox-triage', 'other'].includes(process) || !['occasional', 'weekly', 'daily'].includes(frequency) ||
+    if (![...workflowIds, 'other'].includes(process) || !['occasional', 'weekly', 'daily'].includes(frequency) ||
         !['supported', 'custom', 'unknown'].includes(systems) || !['yes', 'no'].includes(examples) || !['draft', 'write'].includes(actions)) return null;
     if (examples === 'no') return {route: 'prepare', title: 'Gather a few examples first', text: 'Write down the steps, how often they happen and the exceptions. A few cleaned-up examples make the Sprint far more useful.', href: '/workflows', label: 'Look at the free workflows'};
     if (systems !== 'supported' || actions === 'write' || process === 'other') return {route: 'sprint', title: 'Book a fit call about the Sprint', text: 'The tools or the actions need a closer look. A free 15-minute fit call shows whether the Sprint is the right step.', href: null, label: 'Book a free 15-minute fit call'};
     if (frequency === 'occasional') return {route: 'starter', title: 'Try a free workflow first', text: 'At this volume, a checked manual process may be enough. Compare the free example with your real steps first.', href: '/workflows#' + process, label: 'Open the free workflow'};
-    return {route: 'setup', title: 'Ask for a fixed setup quote', text: 'If the free example fits your work, ask for a setup quote. You do not need the Sprint for work that is already clear.', href: null, label: 'Ask for a setup quote'};
+    return {route: 'setup', title: 'Ask about setting it up', text: 'If the free example fits your work, I can quote the setup. You do not need the Sprint for work that is already clear.', href: null, label: 'Email me about setting it up'};
   }
   if (typeof module !== 'undefined') module.exports = {routeFit};
   if (!root.document) return;
@@ -32,7 +32,8 @@
         }
       } catch (_) { /* an invalid booking link falls back to email */ }
     }
-    const subject = 'AI Sprint' + (context ? ': from the ' + (names[context] || context) + ' workflow' : '') + (route ? ' (' + route + ')' : '');
+    const from = !context ? '' : context === 'other' ? ': another process' : ': from the ' + (names[context] || context) + ' workflow';
+    const subject = 'AI Sprint' + from + (route ? ' (' + route + ')' : '');
     return 'mailto:ciarramazaredo@gmail.com?subject=' + encodeURIComponent(subject);
   }
   doc.querySelectorAll('[data-sprint-inquiry]').forEach(a => { a.href = inquiryUrl(workflow); });
