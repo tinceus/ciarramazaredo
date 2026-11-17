@@ -12,7 +12,7 @@ Edit this file, never the HTML it writes. Then run: bash tools/build_resume.sh
 import html, os, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-CONTACT = ['Mandaluyong City, Philippines | Remote | Available immediately',
+CONTACT = ['Mandaluyong City, Philippines | Remote | Available immediately | WhatsApp: wa.me/message/6D7T7R5ZGZVHL1',
            'ciarramazaredo@gmail.com | +63 956 623 8024 | ciarramazaredo.vercel.app | linkedin.com/in/ciarra-m']
 
 # key: (title, org line, [(bullet id, text)])
