@@ -54,6 +54,16 @@ def numbers(text):
     return set(re.findall(r'\d[\d,.]*\d|\d', t))
 
 
+def job_blocks(src):
+    block = src.split('<h2>Professional Experience</h2>')[1].split('<h2>Education</h2>')[0]
+    out = []
+    for m in re.finditer(r'<div class="job"><h3>(.*?)</h3>\s*<p class="org">(.*?)</p>\s*<ul>(.*?)</ul></div>', block, re.S):
+        out.append((html.unescape(m.group(1)), m.group(2), [html.unescape(re.sub(r'<[^>]+>', '', b)) for b in re.findall(r'<li>(.*?)</li>', m.group(3))]))
+    return out
+
+
+JOB_BLOCKS = {v[0]: job_blocks(open(os.path.join(ROOT, 'tools/resume', v[0]), encoding='utf-8').read()) for v in VARIANTS}
+assert all(len(b) == 5 for b in JOB_BLOCKS.values()), 'expected five jobs per résumé'
 allowed = numbers(open(RESUME_MD, encoding='utf-8').read() + open(os.path.join(ROOT, 'assets/case-studies.js'), encoding='utf-8').read())
 histories, report = {}, []
 for src_name, base, roles, keys in VARIANTS:
@@ -74,6 +84,13 @@ for src_name, base, roles, keys in VARIANTS:
         continue
     pdf_text = subprocess.run(['pdftotext', pdf, '-'], capture_output=True, text=True, check=True).stdout
     check_text(base + '.pdf', pdf_text, roles)
+    pages_text = pdf_text.split('\f')
+    flat = lambda x: re.sub(r'\s+', ' ', x)
+    for title, org, bullets in JOB_BLOCKS[src_name]:  # a job and its bullets stay on one page
+        anchors = [html.unescape(re.sub(r'<[^>]+>', '', org))[:40]] + [x[:40] for x in bullets]  # the employer line is unique; the title may not be
+        where = {i for i, pg in enumerate(pages_text) for b in anchors if b in flat(pg)}
+        if len(where) > 1:
+            fails.append(f'{base}.pdf: the "{title}" job is split across pages')
     for line in pdf_text.splitlines():  # a date range must not break across lines
         if re.search(r'(?:\| |to )(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s*$', line.strip()) or re.search(r'\| (?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) \d{4} to\s*$', line.strip()):
             fails.append(f'{base}.pdf: date range breaks across lines: "{line.strip()[-40:]}"')

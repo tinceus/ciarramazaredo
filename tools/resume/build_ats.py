@@ -62,7 +62,7 @@ VARIANTS = {
                     'Works with AI tools such as ChatGPT and Claude. BS Psychology, Magna Cum Laude, with a Master of '
                     'Business Psychology and Leadership in progress.'),
         'skills': [
-            ('Executive Operations and Project Management', 'Cross-functional project coordination, priorities, ownership and deadlines, process, form and SOP design, meeting workflows, management reporting, budgeting and financial oversight support, stakeholder and external relations, institutional correspondence'),
+            ('Executive Operations and Project Coordination', 'Cross-functional project coordination, priorities, ownership and deadlines, process, form and SOP design, meeting workflows, management reporting, budgeting and financial oversight support, stakeholder and external relations, institutional correspondence'),
             ('Executive Support', 'Calendar and appointment management, business correspondence, transaction coordination, letters of intent, stakeholder presentations, financial records'),
             ('People and Culture (HR)', 'Recruitment, employee relations, onboarding and training manuals, staff training, team leadership'),
             ('Communications', 'Public announcements, reputation messaging, campaign planning, editorial calendars, email marketing and automation, copywriting and editing'),
@@ -73,8 +73,8 @@ VARIANTS = {
         'target': 'Target roles: Marketing Operations Specialist | Marketing Automation | Email Marketing',
         'summary': ('Marketing operations specialist who built six multi-touch email automation workflows for a real estate coach across '
                     'three brands, with email sequences reaching an 83.57% click-to-open rate. Plans campaigns and editorial calendars, '
-                    'wrote a 50+ page homebuyer guide that converted at 25 to 30 percent on dedicated landing pages, and runs product, '
-                    'competitor and keyword research. Brings operations leadership from serving on a school senior management team, '
+                    'wrote a 50+ page homebuyer guide that converted at 25 to 30 percent on dedicated landing pages, and ran product, '
+                    'competitor and keyword research for 100+ Amazon listings. Brings operations leadership from serving on a school senior management team, '
                     'including campaign planning and final creative approvals. BS Psychology, Magna Cum Laude.'),
         'skills': [
             ('Marketing Operations', 'Email marketing and automation, multi-touch email automation workflows, campaign planning, editorial calendars, lead magnet writing, conversion copywriting, product, competitor and keyword research'),
@@ -89,7 +89,8 @@ VARIANTS = {
                     'from cold to converted for a real estate coach. Works with ChatGPT, Claude, Gemini, Perplexity and NotebookLM, plus '
                     'Zapier and GoHighLevel. As a member of a school senior management team, designed the processes, forms, reporting '
                     'structures and meeting workflows. Placed 2nd in a problem validation hackathon with an evidence-led market research '
-                    'pitch built with NotebookLM and Claude. BS Psychology, Magna Cum Laude.'),
+                    'pitch built with NotebookLM and Claude. Sample work: five workflow files on made-up data, each with a named '
+                    'human check, at ciarramazaredo.vercel.app/workflows. BS Psychology, Magna Cum Laude.'),
         'skills': [
             ('Automation and AI', 'Multi-touch email automation workflows (MailerLite, kvCORE, GoHighLevel), AI-assisted research (NotebookLM, Claude)'),
             ('AI Tools', 'ChatGPT, Claude, Gemini, Perplexity, NotebookLM'),
@@ -113,7 +114,7 @@ STYLE = """  @page { size: Letter; margin: 0.6in 0.7in; }
   .org { margin: 0 0 2pt; break-inside: avoid; }
   h2, h3 { break-after: avoid; }
   .d { white-space: nowrap; }
-  .job { break-inside: avoid; break-after: avoid; }"""
+  .job { break-inside: avoid; }"""
 
 
 def e(s):
@@ -128,7 +129,7 @@ def history(order):
         ids = order.get(key, [b for b, _ in bullets])
         assert sorted(ids) == sorted(by_id), key  # reorder only: never drop or add a bullet
         place, _, dates = org.rpartition(' | ')
-        out.append('<div class="job"><h3>%s</h3>\n<p class="org">%s | <span class="d">%s</span></p></div>\n<ul>\n%s\n</ul>' % (
+        out.append('<div class="job"><h3>%s</h3>\n<p class="org">%s | <span class="d">%s</span></p>\n<ul>\n%s\n</ul></div>' % (
             e(title), e(place), e(dates), '\n'.join('  <li>%s</li>' % e(by_id[i]) for i in ids)))
     return '\n\n'.join(out)
 

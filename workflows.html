@@ -127,6 +127,7 @@
 .lead-in{font-size:14px;font-weight:600;margin:4px 0 -4px}
 .property{padding:8px 32px 40px}.property h2{font-family:'Space Grotesk',sans-serif;font-size:26px;margin-bottom:10px}.property ul{list-style:none;display:grid;gap:10px;margin:12px 0}.property li{border:1.5px solid var(--ink);border-radius:16px;padding:14px 18px}.property a{color:var(--purple);font-weight:600;text-decoration:underline;text-underline-offset:3px}.property .note{font-size:14px;color:var(--smoke)}@media (max-width:820px){.property{padding-left:20px;padding-right:20px}}
 .adapt{font-size:14px;font-weight:600;color:var(--purple);text-decoration:underline;text-underline-offset:3px;align-self:center}
+.property .tag{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:var(--purple-bg,#F5F3FF);color:var(--purple);padding:2px 8px;border-radius:999px;margin-right:4px}
 </style>
 </head>
 
@@ -348,11 +349,11 @@
     <h2 id="property-title">Property examples on made-up data</h2>
     <p>Three of the workflows above, run on data for a fictional property manager. Each one is labelled Sample.</p>
     <ul>
-      <li><strong>A rental inquiry, scored.</strong> Five inquiries go through the lead workflow. Owners who want a manager come out hot. <a href="/workflows/lead-to-booked-call/sample-data/property-inquiries.csv" download>Get the inquiries</a></li>
-      <li><strong>An owner report, drafted.</strong> Occupancy, rent collected, work orders and days to fill go through the weekly report. <a href="/workflows/weekly-report-error-alerts/sample-data/owner-report.csv" download>Get the owner numbers</a></li>
-      <li><strong>A tenant question, answered.</strong> The receptionist answers from a property FAQ and hands a leak to a person. <a href="/workflows/ai-receptionist/sample-data/property-faq.md" download>Get the property FAQ</a></li>
+      <li><span class="tag">Sample</span> <strong>A rental inquiry, scored.</strong> Five inquiries go through the lead workflow. Owners who want a manager come out hot. <a href="/workflows/lead-to-booked-call/sample-data/property-inquiries.csv" download>Get the inquiries</a> · <a href="https://github.com/tinceus/ciarramazaredo/tree/main/workflows/lead-to-booked-call#property-example-sample" target="_blank" rel="noopener">See the steps</a></li>
+      <li><span class="tag">Sample</span> <strong>An owner report, drafted.</strong> Occupancy, rent collected, work orders and days to fill go through the weekly report. <a href="/workflows/weekly-report-error-alerts/sample-data/owner-report.csv" download>Get the owner numbers</a> · <a href="https://github.com/tinceus/ciarramazaredo/tree/main/workflows/weekly-report-error-alerts#property-example-sample" target="_blank" rel="noopener">See the steps</a></li>
+      <li><span class="tag">Sample</span> <strong>A tenant question, answered.</strong> The receptionist answers from a property FAQ and hands a leak to a person. <a href="/workflows/ai-receptionist/sample-data/property-faq.md" download>Get the property FAQ</a> · <a href="https://github.com/tinceus/ciarramazaredo/tree/main/workflows/ai-receptionist#property-example-sample" target="_blank" rel="noopener">See the steps</a></li>
     </ul>
-    <p class="note">Each folder's guide on GitHub shows the steps and the expected result. Tests check the first two.</p>
+    <p class="note">Each guide shows the steps and the expected result. Tests check the first two.</p>
   </div>
 </section>
 

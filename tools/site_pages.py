@@ -58,6 +58,7 @@ ROLES = [
         'quote': None,
         'tools': 'Google Workspace · Notion · Trello · Slack · ChatGPT · Claude · Canva',
         'subject': 'Executive Assistant role',
+        'resume': '/resume-ats',
         'proof_line': 'Supported a Senior Vice President of Investment at Kidder Mathews with transactions, listings and correspondence.',
     },
     {
@@ -85,6 +86,7 @@ ROLES = [
         'quote': None,
         'tools': 'Google Workspace · Notion · Airtable · ClickUp · Asana · Monday · Slack · Zapier',
         'subject': 'Operations Manager role',
+        'resume': '/resume-ats',
         'proof_line': 'Designed the processes, forms and reports behind a school that grew from about 24 to 53 staff.',
     },
     {
@@ -290,6 +292,7 @@ SPRINT = {
     'terms': ['A finding of do not build, or access blocked, is a full result.',
               'If you cancel, you pay for the work done and get the rest back.',
               'If your inputs are five business days late, the Sprint pauses and we rebook it.',
+              'If the scope changes, I price the change before any work starts.',
               'After a fit call, I follow up at most twice in ten business days. Then I stop.',
               'Not included: a live build, data clean-up, other departments, ongoing support or savings promises.'],
     'ways_out': 'Three good ways forward. Do nothing for now. Build it yourself with the free workflows. Or book the free fit call.',

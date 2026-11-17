@@ -431,6 +431,9 @@ def sprint_page():
     <p class="price">{esc(price_lines[0])}</p>
     <p>{esc(' '.join(price_lines[1:]))}</p>
     <p>{esc(site_pages.sprint_fmt(S['price_reason']))} {esc(S['no_build'])}</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="{fit_mail}" data-sprint-inquiry>Book a free 15-minute fit call</a>
+    </div>
     <h2>What happens after the brief</h2>
     {lis(S['after'], 'plate')}
     <h2>The terms, in plain words</h2>
@@ -485,7 +488,7 @@ def sample_page():
   </article>"""
     return page_shell(route, '%s · %s' % (S['title'], NAME), S['desc'], 'AI Sprint', main,
                       '<script type="application/ld+json">%s</script>\n' % crumbs_ld([('Home', '/'), ('AI Sprint', '/ai-sprint'), ('Sample brief', route)]),
-                      '<script src="/assets/portfolio.js"></script>\n', alt=NAME, sprint_header=True)
+                      '<script src="/assets/portfolio.js"></script>\n', alt=NAME, noindex=site_pages.sprint_pending(), sprint_header=True)
 
 
 def contact_page():
@@ -497,7 +500,7 @@ def contact_page():
     <p class="lede">Most people write to me about a role. Some want one process reviewed. Pick the path that fits, and the email opens with the right subject.</p>
     <h2>About a role on your team</h2>
     <p>I am open to remote Chief of Staff, Executive Assistant to CEO and Operations Manager roles. I am also open to Marketing Operations and AI Automation roles.</p>
-    <p>Tell me the role, your hours and the first problem you want solved. If you want proof first, the free hiring kit has six paid trial tasks.</p>
+    <p>Tell me the role, your hours and the first problem you want solved. A link to the job post helps. If you want proof first, the free hiring kit has six paid trial tasks.</p>
     <div class="cta-row">
       <a class="btn btn-primary" href="{mailto('Chief of Staff role')}" data-book>Email me about a role</a>
       <a class="btn" href="/test-me">See the free hiring kit</a>
@@ -507,14 +510,14 @@ def contact_page():
       <li><a href="/resume">My résumé (PDF)</a>, or the <a href="/resume-ats">plain résumé for job boards</a></li>
     </ul>
     <h2>About one process to automate</h2>
-    <p>The AI Sprint reviews one process in {site_pages.SPRINT_TERMS['size']['days']}. It ends in a written brief that says build, simplify, use what you have, or wait.</p>
-    <p>Tell me the process, how many times a week it runs and the tools it touches. Do not send passwords or private client records.</p>
+    <p>The AI Sprint reviews one process{'' if site_pages.SPRINT_TERMS['size']['pending'] else ' in ' + site_pages.SPRINT_TERMS['size']['days']}. It ends in a written brief that says build, simplify, use what you have, or wait.</p>
+    <p>Tell me the process, how many times a week it runs and the tools it touches. A short screen recording of the steps helps too. Do not send passwords or private client records.</p>
     <div class="cta-row">
       <a class="btn" href="{mailto('AI Sprint fit call')}" data-sprint-inquiry>Book a free 15-minute fit call</a>
       <a class="btn" href="/ai-sprint">Read about the AI Sprint</a>
     </div>
     <h2>What happens after you write</h2>
-    <p>I read every email myself. For a role, I reply with when I can start and one question about your team.</p>
+    <p>For a role, I reply with when I can start and one question about your team.</p>
     <p>If it is about a process, I reply with times for the fit call. If the Sprint is not a fit, I say so and say why. I point you to a free workflow if one fits.</p>
     <h2>Where I am and how I work</h2>
     <p>I am based in Mandaluyong City, Philippines, and I work remotely. I write first and call when a decision needs talking through. You can also find me on <a href="https://www.linkedin.com/in/ciarra-m/" target="_blank" rel="noopener">LinkedIn</a>.</p>
@@ -604,7 +607,7 @@ def resolve(path):
 
 
 def sitemap(pages):
-    held = {'/ai-sprint'} if site_pages.sprint_pending() else set()
+    held = {'/ai-sprint', '/sample-assessment'} if site_pages.sprint_pending() else set()
     rows = ['  <url><loc>%s%s</loc><lastmod>%s</lastmod></url>' % (BASE, p['route'], p['lastmod']) for p in pages if p['lastmod'] and p['route'] not in held]
     return '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + '\n'.join(rows) + '\n</urlset>\n'
 
