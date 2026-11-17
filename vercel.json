@@ -12,6 +12,16 @@
       "source": "/resume-ats",
       "destination": "/assets/Ciarra_Mazaredo_Resume_ATS.pdf",
       "permanent": false
+    },
+    {
+      "source": "/resume-marketing-ops",
+      "destination": "/assets/Ciarra_Mazaredo_Resume_ATS_MarketingOps.pdf",
+      "permanent": false
+    },
+    {
+      "source": "/resume-ai-automation",
+      "destination": "/assets/Ciarra_Mazaredo_Resume_ATS_AIAutomation.pdf",
+      "permanent": false
     }
   ],
   "headers": [

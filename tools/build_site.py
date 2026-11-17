@@ -20,7 +20,7 @@ FOOTER_LINKS = [('/how-i-work', 'How I work'), ('/industries', 'Industries'), ('
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import site_pages  # noqa: E402  (copy for role and industry pages)
 ROLE_LASTMOD = '2026-11-17'
-REDIRECTS = {'/resume', '/resume-ats'}  # vercel.json
+REDIRECTS = {r['source'] for r in json.load(open(os.path.join(ROOT, 'vercel.json')))['redirects']}
 IGNORED = ('tools/', 'systems/', 'README.md', 'tests/')  # .vercelignore: never served
 
 # route, file, word floor, sitemap lastmod, header mail subject, llms.txt line
@@ -247,7 +247,10 @@ def detail_page(item, hub_route, stories_by_id):
     plate = '\n'.join('      <li>%s</li>' % esc(x) for x in item['plate'])
     links = ['<li><a href="/case-studies/%s">Case study: %s<span class="sub">%s %s</span></a></li>' % (
         c, stories_by_id[c]['title'], stories_by_id[c]['headline'], stories_by_id[c]['headlineLabel'].lower()) for c in item['cases']]
-    start = '\n'.join('      <li><strong>%s.</strong> %s</li>' % (esc(a), esc(b)) for a, b in site_pages.START)
+    steps = list(site_pages.START)
+    if item['slug'] in site_pages.START_FIRST:
+        steps[0] = (steps[0][0], site_pages.START_FIRST[item['slug']])
+    start = '\n'.join('      <li><strong>%s.</strong> %s</li>' % (esc(a), esc(b)) for a, b in steps)
     links.append('<li><a href="/test-me#%s">Paid trial task: %s</a></li>' % (item['task'][0], esc(item['task'][1])))
     links.append('<li><a href="/workflows#%s">Workflow: %s</a></li>' % (item['workflow'][0], esc(item['workflow'][1])))
     if item.get('extra_link'):
@@ -293,7 +296,7 @@ def detail_page(item, hub_route, stories_by_id):
     <p>Email me with the role and your hours. I reply with when I can start and one question about your team.</p>
     <div class="cta-row">
       <a class="btn btn-primary" href="{mailto(item['subject'])}" data-book>Email me about this role</a>
-      <a class="btn" href="/resume">Download my résumé</a>
+      <a class="btn" href="{item.get('resume', '/resume')}">Download my résumé</a>
     </div>
   </article>
 </main>
@@ -312,13 +315,17 @@ def hub_page(hub_route, stories_by_id):
     title = '%s · %s' % (hub['title'], NAME)
     trail = [('Home', '/'), (hub['crumb'], hub_route)]
     cards = '\n'.join(f'''    <li class="hub-card"><a href="{hub['prefix']}{it['slug']}"><strong>{esc(it['title'])}</strong></a><span>{esc(it['h1'])} {esc(it['proof_line'])}</span></li>''' for it in hub['items'])
-    body = f'''{header(hub_route, 'Chief of Staff role')}
+    body = f'''{header(hub_route, 'Which role fits')}
 
 <main id="main">
   <article class="detail container">
     {crumbs_nav(trail)}
     <h1>{esc(hub['h1'])}</h1>
     <p class="lede">{esc(' '.join(hub['lede']))}</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="{mailto('Which role fits')}" data-book>Email me the job post</a>
+      <a class="btn" href="/test-me">See the free hiring kit</a>
+    </div>
     <ul class="hub">
 {cards}
     </ul>
@@ -435,7 +442,7 @@ def llms(pages):
 
 ## Pages
 """ + '\n'.join(lines) + f"""
-- [Résumé (PDF)]({BASE}/resume) · [Plain résumé for job boards]({BASE}/resume-ats)
+- [Résumé (PDF)]({BASE}/resume) · [Plain résumé for job boards]({BASE}/resume-ats) · [Marketing Operations résumé]({BASE}/resume-marketing-ops) · [AI Automation résumé]({BASE}/resume-ai-automation)
 
 ## Roles and industries
 """ + '\n'.join(roles) + """

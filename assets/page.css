@@ -49,3 +49,4 @@ p { margin: 0 0 14px; font-size: 17px; }
 .hub-card span { display: block; color: var(--smoke); font-size: 15px; margin-top: 4px; }
 .next .sub { display: block; font-weight: 400; font-size: 14px; color: var(--smoke); margin-top: 2px; }
 .start { margin: 0 0 14px 20px; display: grid; gap: 8px; font-size: 17px; }
+.detail .tools { margin-top: 14px; }
