@@ -12,8 +12,8 @@ Edit this file, never the HTML it writes. Then run: bash tools/build_resume.sh
 import html, os, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-CONTACT = ('Mandaluyong City, Philippines | Remote | Available immediately<br>'
-           'ciarramazaredo@gmail.com | +63 956 623 8024 | ciarramazaredo.vercel.app | linkedin.com/in/ciarra-m')
+CONTACT = ['Mandaluyong City, Philippines | Remote | Available immediately',
+           'ciarramazaredo@gmail.com | +63 956 623 8024 | ciarramazaredo.vercel.app | linkedin.com/in/ciarra-m']
 
 # key: (title, org line, [(bullet id, text)])
 JOBS = {
@@ -59,7 +59,7 @@ VARIANTS = {
                     'project coordination, priorities and deadlines across functions, SOPs and management reporting, recruitment, '
                     'budgeting support and stakeholder communication. Brings executive assistant experience supporting company leadership '
                     'and a Senior Vice President of Investment, plus a marketing background in automation, email and communications. '
-                    'Uses AI tools such as ChatGPT and Claude, and checks every output. BS Psychology, Magna Cum Laude, with a Master of '
+                    'Works with AI tools such as ChatGPT and Claude. BS Psychology, Magna Cum Laude, with a Master of '
                     'Business Psychology and Leadership in progress.'),
         'skills': [
             ('Executive Operations and Project Management', 'Cross-functional project coordination, priorities, ownership and deadlines, process, form and SOP design, meeting workflows, management reporting, budgeting and financial oversight support, stakeholder and external relations, institutional correspondence'),
@@ -73,29 +73,28 @@ VARIANTS = {
         'target': 'Target roles: Marketing Operations Specialist | Marketing Automation | Email Marketing',
         'summary': ('Marketing operations specialist who built six multi-touch email automation workflows for a real estate coach across '
                     'three brands, with email sequences reaching an 83.57% click-to-open rate. Plans campaigns and editorial calendars, '
-                    'writes lead magnets and landing page copy (25 to 30 percent conversion on dedicated landing pages), and runs product, '
-                    'competitor and keyword research. Brings operations leadership from a school senior management team, including '
-                    'campaign planning and final creative approvals. Uses ChatGPT and Claude for research and drafts, and checks every '
-                    'output. BS Psychology, Magna Cum Laude.'),
+                    'wrote a 50+ page homebuyer guide that converted at 25 to 30 percent on dedicated landing pages, and runs product, '
+                    'competitor and keyword research. Brings operations leadership from serving on a school senior management team, '
+                    'including campaign planning and final creative approvals. BS Psychology, Magna Cum Laude.'),
         'skills': [
-            ('Marketing Operations', 'Email marketing and automation, multi-touch email automation workflows, campaign planning, editorial calendars, lead magnets, landing page copy, product, competitor and keyword research'),
+            ('Marketing Operations', 'Email marketing and automation, multi-touch email automation workflows, campaign planning, editorial calendars, lead magnet writing, conversion copywriting, product, competitor and keyword research'),
             ('Communications', 'Copywriting and editing, public announcements, reputation messaging, stakeholder presentations'),
             ('Operations', 'Cross-functional project coordination, priorities, ownership and deadlines, process, form and SOP design, management reporting'),
-            ('Tools', 'GoHighLevel, Zapier, Canva, Notion, Airtable, ClickUp, Asana, Trello, Monday, Slack, Google Workspace, ChatGPT, Claude, Gemini, Perplexity, NotebookLM')],
+            ('Tools', 'GoHighLevel, MailerLite, kvCORE, Zapier, Canva, Notion, Airtable, ClickUp, Asana, Trello, Monday, Slack, Google Workspace, ChatGPT, Claude, Gemini, Perplexity, NotebookLM')],
         'order': {'edgyvis': ['comms', 'coord', 'smt', 'reports', 'hiring'], 'kimbarber': ['flows', 'copy'], 'yokly': ['train', 'svp']},
     },
     'resume-ats-ai-automation.html': {
         'target': 'Target roles: AI Automation Specialist | Operations Automation | Workflow Automation',
-        'summary': ('Operations and marketing professional who builds automations with a person checking the output. Built six multi-touch '
-                    'email automation workflows that moved agent leads from cold to converted for a real estate coach. Uses ChatGPT, Claude, '
-                    'Gemini, Perplexity and NotebookLM for research, drafts and summaries, and Zapier and GoHighLevel to connect tools. '
-                    'Designed the processes, forms, reporting structures and meeting workflows for a school senior management team. '
-                    'Placed 2nd in a problem validation hackathon with an evidence-led market research pitch. BS Psychology, Magna Cum Laude.'),
+        'summary': ('Operations and marketing professional who built six multi-touch email automation workflows that moved agent leads '
+                    'from cold to converted for a real estate coach. Works with ChatGPT, Claude, Gemini, Perplexity and NotebookLM, plus '
+                    'Zapier and GoHighLevel. As a member of a school senior management team, designed the processes, forms, reporting '
+                    'structures and meeting workflows. Placed 2nd in a problem validation hackathon with an evidence-led market research '
+                    'pitch built with NotebookLM and Claude. BS Psychology, Magna Cum Laude.'),
         'skills': [
-            ('Automation and AI', 'Email automation workflows, CRM automation in GoHighLevel, Zapier connections between tools, AI research, drafts and summaries with human review'),
+            ('Automation and AI', 'Multi-touch email automation workflows (MailerLite, kvCORE, GoHighLevel), AI-assisted research (NotebookLM, Claude)'),
             ('AI Tools', 'ChatGPT, Claude, Gemini, Perplexity, NotebookLM'),
             ('Process and Reporting', 'Process, form and SOP design, meeting workflows, management reporting, cross-functional project coordination, priorities, ownership and deadlines'),
-            ('Tools', 'GoHighLevel, Zapier, Google Workspace, Notion, Airtable, ClickUp, Asana, Trello, Monday, Slack, Canva')],
+            ('Tools', 'GoHighLevel, MailerLite, kvCORE, Zapier, Google Workspace, Notion, Airtable, ClickUp, Asana, Trello, Monday, Slack, Canva')],
         'order': {'edgyvis': ['coord', 'smt', 'reports', 'hiring', 'comms'], 'kimbarber': ['flows', 'copy']},
     },
 }
@@ -104,13 +103,17 @@ STYLE = """  @page { size: Letter; margin: 0.6in 0.7in; }
   body { font-family: Arial, Helvetica, sans-serif; font-size: 10.5pt; line-height: 1.36; color: #000; margin: 0; }
   h1 { font-size: 18pt; margin: 0 0 2pt; }
   .target { font-size: 11pt; font-weight: bold; margin: 0 0 4pt; }
+  .contact1 { margin: 0; }
   .contact { margin: 0 0 10pt; }
   h2 { font-size: 11pt; text-transform: uppercase; letter-spacing: 0.5pt; border-bottom: 1px solid #000; margin: 12pt 0 5pt; padding-bottom: 2pt; }
   h3 { font-size: 10.5pt; margin: 8pt 0 0; }
   p { margin: 0 0 4pt; }
   ul { margin: 2pt 0 4pt; padding-left: 16pt; }
   li { margin: 0 0 2pt; }
-  .org { margin: 0 0 2pt; }"""
+  .org { margin: 0 0 2pt; break-inside: avoid; }
+  h2, h3 { break-after: avoid; }
+  .d { white-space: nowrap; }
+  .job { break-inside: avoid; break-after: avoid; }"""
 
 
 def e(s):
@@ -124,8 +127,9 @@ def history(order):
         by_id = dict(bullets)
         ids = order.get(key, [b for b, _ in bullets])
         assert sorted(ids) == sorted(by_id), key  # reorder only: never drop or add a bullet
-        out.append('<h3>%s</h3>\n<p class="org">%s</p>\n<ul>\n%s\n</ul>' % (
-            e(title), e(org), '\n'.join('  <li>%s</li>' % e(by_id[i]) for i in ids)))
+        place, _, dates = org.rpartition(' | ')
+        out.append('<div class="job"><h3>%s</h3>\n<p class="org">%s | <span class="d">%s</span></p></div>\n<ul>\n%s\n</ul>' % (
+            e(title), e(place), e(dates), '\n'.join('  <li>%s</li>' % e(by_id[i]) for i in ids)))
     return '\n\n'.join(out)
 
 
@@ -144,7 +148,8 @@ def render(v):
 <body>
 <h1>Ciarra Amor G. Mazaredo</h1>
 <p class="target">{e(v['target'])}</p>
-<p class="contact">{CONTACT}</p>
+<p class="contact1">{CONTACT[0]}</p>
+<p class="contact">{CONTACT[1]}</p>
 
 <h2>Summary</h2>
 <p>{e(v['summary'])}</p>

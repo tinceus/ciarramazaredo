@@ -21,7 +21,7 @@ VARIANTS = [  # source, output base, role words, true keywords for that role
       'keyword research', 'click-to-open', 'GoHighLevel', 'Zapier', 'Canva', 'Notion', 'ChatGPT', 'Claude']),
     ('resume-ats-ai-automation.html', 'Ciarra_Mazaredo_Resume_ATS_AIAutomation', ['AI Automation', 'Workflow Automation'],
      ['automation', 'workflows', 'AI tools', 'ChatGPT', 'Claude', 'Gemini', 'Perplexity', 'NotebookLM', 'Zapier', 'GoHighLevel',
-      'SOP', 'management reporting', 'process', 'human review']),
+      'SOP', 'management reporting', 'process', 'MailerLite']),
 ]
 fails = []
 
@@ -44,7 +44,7 @@ def check_text(label, text, roles):
 def history(src):
     """Employer, title, date and bullet lines of the experience block, as a set."""
     block = src.split('<h2>Professional Experience</h2>')[1].split('<h2>Education</h2>')[0]
-    return set(re.findall(r'<(?:h3|p class="org"|li)>(.*?)</', block))
+    return {re.sub(r'<[^>]+>', '', m[1]) for m in re.findall(r'<(h3|p class="org"|li)>(.*?)</(?:h3|p|li)>', block)}
 
 
 def numbers(text):
@@ -74,6 +74,9 @@ for src_name, base, roles, keys in VARIANTS:
         continue
     pdf_text = subprocess.run(['pdftotext', pdf, '-'], capture_output=True, text=True, check=True).stdout
     check_text(base + '.pdf', pdf_text, roles)
+    for line in pdf_text.splitlines():  # a date range must not break across lines
+        if re.search(r'(?:\| |to )(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s*$', line.strip()) or re.search(r'\| (?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) \d{4} to\s*$', line.strip()):
+            fails.append(f'{base}.pdf: date range breaks across lines: "{line.strip()[-40:]}"')
     if 'Type 3' in subprocess.run(['pdffonts', pdf], capture_output=True, text=True, check=True).stdout:
         fails.append(f'{base}.pdf: uses Type 3 fonts')
     pages = re.search(r'Pages:\s+(\d+)', subprocess.run(['pdfinfo', pdf], capture_output=True, text=True).stdout)
