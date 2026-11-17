@@ -168,7 +168,7 @@ INDUSTRIES = [
         'objection': 'See the work before you hire. Start with one paid trial task, such as an SOP from a recorded process.',
         'cases': ['yokly-onboarding', 'email-funnel'],
         'task': ('task-ops-2', 'SOP from a recorded process'),
-        'workflow': ('lead-to-booked-call', 'Lead to booked call'),
+        'workflow': ('property-examples', 'Property examples on made-up data'),
         'quote': ("Love your work, love your contributions, love your creativity and your commitment to excellence. I'm very thankful for the work you've done in my business.", 'Kim Barber, CEO & Co-Founder'),
         'tools': 'Google Workspace · Notion · GoHighLevel · Zapier · Canva · ChatGPT · Claude',
         'subject': 'Real estate operations role',

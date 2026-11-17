@@ -46,3 +46,13 @@ Set it as the **Error workflow** in each other workflow's settings. A failed run
 | `compare-weeks.js` | The week comparison, also used inside the workflow |
 | `normalize-error.js` | Turns any failure into the same alert fields |
 | `report.test.js` | Tests for both: `node --test report.test.js` |
+
+## Property example (Sample)
+
+`sample-data/owner-report.csv` holds two weeks of made-up numbers for a property owner: occupancy, rent collected, open work orders and days to fill a vacancy.
+
+1. Paste the rows into the `KPIs` tab in place of `kpis.csv`.
+2. Run the weekly report.
+3. Expected: occupancy and days to fill are On track. Rent collected and open work orders are Watch. Open work orders fell by 7.
+
+The test checks those statuses: `node --test report.test.js`.

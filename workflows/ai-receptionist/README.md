@@ -46,3 +46,13 @@ Written into the agent's instructions:
 |---|---|
 | `workflow.json` | Importable n8n workflow (n8n 2.47) |
 | `sample-data/faq.md` | Fictional clinic FAQ used as the knowledge base |
+
+## Property example (Sample)
+
+`sample-data/property-faq.md` is the knowledge for a fictional property manager, Harbor Lane. It covers showings, applications, pets, maintenance and emergencies, and it never quotes rent or deposits.
+
+1. Paste it into the agent's instructions in place of `faq.md`.
+2. Ask the four test questions at the end of the file.
+3. Expected: it offers a showing, gives no deposit figure, hands the leak to a person and offers owners a call.
+
+Its rules are instructions, not hard limits, so a person watches the handoffs.

@@ -57,3 +57,13 @@ It scores the five sample leads and checks each tier.
 | `score-lead.js` | The scoring rules used inside the Score lead node |
 | `score-lead.test.js` | Test against the sample leads |
 | `sample-data/leads.csv` | Five fictional leads |
+
+## Property example (Sample)
+
+`sample-data/property-inquiries.csv` holds five made-up inquiries for a fictional property manager, Harbor Lane. Two are owners who want a manager, one is a renter asking for a showing, and two are only browsing.
+
+1. Import the rows into the Leads sheet in place of `leads.csv`.
+2. Run the workflow. The same plain rules score each one.
+3. Expected: Maya Torres and Leo Grant are hot (the owner gets an alert), Jon Bell is warm, Priya Shah and Ana Cruz are nurture.
+
+The test checks those tiers: `node score-lead.test.js`.

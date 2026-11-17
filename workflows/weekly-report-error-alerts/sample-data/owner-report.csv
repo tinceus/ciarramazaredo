@@ -1,0 +1,9 @@
+week_start,metric,value,target,direction
+2026-11-02,Occupancy (%),93,95,up
+2026-11-02,Rent collected (%),91,97,up
+2026-11-02,Open work orders,18,10,down
+2026-11-02,Days to fill a vacancy,24,21,down
+2026-11-09,Occupancy (%),95,95,up
+2026-11-09,Rent collected (%),96,97,up
+2026-11-09,Open work orders,11,10,down
+2026-11-09,Days to fill a vacancy,19,21,down

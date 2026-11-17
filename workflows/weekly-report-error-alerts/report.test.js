@@ -33,3 +33,13 @@ test('execution and trigger failures normalize without optional fields', () => {
   assert.equal(r.step,'Webhook'); assert.equal(r.message,'Trigger failed'); assert.match(r.url,/No execution/);
   assert.equal(normalizeError({}).workflow,'Unknown workflow');
 });
+test('property owner report sample (fictional) gives the expected statuses', () => {
+  const fs = require('node:fs'), path = require('node:path');
+  const lines = fs.readFileSync(path.join(__dirname, 'sample-data/owner-report.csv'), 'utf8').trim().split('\n');
+  const head = lines.shift().split(',');
+  const rows = lines.map(l => Object.fromEntries(l.split(',').map((v, i) => [head[i], v])));
+  const r = compareWeeks(rows);
+  const status = Object.fromEntries(r.metrics.map(m => [m.metric, m.status]));
+  assert.deepEqual(status, {'Occupancy (%)': 'On track', 'Rent collected (%)': 'Watch', 'Open work orders': 'Watch', 'Days to fill a vacancy': 'On track'});
+  assert.equal(r.metrics.find(m => m.metric === 'Open work orders').change, -7);
+});

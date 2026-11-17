@@ -17,5 +17,15 @@ assert.strictEqual(byName['Ali Hassan'].tier, 'nurture');
 assert.ok(byName['Dana Reyes'].reasons.length >= 3, 'every score explains itself');
 assert.deepStrictEqual(scoreLead({}), { score: 0, tier: 'nurture', reasons: [] });
 
+
+// Property example (fictional rental inquiries): same rules, expected tiers pinned.
+const prows = fs.readFileSync(path.join(__dirname, 'sample-data/property-inquiries.csv'), 'utf8').trim().split('\n');
+const phead = prows.shift().split(',');
+const prop = Object.fromEntries(prows.map(r => Object.fromEntries(r.split(',').map((v, i) => [phead[i], v]))).map(l => [l.name, scoreLead(l)]));
+assert.strictEqual(prop['Maya Torres'].tier, 'hot');
+assert.strictEqual(prop['Leo Grant'].tier, 'hot');
+assert.strictEqual(prop['Jon Bell'].tier, 'warm');
+assert.strictEqual(prop['Priya Shah'].tier, 'nurture');
+assert.strictEqual(prop['Ana Cruz'].tier, 'nurture');
 for (const [n, r] of Object.entries(byName)) console.log(n.padEnd(12), String(r.score).padStart(3), r.tier);
 console.log('score-lead: PASS');
