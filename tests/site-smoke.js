@@ -29,6 +29,8 @@ const fail = msg => { fails.push(msg); console.log('FAIL ' + msg); };
         if (await page.locator('h1').count() !== 1) fail(`${route}: needs exactly one h1`);
         if (await page.locator('main').count() !== 1) fail(`${route}: needs exactly one main`);
         if (!(await page.title())) fail(`${route}: no title`);
+        const cta = (await page.locator('header .nav-cta').innerText()).trim();
+        if (!['Email me', 'Book a fit call', 'Book a call'].includes(cta)) fail(`${route}: header button reads "${cta}"`);
         const layout = await page.evaluate(() => ({vw: innerWidth, sw: document.documentElement.scrollWidth}));
         if (layout.sw > layout.vw + 1) fail(`${route}: sideways scroll at ${width} (${layout.sw} > ${layout.vw})`);
         for (const href of await page.locator('a[href]').evaluateAll(ns => ns.map(n => n.href))) if (href.startsWith(base)) links.add(href.split('#')[0]);

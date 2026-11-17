@@ -58,11 +58,11 @@ def mailto(subject):
 
 def header(route, subject, skip=('#main', 'Skip to content'), label='Email me', attr='data-book'):
     items = []
-    for href, label in NAV:
+    for href, text in NAV:  # keep `label` for the header button
         if href == '/ai-sprint' and site_pages.sprint_pending():
             continue  # held: the Sprint page stays out of the menu until her five answers are in
         cur = href == route or (not href.startswith('/#') and href != '/' and route.startswith(href + '/'))
-        items.append('        <li><a href="%s"%s>%s</a></li>' % (href, ' aria-current="page"' if cur else '', label))
+        items.append('        <li><a href="%s"%s>%s</a></li>' % (href, ' aria-current="page"' if cur else '', text))
     return '\n'.join([
         '<!-- shell:header -->',
         '<a class="skip-link" href="%s">%s</a>' % skip,
@@ -689,6 +689,10 @@ def check(pages, out):
             want = BASE + ('/' if r == '/' else r)
             if f.canon != want:
                 errs.append('%s: canonical %r, want %r' % (p['file'], f.canon, want))
+        btn = re.search(r'<a href="[^"]*" class="nav-cta"[^>]*>([^<]*)</a>', text)
+        want_btn = 'Book a fit call' if p['route'] in ('/ai-sprint', '/sample-assessment') else 'Email me'
+        if not btn or btn.group(1) != want_btn:
+            errs.append('%s: header button reads %r, want %r' % (p['file'], btn and btn.group(1), want_btn))
         if f.h1 != 1:
             errs.append('%s: %d h1 (need exactly 1)' % (p['file'], f.h1))
         t = f.title.strip()
