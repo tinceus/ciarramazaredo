@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://ciarramazaredo.vercel.app/</loc><lastmod>2026-10-25</lastmod></url>
-  <url><loc>https://ciarramazaredo.vercel.app/case-studies</loc><lastmod>2026-10-25</lastmod></url>
-  <url><loc>https://ciarramazaredo.vercel.app/workflows</loc><lastmod>2026-11-15</lastmod></url>
-  <url><loc>https://ciarramazaredo.vercel.app/test-me</loc><lastmod>2026-11-15</lastmod></url>
+  <url><loc>https://ciarramazaredo.vercel.app/case-studies</loc><lastmod>2026-11-17</lastmod></url>
+  <url><loc>https://ciarramazaredo.vercel.app/workflows</loc><lastmod>2026-11-17</lastmod></url>
+  <url><loc>https://ciarramazaredo.vercel.app/test-me</loc><lastmod>2026-11-17</lastmod></url>
   <url><loc>https://ciarramazaredo.vercel.app/how-i-work</loc><lastmod>2026-11-15</lastmod></url>
+  <url><loc>https://ciarramazaredo.vercel.app/case-studies/edgyvis-people-ops</loc><lastmod>2026-11-17</lastmod></url>
+  <url><loc>https://ciarramazaredo.vercel.app/case-studies/yokly-onboarding</loc><lastmod>2026-11-17</lastmod></url>
+  <url><loc>https://ciarramazaredo.vercel.app/case-studies/email-funnel</loc><lastmod>2026-11-17</lastmod></url>
+  <url><loc>https://ciarramazaredo.vercel.app/case-studies/lead-magnet</loc><lastmod>2026-11-17</lastmod></url>
+  <url><loc>https://ciarramazaredo.vercel.app/case-studies/hackathon</loc><lastmod>2026-11-17</lastmod></url>
 </urlset>

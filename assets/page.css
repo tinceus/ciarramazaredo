@@ -1,0 +1,34 @@
+/* Base styles for generated pages (case study pages and, later, role pages). */
+:root { --purple-deep: #3D2BB3; --purple-tint: #ECE7FF; --hairline: #D9D9DF; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body { font-family: 'Inter', system-ui, sans-serif; background: var(--paper); color: var(--ink); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+a { color: var(--purple); }
+::selection { background: var(--lime); color: var(--ink); }
+.container { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+main { padding: 48px 0 80px; }
+h1, h2 { font-family: 'Space Grotesk', 'Inter', sans-serif; letter-spacing: -0.02em; line-height: 1.15; }
+h1 { font-size: clamp(34px, 5vw, 52px); margin: 8px 0 10px; }
+h2 { font-size: 22px; margin: 36px 0 10px; }
+p { margin: 0 0 14px; font-size: 17px; }
+.crumbs { font-size: 13px; color: var(--smoke); margin-bottom: 28px; }
+.crumbs a { color: var(--smoke); }
+.eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--purple); margin: 0; }
+.client { color: var(--smoke); font-size: 15px; }
+.headline { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin: 24px 0 8px; padding: 20px 24px; background: var(--purple-bg); border-radius: 20px; }
+.headline .num { font-family: 'Space Grotesk', sans-serif; font-size: 44px; font-weight: 700; color: var(--purple); line-height: 1; }
+.headline .label { font-weight: 600; }
+.metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin: 8px 0 18px; }
+.metrics div { border: 1.5px solid var(--ink); border-radius: 16px; padding: 14px 16px; }
+.metrics dt { font-family: 'Space Grotesk', sans-serif; font-size: 26px; font-weight: 700; }
+.metrics dd { font-size: 14px; color: var(--smoke); }
+.quote { margin: 12px 0; padding: 18px 22px; border-left: 4px solid var(--lime); background: #FAFAFC; border-radius: 0 16px 16px 0; }
+.quote blockquote { font-size: 17px; font-style: italic; }
+.quote figcaption { margin-top: 8px; font-size: 14px; color: var(--smoke); }
+.skills { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 14px; }
+.skills li { font-size: 13px; font-weight: 600; padding: 6px 12px; border-radius: 999px; background: var(--purple-tint); }
+.tools { font-size: 15px; color: var(--smoke); }
+.next { list-style: none; display: grid; gap: 10px; }
+.next a { display: block; padding: 14px 18px; border: 1.5px solid var(--ink); border-radius: 14px; font-weight: 600; color: var(--ink); text-decoration: none; }
+.next a:hover { background: var(--lime); }

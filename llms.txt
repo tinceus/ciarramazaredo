@@ -5,10 +5,17 @@
 ## Pages
 - [Home](https://ciarramazaredo.vercel.app/): numbers, what I run, experience, recognition, testimonials, ways to work together
 - [Case studies](https://ciarramazaredo.vercel.app/case-studies): the situation, what I did and what changed
-- [Workflows](https://ciarramazaredo.vercel.app/workflows): automation workflows grouped by result, with free n8n files (built on sample data)
+- [Workflows](https://ciarramazaredo.vercel.app/workflows): automation workflows grouped by result, with free n8n files (labelled Sample or Parts tested)
 - [Test me](https://ciarramazaredo.vercel.app/test-me): six trial tasks, a scorecard, reference questions and a paid pilot week
 - [How I work](https://ciarramazaredo.vercel.app/how-i-work): communication, mistakes, AI use, first 90 days, fit
 - [Résumé (PDF)](https://ciarramazaredo.vercel.app/resume) · [Plain résumé for job boards](https://ciarramazaredo.vercel.app/resume-ats)
+
+## Case studies
+- [The 24 to 53 Year](https://ciarramazaredo.vercel.app/case-studies/edgyvis-people-ops): 24 → 53 employees in one year
+- [The Onboarding Manual](https://ciarramazaredo.vercel.app/case-studies/yokly-onboarding): 3 to 6 support staff trained
+- [The 83% Email Funnel](https://ciarramazaredo.vercel.app/case-studies/email-funnel): 83.57% click-to-open rate
+- [The 50+ Page Lead Magnet](https://ciarramazaredo.vercel.app/case-studies/lead-magnet): 25 to 30% landing page conversion
+- [The $86B Validation](https://ciarramazaredo.vercel.app/case-studies/hackathon): $86B market opportunity validated
 
 ## Contact
 - Email: ciarramazaredo@gmail.com

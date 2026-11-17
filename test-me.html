@@ -28,6 +28,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/shell.css">
 <style>
   :root {
     --purple: #5B3FE9; --purple-deep: #3D2BB3; --purple-bg: #F5F3FF; --purple-tint: #ECE7FF;
@@ -166,14 +167,15 @@
     .score select:invalid { color: transparent; border: 1px solid #000; border-radius: 6px; min-width: 56px; }
     .score output[data-empty] { color: transparent; display: inline-block; min-width: 56px; border-bottom: 1px solid #000; }
   }
+  .paid-rule { margin-top: 18px; padding: 14px 18px; border-left: 4px solid var(--lime); background: var(--purple-bg, #F5F3FF); border-radius: 0 14px 14px 0; font-size: 15px; }
 </style>
 </head>
 
 <body>
 
+<!-- shell:header -->
 <a class="skip-link" href="#main">Skip to content</a>
-
-<header>
+<header class="site-header">
   <div class="nav-wrap">
     <a href="/" class="logo">ciarra<span class="dot">.</span>mazaredo</a>
     <nav aria-label="Primary">
@@ -190,6 +192,7 @@
     <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="nav-menu">Menu</button>
   </div>
 </header>
+<!-- /shell:header -->
 
 <main id="main">
 <section class="hero">
@@ -208,6 +211,7 @@
       <li><strong>2. Send the inputs</strong>Real or made up, both work. Remove anything private first.</li>
       <li><strong>3. Score the result</strong>Use the scorecard below, so the decision rests on evidence.</li>
     </ul>
+    <p class="paid-rule"><strong>The kit is free. The work is paid.</strong> Any task I do for your business is paid. We agree the scope and the fee before I start, so you know what you get.</p>
   </div>
 </section>
 
@@ -352,14 +356,15 @@
 </section>
 </main>
 
-<footer>
+<!-- shell:footer -->
+<footer class="site-footer">
   <div class="footer-inner">
     <span>© 2026 Ciarra Amor G. Mazaredo · Mandaluyong City, Philippines</span>
-    <span class="footer-connect">Connect with me <a href="https://www.linkedin.com/in/ciarra-m/" target="_blank" rel="noopener" aria-label="LinkedIn">
-      <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.95v5.66H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.26 2.37 4.26 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zm1.78 13.02H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/></svg>
-    </a></span>
+    <span class="footer-links"><a href="/how-i-work">How I work</a></span>
+    <span class="footer-connect">Connect with me <a href="https://www.linkedin.com/in/ciarra-m/" target="_blank" rel="noopener" aria-label="LinkedIn" class="footer-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.95v5.66H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.26 2.37 4.26 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zm1.78 13.02H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/></svg></a></span>
   </div>
 </footer>
+<!-- /shell:footer -->
 
 <script src="/assets/site.js"></script>
 <script>

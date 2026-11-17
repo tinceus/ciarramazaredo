@@ -3,14 +3,22 @@
 
 Hard checks: em/en dashes, sentence-ending ? or ! outside quotes, banned words and
 phrases, sentences over 18 words, H1/H2 outside 4 to 7 words.
-Report only: Flesch-Kincaid grade of the visible body text.
+Grade: Flesch-Kincaid for the whole site and for each page. A page with ten or more
+full sentences fails above grade 9. Shorter pages are reported, not failed.
+Pages come from tools/build_site.py, so a new page is checked without editing this file.
 Usage: python3 tools/copy_gate.py
 """
 import html, os, re, sys
 from html.parser import HTMLParser
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-PAGES = ['index.html', 'case-studies.html', 'workflows.html', 'test-me.html', 'how-i-work.html', '404.html']
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import build_site  # noqa: E402
+
+PAGES = [p['file'] for p in build_site.all_pages(build_site.stories())]
+MAX_GRADE, MIN_SENTENCES = 9, 10
+# Story titles kept at three words by choice (plan task 3.5). Exempt by exact text only.
+SHORT_TITLES = {'The Onboarding Manual', 'The $86B Validation'}
 DATA = 'assets/case-studies.js'
 BANNED = [
     'leverage', 'delve', 'unlock', 'elevate', r'optimi[sz]e', 'transformative', 'innovative',
@@ -91,9 +99,18 @@ def data_strings(js):
     return out
 
 
+def fk_grade(sents):
+    words = [w for s in sents for w in re.findall(r"[A-Za-z][A-Za-z'-]*", s)]
+    if not words:
+        return None
+    syl = sum(syllables(w) for w in words)
+    return 0.39 * len(words) / len(sents) + 11.8 * syl / len(words) - 15.59
+
+
 def main():
     fails = []
     body_text = []
+    per_page = {}
     for name in PAGES + [DATA]:
         raw = open(os.path.join(ROOT, name), encoding='utf-8').read()
         for i, line in enumerate(raw.split('\n'), 1):
@@ -107,7 +124,7 @@ def main():
             prose = [''.join(v.text)]
             for tag, h in v.heads:
                 n = len(h.split())
-                if n and not 4 <= n <= 7:   # empty = filled by script at runtime
+                if n and not 4 <= n <= 7 and h not in SHORT_TITLES:   # empty = filled by script at runtime
                     fails.append(f'{name}: {tag} has {n} words (4 to 7): "{h}"')
         for block in prose:
             for s in sentences(block):
@@ -122,12 +139,26 @@ def main():
                         fails.append(f'{name}: banned "{b}": "{s[:90]}"')
                 if s.endswith('.') and len(words) >= 6:
                     body_text.append(s)
+                    per_page.setdefault(name, []).append(s)
     # Flesch-Kincaid grade over full sentences of prose (report only)
     words = [w for s in body_text for w in re.findall(r"[A-Za-z][A-Za-z'-]*", s)]
     if words and body_text:
         syl = sum(syllables(w) for w in words)
         grade = 0.39 * len(words) / len(body_text) + 11.8 * syl / len(words) - 15.59
         print(f'Flesch-Kincaid grade (prose sentences): {grade:.1f}  [{len(body_text)} sentences, {len(words)} words]')
+    for name in PAGES:
+        sents = per_page.get(name, [])
+        g = fk_grade(sents) if sents else None
+        if g is None:
+            print(f'  {name}: no full sentences')
+            continue
+        flag = ''
+        if g > MAX_GRADE and len(sents) >= MIN_SENTENCES:
+            fails.append(f'{name}: grade {g:.1f} is above {MAX_GRADE} ({len(sents)} sentences)')
+            flag = '  FAIL'
+        elif g > MAX_GRADE:
+            flag = '  (above 9, under ten sentences: reported only)'
+        print(f'  {name}: grade {g:.1f} [{len(sents)} sentences]{flag}')
     if fails:
         print(f'\n{len(fails)} problem(s):')
         for f in fails:

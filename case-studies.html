@@ -26,6 +26,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add('js');</script>
+<script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
+<script defer src="/_vercel/insights/script.js"></script>
+<link rel="stylesheet" href="/assets/shell.css">
 <style>
   :root {
     --purple: #5B3FE9;
@@ -301,6 +305,7 @@
     background: var(--paper);
   }
   .case-wrap.flipping { opacity: 0.25; }
+  @media (prefers-reduced-motion: reduce) { .case-wrap.flipping { opacity: 1; } }
   .case-inner {
     max-width: var(--max-narrow);
     margin: 0 auto;
@@ -578,7 +583,7 @@
     font-family: 'Space Grotesk', sans-serif;
     font-size: 12px; font-weight: 700;
     letter-spacing: 0.22em; text-transform: uppercase;
-    color: rgba(255,255,255,0.78); margin-bottom: 6px;
+    color: #fff; margin-bottom: 6px;
   }
   .next-case-title {
     font-family: 'Space Grotesk', sans-serif;
@@ -792,14 +797,24 @@
     nav ul.open { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; position: absolute; top: 100%; left: 0; right: 0; background: var(--paper); border-bottom: 1px solid var(--whisper); padding: 12px 20px 18px; box-shadow: 0 16px 32px rgba(14,14,18,0.08); }
     nav ul.open a { display: block; padding: 10px 0; font-size: 16px; }
   }
+  .cs-static { padding: 24px 32px 8px; }
+  .cs-static h2 { font-family: 'Space Grotesk', sans-serif; font-size: 22px; margin-bottom: 12px; }
+  .cs-static ul { list-style: none; display: grid; gap: 10px; }
+  .cs-static a { font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+  .cs-static .num { color: var(--purple); }
+  .cs-static .line { display: block; color: var(--smoke); font-size: 14px; }
+  .js .cs-static { display: none; }
+  html:not(.js) .strip-wrap, html:not(.js) .case-wrap { display: none; }
+  .cs-static .num { font-weight: 700; }
+  .case-permalink { display: inline-block; margin: 8px 0 20px; font-weight: 600; color: var(--purple); text-decoration: underline; text-underline-offset: 3px; }
 </style>
 </head>
 
 <body>
 
+<!-- shell:header -->
 <a class="skip-link" href="#case-wrap">Skip to the case study</a>
-
-<header>
+<header class="site-header">
   <div class="nav-wrap">
     <a href="/" class="logo">ciarra<span class="dot">.</span>mazaredo</a>
     <nav aria-label="Primary">
@@ -807,16 +822,16 @@
         <li><a href="/#numbers">Numbers</a></li>
         <li><a href="/#what-i-run">What I run</a></li>
         <li><a href="/#experience">Experience</a></li>
-        <li><a href="/case-studies" style="color:var(--purple);" aria-current="page">Case studies</a></li>
+        <li><a href="/case-studies" aria-current="page">Case studies</a></li>
         <li><a href="/workflows">Workflows</a></li>
         <li><a href="/test-me">Test me</a></li>
-        <li><a href="/#recognition">Recognition</a></li>
       </ul>
     </nav>
     <a href="mailto:ciarramazaredo@gmail.com?subject=Chief%20of%20Staff%20role" class="nav-cta" data-book>Email me</a>
     <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="nav-menu">Menu</button>
   </div>
 </header>
+<!-- /shell:header -->
 
 <main>
 <section class="cs-page-hero">
@@ -827,6 +842,21 @@
     <div class="cs-filters" id="cs-filters"></div>
   </div>
 </section>
+
+<!-- shell:caselist -->
+<section class="cs-static" aria-label="All case studies">
+  <div class="container">
+  <h2>Every story on its own page</h2>
+  <ul>
+    <li id="edgyvis-people-ops"><a href="/case-studies/edgyvis-people-ops">The 24 to 53 Year</a> <span class="line"><span class="num">24 → 53</span> Employees in one year. The workforce more than doubled in one year while I led recruitment and employee relations.</span></li>
+    <li id="yokly-onboarding"><a href="/case-studies/yokly-onboarding">The Onboarding Manual</a> <span class="line"><span class="num">3 to 6</span> Support staff trained. New staff were onboarded from one written standard.</span></li>
+    <li id="email-funnel"><a href="/case-studies/email-funnel">The 83% Email Funnel</a> <span class="line"><span class="num">83.57%</span> Click-to-open rate. 83.57% click-to-open and 40 to 44 percent open rates, held across multiple quarters.</span></li>
+    <li id="lead-magnet"><a href="/case-studies/lead-magnet">The 50+ Page Lead Magnet</a> <span class="line"><span class="num">25 to 30%</span> Landing page conversion. 25 to 30 percent conversion on dedicated landing pages, five to fifteen times the benchmark.</span></li>
+    <li id="hackathon"><a href="/case-studies/hackathon">The $86B Validation</a> <span class="line"><span class="num">$86B</span> Market opportunity validated. 2nd place, individual, and a ₱30,000 prize.</span></li>
+  </ul>
+  </div>
+</section>
+<!-- /shell:caselist -->
 
 <section class="strip-wrap">
   <div class="strip-inner">
@@ -893,6 +923,8 @@
       </div>
     </div>
 
+    <a class="case-permalink" id="case-permalink" href="/case-studies/edgyvis-people-ops">Read this story on its own page</a>
+
     <a class="next-case-wrap" id="next-case-wrap" href="#">
       <div>
         <div class="next-case-label">Next case study</div>
@@ -922,16 +954,15 @@
 </section>
 </main>
 
-<footer>
+<!-- shell:footer -->
+<footer class="site-footer">
   <div class="footer-inner">
     <span>© 2026 Ciarra Amor G. Mazaredo · Mandaluyong City, Philippines</span>
-    <span class="footer-connect">Connect with me <a href="https://www.linkedin.com/in/ciarra-m/" target="_blank" rel="noopener" aria-label="LinkedIn" class="footer-icon">
-      <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true">
-        <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.95v5.66H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.26 2.37 4.26 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zm1.78 13.02H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/>
-      </svg>
-    </a></span>
+    <span class="footer-links"><a href="/how-i-work">How I work</a></span>
+    <span class="footer-connect">Connect with me <a href="https://www.linkedin.com/in/ciarra-m/" target="_blank" rel="noopener" aria-label="LinkedIn" class="footer-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.95v5.66H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.26 2.37 4.26 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zm1.78 13.02H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/></svg></a></span>
   </div>
 </footer>
+<!-- /shell:footer -->
 
 <script src="/assets/site-config.js"></script>
 <script src="/assets/case-studies.js"></script>
@@ -973,6 +1004,7 @@
       document.getElementById('hero-progress').textContent = `Story ${String(globalIdx + 1).padStart(2, '0')} / ${String(caseStudies.length).padStart(2, '0')}`;
       document.getElementById('hero-tag').textContent = cs.tag;
       document.getElementById('hero-title').textContent = cs.title;
+      document.getElementById('case-permalink').href = '/case-studies/' + cs.id;
       document.getElementById('hero-client').textContent = cs.client;
       document.getElementById('hero-client-type').textContent = cs.clientType;
 
