@@ -432,6 +432,7 @@ def sprint_page():
     <div class="who"><img src="/assets/img/ciarra-mazaredo.jpg" alt="Ciarra Amor G. Mazaredo" width="120" height="120"><p>{esc(' '.join(S['who']))} More on my habits is on <a href="/how-i-work">how I work</a>.</p></div>
     <h2>The price and what it covers</h2>
     <p class="price">{esc(price_lines[0])}</p>
+    <p>{esc(T['price'].get('reason', ''))}</p>
     <p>{esc(' '.join(price_lines[1:]))}</p>
     <p>{esc(site_pages.sprint_fmt(S['price_reason']))} {esc(S['no_build'])}</p>
     <div class="cta-row">
