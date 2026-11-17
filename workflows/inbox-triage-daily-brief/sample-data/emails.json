@@ -1,7 +1,77 @@
 [
-  {"from": "board@example.com", "subject": "Board deck due Thursday", "body": "Can you confirm the Q4 numbers by Wednesday noon?"},
-  {"from": "vendor@example.com", "subject": "Invoice #4821", "body": "Attached is the invoice for October services, due Nov 30."},
-  {"from": "candidate@example.com", "subject": "Re: Operations Associate interview", "body": "Thanks for the call. Is Friday 2pm still okay for the second round?"},
-  {"from": "news@example.com", "subject": "This week in SaaS", "body": "Top 10 links from the week."},
-  {"from": "client@example.com", "subject": "URGENT: login not working", "body": "Our team cannot log in since this morning."}
+  {
+    "id": "sample-1",
+    "threadId": "sample-thread-1",
+    "from": {
+      "text": "board@example.com",
+      "value": [
+        {
+          "address": "board@example.com",
+          "name": ""
+        }
+      ]
+    },
+    "subject": "Board deck due Thursday",
+    "text": "Can you confirm the Q4 numbers by Wednesday noon?"
+  },
+  {
+    "id": "sample-2",
+    "threadId": "sample-thread-2",
+    "from": {
+      "text": "vendor@example.com",
+      "value": [
+        {
+          "address": "vendor@example.com",
+          "name": ""
+        }
+      ]
+    },
+    "subject": "Invoice #4821",
+    "text": "Attached is the invoice for October services, due Nov 30."
+  },
+  {
+    "id": "sample-3",
+    "threadId": "sample-thread-3",
+    "from": {
+      "text": "candidate@example.com",
+      "value": [
+        {
+          "address": "candidate@example.com",
+          "name": ""
+        }
+      ]
+    },
+    "subject": "Re: Operations Associate interview",
+    "text": "Thanks for the call. Is Friday 2pm still okay for the second round?"
+  },
+  {
+    "id": "sample-4",
+    "threadId": "sample-thread-4",
+    "from": {
+      "text": "news@example.com",
+      "value": [
+        {
+          "address": "news@example.com",
+          "name": ""
+        }
+      ]
+    },
+    "subject": "This week in SaaS",
+    "text": "Top 10 links from the week."
+  },
+  {
+    "id": "sample-5",
+    "threadId": "sample-thread-5",
+    "from": {
+      "text": "client@example.com",
+      "value": [
+        {
+          "address": "client@example.com",
+          "name": ""
+        }
+      ]
+    },
+    "subject": "URGENT: login not working",
+    "text": "Our team cannot log in since this morning."
+  }
 ]

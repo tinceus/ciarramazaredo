@@ -30,7 +30,7 @@ flowchart LR
 
 ## Try it on the sample
 
-`sample-data/emails.json` holds five fictional emails, one per label. Pin them to the trigger in n8n to test the sorting without a real inbox.
+`sample-data/emails.json` holds five fictional emails, one per label, in the shape the Gmail trigger gives n8n (`from.text`, `subject`, `text`, `id`, `threadId`). Pin them to the trigger to test the sorting without a real inbox. The label and draft steps need real Gmail message ids, so they stop on the sample. That is expected.
 
 ## Files
 
