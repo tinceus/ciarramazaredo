@@ -382,7 +382,7 @@ def sprint_page():
       <label for="process">The process</label>
       <select id="process" name="process" required><option value="">Choose a process</option><option value="lead-to-booked-call">Lead follow-up</option><option value="weekly-report">Weekly reporting</option><option value="content-routing">Approved content into a calendar</option><option value="inbox-triage">Inbox and replies</option><option value="other">Another process</option></select>
       <label for="frequency">How frequently it runs</label>
-      <select id="frequency" name="frequency" required><option value="">Choose how often</option><option value="occasional">Now and then</option><option value="weekly">Weekly</option><option value="daily">Daily</option></select>
+      <select id="frequency" name="frequency" required><option value="">Choose one</option><option value="occasional">Now and then</option><option value="weekly">Weekly</option><option value="daily">Daily</option></select>
       <label for="systems">The tools involved</label>
       <select id="systems" name="systems" required><option value="">Choose the closest fit</option><option value="supported">Only the tools in the matching free workflow</option><option value="custom">Other tools, or a custom connection</option><option value="unknown">Not sure yet</option></select>
       <label for="examples">Real examples you can share</label>
@@ -421,9 +421,10 @@ def sprint_page():
     {lis(S['notfit'], 'plate')}
     <p>{esc(S['near_fit'])}</p>
     <h2>Who does the work for you</h2>
-    <div class="who"><img src="/assets/img/ciarra-mazaredo.jpg" alt="Ciarra Amor G. Mazaredo" width="120" height="120" loading="lazy"><p>{esc(' '.join(S['who']))} More on my habits is on <a href="/how-i-work">how I work</a>.</p></div>
+    <div class="who"><img src="/assets/img/ciarra-mazaredo.jpg" alt="Ciarra Amor G. Mazaredo" width="120" height="120"><p>{esc(' '.join(S['who']))} More on my habits is on <a href="/how-i-work">how I work</a>.</p></div>
     <h2>The price and what it covers</h2>
-    <p class="price">{esc(' '.join(price_lines))}</p>
+    <p class="price">{esc(price_lines[0])}</p>
+    <p>{esc(' '.join(price_lines[1:]))}</p>
     <p>{esc(S['price_reason'])} {esc(S['no_build'])}</p>
     <h2>What happens after the brief</h2>
     {lis(S['after'], 'plate')}
