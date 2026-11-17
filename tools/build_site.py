@@ -253,6 +253,8 @@ def detail_page(item, hub_route, stories_by_id):
     steps = list(site_pages.START)
     if item['slug'] in site_pages.START_FIRST:
         steps[0] = (steps[0][0], site_pages.START_FIRST[item['slug']])
+    if item['slug'] in site_pages.START_SECOND:
+        steps[1] = (steps[1][0], site_pages.START_SECOND[item['slug']])
     start = '\n'.join('      <li><strong>%s.</strong> %s</li>' % (esc(a), esc(b)) for a, b in steps)
     links.append('<li><a href="/test-me#%s">Paid trial task: %s</a></li>' % (item['task'][0], esc(item['task'][1])))
     links.append('<li><a href="/workflows#%s">Workflow: %s</a></li>' % (item['workflow'][0], esc(item['workflow'][1])))
@@ -448,7 +450,7 @@ def sprint_page():
     </div>
     <p class="objection">{esc(S['ways_out'])}</p>
   </article>"""
-    return page_shell(route, title, site_pages.sprint_fmt(S['desc']), 'AI Sprint', main, '<script type="application/ld+json">%s</script>\n<script type="application/ld+json">%s</script>\n' % (service, crumbs_ld([('Home', '/'), ('AI Sprint', route)])),
+    return page_shell(route, title, site_pages.sprint_fmt(S['desc']), 'AI Sprint fit call', main, '<script type="application/ld+json">%s</script>\n<script type="application/ld+json">%s</script>\n' % (service, crumbs_ld([('Home', '/'), ('AI Sprint', route)])),
                       '<script src="/assets/portfolio.js"></script>\n', alt=NAME, noindex=site_pages.sprint_pending(), sprint_header=True)
 
 
@@ -486,7 +488,7 @@ def sample_page():
       <a class="btn" href="/ai-sprint">Back to the AI Sprint</a>
     </div>
   </article>"""
-    return page_shell(route, '%s · %s' % (S['title'], NAME), S['desc'], 'AI Sprint', main,
+    return page_shell(route, '%s · %s' % (S['title'], NAME), S['desc'], 'AI Sprint fit call', main,
                       '<script type="application/ld+json">%s</script>\n' % crumbs_ld([('Home', '/'), ('AI Sprint', '/ai-sprint'), ('Sample brief', route)]),
                       '<script src="/assets/portfolio.js"></script>\n', alt=NAME, noindex=site_pages.sprint_pending(), sprint_header=True)
 

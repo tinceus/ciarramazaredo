@@ -232,6 +232,10 @@ START_FIRST = {  # page-specific first step; others use START[0]
     'marketing-operations': 'Map your campaigns, lists and reports. Take over the calendar and the weekly numbers.',
     'ai-automation': 'Map the recurring work and pick one process to automate first, with its human check.',
 }
+START_SECOND = {  # page-specific second step
+    'marketing-operations': 'Run the campaign calendar and the weekly numbers. Take two recurring campaigns fully off your plate.',
+    'ai-automation': 'Build the first workflow on your accounts, test it on real cases, and hand it over with notes.',
+}
 START = [('Days 1 to 30', 'Meet the team and map the recurring work. Take over the calendar, weekly brief and first SOPs.'),
          ('Days 31 to 60', 'Run the meeting rhythm, track priorities, and take two recurring processes fully off your plate.'),
          ('Days 61 to 90', 'Propose one improvement, agree how to measure it, then run it and report the result.')]
